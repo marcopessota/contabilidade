@@ -16,6 +16,7 @@ body{
 	z-index: 10;
 	position: fixed;
 	top: 85px;
+	cursor: pointer;
 }
 .icone_sidebar_menu.in{
 	font-size: 1.8em;
@@ -23,6 +24,7 @@ body{
 	position: absolute;
 	right: 0.3em;
 	top: 0.4em;
+	cursor: pointer;
 }
 .nav_logo{
 	width: 6em;

@@ -11,6 +11,7 @@
 }
 .navbar-nav>li {
     float: left;
+    cursor: pointer;
 }
 .navbar{
 	border-radius: 0;

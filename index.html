@@ -69,7 +69,7 @@
 		<div id="wrapper">
 	        <!-- Sidebar -->
 	        <div id="sidebar-wrapper">
-	            <ul ng-if="appCtrl.selected_menu == 'contabilidade'" class="sidebar-nav">
+	            <ul ng-show="appCtrl.selected_menu == 'contabilidade'" class="sidebar-nav">
 	                <li class="sidebar-brand">
 	                    <span>Circuito Contábil</span>
 						<span class="icone_sidebar_menu in glyphicon glyphicon-menu-hamburger menu-toggle" aria-hidden="true"></span>
@@ -84,7 +84,7 @@
 	                    <a href="#">Folhas de Trabalho</a>
 	                </li>
 	            </ul>
-	            <ul ng-if="appCtrl.selected_menu == 'planejamento'" class="sidebar-nav">
+	            <ul ng-show="appCtrl.selected_menu == 'planejamento'" class="sidebar-nav">
 	                <li class="sidebar-brand">
 	                    <span>Planejamento</span>
 						<span class="icone_sidebar_menu in glyphicon glyphicon-menu-hamburger menu-toggle" aria-hidden="true"></span>
@@ -96,7 +96,7 @@
 	                    <a href="#auditoria">Composição de Saldo</a>
 	                </li>
 	            </ul>
-	            <ul ng-if="appCtrl.selected_menu == 'auditoria'" class="sidebar-nav">
+	            <ul ng-show="appCtrl.selected_menu == 'auditoria'" class="sidebar-nav">
 	                <li class="sidebar-brand">
 	                    <span>Auditoria</span>
 						<span class="icone_sidebar_menu in glyphicon glyphicon-menu-hamburger menu-toggle" aria-hidden="true"></span>
