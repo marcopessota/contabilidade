@@ -44,12 +44,19 @@ app.controller('diarioController', function($scope) {
 
     var container = document.getElementById('example');
     var hot = new Handsontable(container, {
-        data: data,
+        // data: data,
+        // minSpareRows: 1,
+        comments: true,
+        startRows: 10,
+        startCols: 15,
         minSpareRows: 1,
         rowHeaders: true,
         colHeaders: true,
         contextMenu: true,
-        formulas: true
+        manualColumnResize: true,
+        manualRowResize: true,
+        formulas: true,
+        stretchH: 'all'
     });
 });
 
