@@ -10,13 +10,13 @@ app.config(['$routeProvider',
         }).
         when('/balancete', {
             templateUrl: 'templates/balancete/balancete.html',
-            controller: 'auditoriaController',
-            controllerAs: 'auditoriaCtrl'
+            controller: 'balanceteController',
+            controllerAs: 'balanceteCtrl'
         }).
         when('/folha_trabalho', {
             templateUrl: 'templates/folha_trabalho/folha_trabalho.html',
-            controller: 'auditoriaController',
-            controllerAs: 'auditoriaCtrl'
+            controller: 'folhaTrabalhoController',
+            controllerAs: 'folhaTrabalhoCtrl'
         }).
         otherwise({
             redirectTo: '/diario'

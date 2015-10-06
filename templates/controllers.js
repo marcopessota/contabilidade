@@ -10,6 +10,10 @@ app.controller('appController', function($scope) {
     };
 });
 
+app.controller('balanceteController', function($scope) {
+    var $balancete = this;
+    $balancete.titulo = "Balancete";
+});
 
 app.controller('diarioController', function($scope) {
     var $diario = this;
@@ -34,6 +38,11 @@ app.controller('diarioController', function($scope) {
     //         DTColumnBuilder.newColumn('lastName').withTitle('Last name').notVisible()
     //     ];
     // }
+});
+
+app.controller('folhaTrabalhoController', function($scope) {
+    var $folha_trabalho = this;
+    $folha_trabalho.titulo = "Folhas de Trabalho";
 
     var data = [
         ["", "Ford", "Volvo", "Toyota", "Honda"],
@@ -58,10 +67,4 @@ app.controller('diarioController', function($scope) {
         formulas: true,
         stretchH: 'all'
     });
-});
-
-
-app.controller('auditoriaController', function($scope) {
-    var $auditoria = this;
-    $auditoria.titulo = "Auditoria";
 });
