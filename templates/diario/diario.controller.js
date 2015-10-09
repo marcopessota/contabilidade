@@ -3,15 +3,15 @@ var app = angular.module('app');
 app.controller('diarioController', function($scope) {
     var $diario = this;
     $diario.titulo = "Diario";
+    $diario.selected = {};
 
     $diario.ServerSideProcessingCtrl = function($compile, $scope, $resource, DTOptionsBuilder, DTColumnBuilder) {
         var vm = this;
-        vm.selected = {};
         vm.selectAll = false;
-        vm.toggleAll = toggleAll;
-        vm.toggleOne = toggleOne;
+        $diario.toggleAll = toggleAll;
+        $diario.toggleOne = toggleOne;
 
-        var titleHtml = '<input type="checkbox" ng-model="showCase.selectAll" ng-click="showCase.toggleAll(showCase.selectAll, showCase.selected)">';
+        var titleHtml = '<input type="checkbox" ng-model="diarioCtrl.selectAll" ng-click="diarioCtrl.toggleAll(diarioCtrl.selectAll, diarioCtrl.selected)">';
 
 
 
@@ -34,14 +34,14 @@ app.controller('diarioController', function($scope) {
         vm.dtColumns = [
             DTColumnBuilder.newColumn(null).withTitle(titleHtml).notSortable()
                 .renderWith(function(data, type, full, meta) {
-                    vm.selected[full.id] = false;
-                    return '<input type="checkbox" ng-model="showCase.selected[' + data.id + ']" ng-click="showCase.toggleOne(showCase.selected)">';
+                    $diario.selected[full.id] = false;
+                    return '<input type="checkbox" ng-model="diarioCtrl.selected[' + data.id + ']" ng-click="diarioCtrl.toggleOne(diarioCtrl.selected)">';
                 }),
             DTColumnBuilder.newColumn('id').withTitle('ID'),
             DTColumnBuilder.newColumn('firstName').withTitle('First name'),
             DTColumnBuilder.newColumn('lastName').withTitle('Last name').notVisible()
         ];
-         function toggleAll (selectAll, selectedItems) {
+        function toggleAll (selectAll, selectedItems) {
         for (var id in selectedItems) {
             if (selectedItems.hasOwnProperty(id)) {
                 selectedItems[id] = selectAll;
