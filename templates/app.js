@@ -23,3 +23,13 @@ app.config(['$routeProvider',
         });
     }
 ]);
+
+app.controller('appController', function($scope) {
+    var $app = this;
+    $app.titulo = "App";
+    $app.selected_menu = "contabilidade";
+
+    $app.select_menu = function(menu) {
+        $app.selected_menu = menu;
+    };
+});
