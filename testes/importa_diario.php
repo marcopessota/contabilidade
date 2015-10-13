@@ -7,8 +7,9 @@ $_M = $m->contabilidade; // selectiona o banco
 
 $numero_colunas = 10;
 
-// $filename = "../rep/diario/diario_full.txt";
-if(empty($filename)){
+
+$filename = "../rep/diario/".$_GET["n"];
+if(empty($_GET["n"])){
 	echo "Digite nome do arquivo";
 }else{
 	$f = @fopen($filename, "r");
