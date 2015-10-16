@@ -1,5 +1,5 @@
 <?php 
-
+ 
 set_time_limit(0);
 
 $m = new MongoClient();
@@ -7,9 +7,8 @@ $_M = $m->contabilidade; // selectiona o banco
 
 $numero_colunas = 10;
 
-
-$filename = "../rep/diario/".$_GET["n"];
-if(empty($_GET["n"])){
+// $filename = "../rep/diario/diario_full.txt";
+if(empty($filename)){
 	echo "Digite nome do arquivo";
 }else{
 	$f = @fopen($filename, "r");
