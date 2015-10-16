@@ -236,6 +236,31 @@ app.controller('folhaTrabalhoController', function($scope, $timeout) {
                 });
         })
         .on('changed.jstree', function(e, data) {
+            var data = data.selected[0];
+            $.ajax({
+                type: 'POST',
+                data: {
+                    _p: data,
+                    _f: 'carrega_folha_trabalho'
+                },
+                url: 'ws/ajax.php',
+                success: function(response) {
+                    // alert('Nota salva com sucesso!');
+                    console.log(response);
+                    // var data = JSON.parse(data);
+
+                    // if (arquivo_atual != 'none') {
+                    //     if (confirm('Já existe uma nota aberta. Deseja abrir uma nova nota mesmo assim?'))
+                    //         hst_sheet_caderno_notas[0].loadData(data);
+                    // } else {
+                    //     hst_sheet_caderno_notas[0].loadData(data);
+                    // }
+
+                    // $('#titulo_nota_0').text(file);
+                    // arquivo_atual = file;
+                }
+            });
+
             if (data && data.selected && data.selected.length) {
                 $.get('rep/fx.php?operation=get_content&id=' + data.selected.join(':'), function(d) {
                     if (d && typeof d.type !== 'undefined') {
