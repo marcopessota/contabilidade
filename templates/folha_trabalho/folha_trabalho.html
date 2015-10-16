@@ -1,27 +1,32 @@
 <h1>{{folhaTrabalhoCtrl.titulo}}</h1>
 <!-- <p>Thiss template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
 <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p> -->
-<!-- <div id="jstree_demo_div"></div> -->
-<div class="container">
-	<section>
-		<ul class="nav nav-pills">
-			<li ng-class="{active:folhaTrabalhoCtrl.isSet(1)}"><a href ng-click="folhaTrabalhoCtrl.setTab(1)">Aba 1</a></li>
-			<!-- <li ng-class="{active:folhaTrabalhoCtrl.isSet(2)}"><a href ng-click="folhaTrabalhoCtrl.setTab(2)">Tab 2</a></li> -->
-			<!-- <li ng-class="{active:folhaTrabalhoCtrl.isSet(3)}"><a href ng-click="folhaTrabalhoCtrl.setTab(3)">Tab 3</a></li> -->
-			<li ng-repeat="tab in folhaTrabalhoCtrl.tabs" ng-class="{active:folhaTrabalhoCtrl.isSet(tab.id)}"><a href ng-click="folhaTrabalhoCtrl.setTab(tab.id)">Aba {{tab.id}}</a></li>
-			<li><a href ng-click="folhaTrabalhoCtrl.addTab()">+</a></li>
-		</ul>
-		<div ng-show="folhaTrabalhoCtrl.isSet(1)">
-			<h4>Aba 1</h4>
-			<div id="handsontable_1"></div>
-			<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.salvar_folha_trabalho(1)">Salvar</button>
-			<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.exportar_folha_trabalho(1)">Exportar CSV</button>
+<div class="row">
+	<div class="col-md-4">
+		<div id="tree"></div>
+	</div>
+	<div class="col-md-8">
+		<div class="container">
+			<section>
+				<ul class="nav nav-pills">
+					<li ng-class="{active:folhaTrabalhoCtrl.isSet(1)}"><a href ng-click="folhaTrabalhoCtrl.setTab(1)">Aba 1</a></li>
+					<li ng-repeat="tab in folhaTrabalhoCtrl.tabs" ng-class="{active:folhaTrabalhoCtrl.isSet(tab.id)}"><a href ng-click="folhaTrabalhoCtrl.setTab(tab.id)">Aba {{tab.id}}</a></li>
+					<li><a href ng-click="folhaTrabalhoCtrl.addTab()">+</a></li>
+				</ul>
+				<div ng-show="folhaTrabalhoCtrl.isSet(1)">
+					<h4>Aba 1</h4>
+					<div id="handsontable_1"></div>
+					<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.salvar_folha_trabalho(1)">Salvar</button>
+					<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.exportar_folha_trabalho(1)">Exportar CSV</button>
+				</div>
+				<div ng-repeat="tab in folhaTrabalhoCtrl.tabs" ng-show="folhaTrabalhoCtrl.isSet(tab.id)">
+					<h4>Aba {{tab.id}}</h4>
+					<div id="handsontable_{{tab.id}}"></div>
+					<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.salvar_folha_trabalho(tab.id)">Salvar</button>
+					<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.exportar_folha_trabalho(tab.id)">Exportar CSV</button>
+				</div>
+			</section>
 		</div>
-		<div ng-repeat="tab in folhaTrabalhoCtrl.tabs" ng-show="folhaTrabalhoCtrl.isSet(tab.id)">
-			<h4>Aba {{tab.id}}</h4>
-			<div id="handsontable_{{tab.id}}"></div>
-			<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.salvar_folha_trabalho(tab.id)">Salvar</button>
-			<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.exportar_folha_trabalho(tab.id)">Exportar CSV</button>
-		</div>
-	</section>
+		
+	</div>
 </div>
