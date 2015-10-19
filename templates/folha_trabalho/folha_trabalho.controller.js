@@ -69,8 +69,7 @@ app.controller('folhaTrabalhoController', function($scope, $timeout) {
     };
 
     $folha_trabalho.salvar_folha_trabalho = function(tab) {
-        var tab = tab - 1;
-        var mydata = hot.getData();
+        var mydata = $folha_trabalho.handsontables[tab].getData();
         mydata = JSON.stringify(mydata);
 
         $.ajax({
@@ -245,19 +244,9 @@ app.controller('folhaTrabalhoController', function($scope, $timeout) {
                 },
                 url: 'ws/ajax.php',
                 success: function(response) {
-                    // alert('Nota salva com sucesso!');
-                    console.log(response);
-                    // var data = JSON.parse(data);
-
-                    // if (arquivo_atual != 'none') {
-                    //     if (confirm('Já existe uma nota aberta. Deseja abrir uma nova nota mesmo assim?'))
-                    //         hst_sheet_caderno_notas[0].loadData(data);
-                    // } else {
-                    //     hst_sheet_caderno_notas[0].loadData(data);
-                    // }
-
-                    // $('#titulo_nota_0').text(file);
-                    // arquivo_atual = file;
+                    var data = JSON.parse(response);
+                    var tab = $folha_trabalho.tab - 1;
+                    $folha_trabalho.handsontables[tab].loadData(data);
                 }
             });
 
