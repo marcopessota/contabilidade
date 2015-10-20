@@ -34,11 +34,27 @@ app.factory('S_errors_message', [function() {
 }]);
 
 
-
 app.factory('S_vars', [function() {
 	$S_vars = this;
 
 	$S_vars.url_ajax = "ws/";
 
 	return $S_vars;
+}]);
+
+app.factory('S_fx', [function() {
+	$S_fx = this;
+
+	$S_fx.get_selection_text = function() {
+      var text = "";
+      if (window.getSelection) {
+          text = window.getSelection().toString();
+      } else if (document.selection && document.selection.type != "Control") {
+          text = document.selection.createRange().text;
+      }
+
+      return text;
+    };
+
+	return $S_fx;
 }]);
