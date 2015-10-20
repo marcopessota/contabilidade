@@ -20,7 +20,8 @@ body{
 }
 .icone_sidebar_menu.in{
 	font-size: 1.8em;
-	color: #FFF;
+	/*color: #FFF;*/
+	color: #666;
 	position: absolute;
 	right: 0.3em;
 	top: 0.4em;

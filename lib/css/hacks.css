@@ -18,6 +18,8 @@
 	height: 85px;
 	overflow: hidden;
 	margin-bottom: 0;
+	background-color: #BF8B41;
+    border-color: #BF8B41;
 }
 .navbar .divider-vertical {
 	margin: 10px 0;
@@ -33,11 +35,15 @@ border-left-color: #666;
 }
 
 .sidebar-nav > .sidebar-brand {
-    color:#FFF;
+    color: #666;
 }
 
 @media (max-width: 767px) {
 .navbar-collapse .nav > .divider-vertical {
     display: none;
   }
+}
+
+.navbar-inverse .navbar-nav>li>a {
+    color: #fff;
 }
