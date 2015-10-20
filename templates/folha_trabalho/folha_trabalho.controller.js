@@ -4,23 +4,7 @@ app.controller('folhaTrabalhoController', function($scope, $timeout) {
     var $folha_trabalho = this;
     $folha_trabalho.titulo = "Folhas de Trabalho";
     $folha_trabalho.handsontables = [];
-
-    // var container = document.getElementById('handsontable_1');
-    // $folha_trabalho.handsontables.push(new Handsontable(container, {
-    //     // data: data,
-    //     // minSpareRows: 1,
-    //     comments: true,
-    //     startRows: 10,
-    //     startCols: 15,
-    //     minSpareRows: 1,
-    //     rowHeaders: true,
-    //     colHeaders: true,
-    //     contextMenu: true,
-    //     manualColumnResize: true,
-    //     manualRowResize: true,
-    //     formulas: true,
-    //     // stretchH: 'all'
-    // }));
+    $folha_trabalho.treeVisible = true;
 
     // Manipulação das Tabs
     $folha_trabalho.tab = 0;
@@ -63,8 +47,11 @@ app.controller('folhaTrabalhoController', function($scope, $timeout) {
     };
     // Fim Manipulação das Tabs
 
+    $folha_trabalho.setTreeVisible = function() {
+        $folha_trabalho.treeVisible = !$folha_trabalho.treeVisible;
+    };
+
     $folha_trabalho.exportar_folha_trabalho = function(tab) {
-        var tab = tab - 1;
         var instance = $folha_trabalho.handsontables[tab];
         handsontable2csv.download(instance, "filename.csv");
     };
@@ -91,7 +78,7 @@ app.controller('folhaTrabalhoController', function($scope, $timeout) {
                 },
                 url: 'ws/ajax.php',
                 success: function(response) {
-                    // alert('Nota salva com sucesso!');
+                    alert('Nota salva com sucesso!');
                     $('#tree').jstree(true).refresh();
                 }
             });
