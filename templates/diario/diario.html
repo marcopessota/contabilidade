@@ -1,10 +1,64 @@
-<h1>{{diarioCtrl.titulo}}</h1>
+<button class="btn btn-primary">Lista de diários</button>
+<button ng-click="diarioCtrl.importar_diario()" class="btn btn-warning">Importar diário</button>
 
-<div>
+
+
+<!-- <div>
 	<div>LINHAS SELECIONADAS</div>
 	{{diarioCtrl.selected | json}}
+</div> -->
+
+
+<div ng-show="diarioCtrl.action == 'import'" class="import_diario_holder">
+	<h1>Importar diário</h1>
+
+
+	<h3>Antes de realizar a importação será necessário que sejam respondidas algumas perguntas.</h3>
+
+	<button class="btn btn-primary" ng-click="diarioCtrl.action = 'answer'">OK, prosseguir</button>
+	<button class="btn btn-primary" ng-click="diarioCtrl.action = 'list'">Cancelar importação</button>
+
+
+
+
+	<table>
+		<tr>
+			<th width="6%">N° linha</th>
+			<th width="94%">Linha diário</th>
+		</tr>
+		<tr ng-repeat="item in diarioCtrl.preview_import_items track by $index">
+			<td>{{$index}}</td>
+			<td>{{item}} {{item}}</td>
+		</tr>
+	</table>
+</div>
+<div ng-show="diarioCtrl.action == 'list'" class="diario_holder">
+	<h1>{{diarioCtrl.titulo}} - 2014</h1>
+	<div ng-controller="diarioCtrl.ServerSideProcessingCtrl as showCase">
+		<table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" class="row-border hover"></table>
+	</div>
+	<button ng-click="diarioCtrl.action = 'list'" class="btn btn-warning">Cancelar importação</button>
 </div>
 
-<div ng-controller="diarioCtrl.ServerSideProcessingCtrl as showCase">
-	<table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" class="row-border hover"></table>
-</div>
+<style>
+.import_diario_holder{
+	margin:0;
+	overflow-x:auto;
+	border: 1px solid #CCC;
+}
+.import_diario_holder table{
+	border: none;
+}
+.import_diario_holder table tr{
+	white-space: nowrap;
+    border: 1px solid #CCC;
+}
+.import_diario_holder table tr th{
+	padding: 0.5em;
+}
+.import_diario_holder table tr td{
+	padding: 0.5em;
+    border: 1px solid #CCC;
+}
+
+</style>
