@@ -9,16 +9,16 @@
 		<div class="container">
 			<section>
 				<ul class="nav nav-pills">
-					<li ng-class="{active:folhaTrabalhoCtrl.isSet(1)}"><a href ng-click="folhaTrabalhoCtrl.setTab(1)">Aba 1</a></li>
+					<!-- <li ng-class="{active:folhaTrabalhoCtrl.isSet(0)}"><a href ng-click="folhaTrabalhoCtrl.setTab(0)">Aba 1</a></li> -->
 					<li ng-repeat="tab in folhaTrabalhoCtrl.tabs" ng-class="{active:folhaTrabalhoCtrl.isSet(tab.id)}"><a href ng-click="folhaTrabalhoCtrl.setTab(tab.id)">Aba {{tab.id}}</a></li>
 					<li><a href ng-click="folhaTrabalhoCtrl.addTab()">+</a></li>
 				</ul>
-				<div ng-show="folhaTrabalhoCtrl.isSet(1)">
+				<!-- <div ng-show="folhaTrabalhoCtrl.isSet(0)">
 					<h4>Aba 1</h4>
 					<div id="handsontable_1"></div>
-					<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.salvar_folha_trabalho(1)">Salvar</button>
-					<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.exportar_folha_trabalho(1)">Exportar CSV</button>
-				</div>
+					<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.salvar_folha_trabalho(0)">Salvar</button>
+					<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.exportar_folha_trabalho(0)">Exportar CSV</button>
+				</div> -->
 				<div ng-repeat="tab in folhaTrabalhoCtrl.tabs" ng-show="folhaTrabalhoCtrl.isSet(tab.id)">
 					<h4>Aba {{tab.id}}</h4>
 					<div id="handsontable_{{tab.id}}"></div>
