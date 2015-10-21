@@ -11,7 +11,8 @@ app.controller('diarioController', function($scope, $http, S_vars, S_http_valida
 	$diario.date_selection_count_done = 0;
 	$diario.selected = {};
 	$diario.import_answers = {};
-	
+	$diario.questions = [];
+
 
 	$diario.set_answer = function(question, answer, next_question){
 		switch(next_question){
@@ -39,6 +40,9 @@ app.controller('diarioController', function($scope, $http, S_vars, S_http_valida
 				$diario.answers = next_question;
 				break;
 			case "question4.1":
+				$diario.answers = next_question;
+				break;
+			case "question_end":
 				$diario.answers = next_question;
 				break;
 		}
@@ -108,20 +112,33 @@ app.controller('diarioController', function($scope, $http, S_vars, S_http_valida
 		$diario.import_answers[$diario.answers].positions = [];
 	}
 
-	$diario.importar_diario = function(){
+	$diario.importar_diario = function(preview){
 		console.log(S_http_validate);
 		var obj_ajax = {};
 		obj_ajax._f = "importar_diario";
-		obj_ajax._p = {"a" : 1};
+		obj_ajax._p = {"answers" : $diario.import_answers, "preview" : preview};
 		$http.post(S_vars.url_ajax + "ajax.php", obj_ajax).success(function(data, status) {
 			var validation = S_http_validate.validate_success(data.error, status);
 			if(validation == true){
-				$diario.preview_import_items = data.value;
-				$diario.action = "import";
+				if(preview == true){
+					$diario.preview_import_items = data.value;
+					$diario.action = "import";
+				}
             }else{
             	alert(validation);
             }
         });
+	}
+
+
+	$diario.get_questions = function(){
+		$diario.questions.push('A data do lançamento aparece em todas as linhas?');
+		$diario.questions.push('Selecione na linha abaixo onde está o campo <b>data</b> e pressione "OK"? (Será necessário fazer essa ação 3 vezes)');
+		$diario.questions.push('A data do lançamento aparece acima ou abaixo das linhas de registros?');
+		$diario.questions.push('Quantas linhas a data está Acima/Abaixo dos registros?');
+		$diario.questions.push('Selecione na linha abaixo onde está o campo <b>conta</b> e pressione "OK"? (Será necessário fazer essa ação 3 vezes)');
+		$diario.questions.push('Selecione na linha abaixo onde está o campo <b>débito</b> e pressione "OK"? (Será necessário fazer essa ação 3 veze)');
+		$diario.questions.push('Selecione na linha abaixo onde está o campo <b>crédito</b> e pressione "OK"? (Será necessário fazer essa ação 3 veze)');
 	}
 
 

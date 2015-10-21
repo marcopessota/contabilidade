@@ -1,5 +1,5 @@
 <button class="btn btn-primary">Lista de diários</button>
-<button ng-click="diarioCtrl.importar_diario()" class="btn btn-warning">Importar diário</button>
+<button ng-click="diarioCtrl.importar_diario(true)" class="btn btn-warning">Importar diário</button>
 
 
 
@@ -12,7 +12,7 @@
 <div ng-show="diarioCtrl.action == 'import'" >
 	<h1>Importar diário</h1>
 	<!-- {{diarioCtrl.answers}} -->
-	{{diarioCtrl.import_answers}}
+	<!-- {{diarioCtrl.import_answers}} -->
 	<div ng-show="diarioCtrl.answers == 'question'">
 		<h3>Antes de realizar a importação será necessário que sejam respondidas algumas questões.</h3>
 		<button class="btn btn-primary" ng-click="diarioCtrl.answers = 'question1.1'">OK, prosseguir</button>
@@ -28,7 +28,7 @@
 	</div>
 
 	<div ng-show="diarioCtrl.answers == 'question1.1.1'">
-		<div>Selecione na linha abaixo onde está o campo <b>data</b> e pressione "OK"? (Será necessário fazer essa ação mais de uma vez)</div>
+		<div>Selecione na linha abaixo onde está o campo <b>data</b> e pressione "OK"? (Será necessário fazer essa ação 3 vezes)</div>
 		<div class="preview_select_line" ng-mouseup="diarioCtrl.selected_text = diarioCtrl.S_fx.get_selection_text()">{{diarioCtrl.table_line}}</div>
 		<div class="preview_answer_question1.1.1">
 			<div ng-repeat="item in diarioCtrl.import_answers['question1.1.1'].selections track by $index">
@@ -68,7 +68,7 @@
 	<!-- QUESTÕES SOBRE CONTA -->
 	<!-- 					  -->
 	<div ng-show="diarioCtrl.answers == 'question2.1'">
-		<div>Selecione na linha abaixo onde está o campo <b>conta</b> e pressione "OK"? (Será necessário fazer essa ação mais de uma vez)</div>
+		<div>Selecione na linha abaixo onde está o campo <b>conta</b> e pressione "OK"? (Será necessário fazer essa ação 3 vezes)</div>
 		<div class="preview_select_line" ng-mouseup="diarioCtrl.selected_text = diarioCtrl.S_fx.get_selection_text()">{{diarioCtrl.table_line}}</div>
 		<div class="preview_answer_question2.1">
 			<div ng-repeat="item in diarioCtrl.import_answers['question2.1'].selections track by $index">
@@ -83,7 +83,7 @@
 	<!-- QUESTÕES SOBRE DÉBITO -->
 	<!-- 					   -->
 	<div ng-show="diarioCtrl.answers == 'question3.1'">
-		<div>Selecione na linha abaixo onde está o campo <b>débito</b> e pressione "OK"? (Será necessário fazer essa ação mais de uma vez)</div>
+		<div>Selecione na linha abaixo onde está o campo <b>débito</b> e pressione "OK"? (Será necessário fazer essa ação 3 veze)</div>
 		<div class="preview_select_line" ng-mouseup="diarioCtrl.selected_text = diarioCtrl.S_fx.get_selection_text()">{{diarioCtrl.table_line}}</div>
 		<div class="preview_answer_question3.1">
 			<div ng-repeat="item in diarioCtrl.import_answers['question3.1'].selections track by $index">
@@ -113,8 +113,31 @@
 	<!-- SUCESSO				-->
 	<!-- 					    -->
 	<div ng-show="diarioCtrl.answers == 'question_end'">
-		<div>Selecione na linha abaixo onde está o campo <b>crédito</b> e pressione "OK"? (Será necessário fazer essa ação mais de uma vez)</div>
-		<h1> SUCESSO</h1>
+		<div>Veja como ficou suas reposta, confirme ou recomece</div>
+		<!-- <table>
+			<tr>
+				<th>Pergunta</th>
+				<th>Resposta</th>
+			</tr>
+			<tr>
+				<td>A data do lançamento aparece em todas as linhas?</td>
+				<td>{{diarioCtrl.answers[""]}}</td>
+			</tr>
+			<tr>
+				<td>A data do lançamento aparece em todas as linhas?</td>
+				<td>{{diarioCtrl.answers[""]}}</td>
+			</tr>
+			<tr>
+				<td>A data do lançamento aparece em todas as linhas?</td>
+				<td>{{diarioCtrl.answers[""]}}</td>
+			</tr>
+			<tr>
+				<td>A data do lançamento aparece em todas as linhas?</td>
+				<td>{{diarioCtrl.answers[""]}}</td>
+			</tr>
+		</table> -->
+		<button class="btn btn-primary" ng-click="diarioCtrl.importar_diario()">Confirmar!</button>
+		<button class="btn btn-primary" ng-click="diarioCtrl.clear_selection_text()">Recomeçar</button>
 	</div>
 
 
