@@ -1,4 +1,5 @@
 <?php
+
 	require_once("config.php");
 
 	if(isset($_SERVER["CONTENT_TYPE"]) && strpos($_SERVER["CONTENT_TYPE"], "application/json") !== false) {

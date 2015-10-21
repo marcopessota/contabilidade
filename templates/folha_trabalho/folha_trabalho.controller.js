@@ -1,6 +1,6 @@
 var app = angular.module('app');
 
-app.controller('folhaTrabalhoController', function($scope, $timeout) {
+app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_vars) {
     var $folha_trabalho = this;
     $folha_trabalho.titulo = "Folhas de Trabalho";
     $folha_trabalho.handsontables = [];
@@ -33,7 +33,7 @@ app.controller('folhaTrabalhoController', function($scope, $timeout) {
                 // minSpareRows: 1,
                 comments: true,
                 startRows: 10,
-                startCols: 15,
+                startCols: 10,
                 minSpareRows: 1,
                 rowHeaders: true,
                 colHeaders: true,
@@ -67,20 +67,15 @@ app.controller('folhaTrabalhoController', function($scope, $timeout) {
             var mydata = $folha_trabalho.handsontables[tab].getData();
             mydata = JSON.stringify(mydata);
 
-            $.ajax({
-                type: 'POST',
-                data: {
-                    _p: {
-                        mydata: mydata,
-                        nome_folha_trabalho: nome_folha_trabalho
-                    },
-                    _f: 'salva_folha_trabalho'
-                },
-                url: 'ws/ajax.php',
-                success: function(response) {
-                    alert('Nota salva com sucesso!');
-                    $('#tree').jstree(true).refresh();
-                }
+            var obj_ajax = {};
+            obj_ajax._f = 'salva_folha_trabalho';
+            obj_ajax._p = {
+                mydata: mydata,
+                nome_folha_trabalho: nome_folha_trabalho
+            };
+            $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
+                alert('Nota salva com sucesso!');
+                $('#tree').jstree(true).refresh();
             });
         }
     };
@@ -236,18 +231,13 @@ app.controller('folhaTrabalhoController', function($scope, $timeout) {
         })
         .on('changed.jstree', function(e, data) {
             var data = data.selected[0];
-            $.ajax({
-                type: 'POST',
-                data: {
-                    _p: data,
-                    _f: 'carrega_folha_trabalho'
-                },
-                url: 'ws/ajax.php',
-                success: function(response) {
-                    var data = JSON.parse(response);
-                    // var tab = $folha_trabalho.tab - 1;
-                    $folha_trabalho.handsontables[$folha_trabalho.tab].loadData(data);
-                }
+
+            var obj_ajax = {};
+            obj_ajax._f = 'carrega_folha_trabalho';
+            obj_ajax._p = data;
+            $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
+                // var data = JSON.parse(data);
+                $folha_trabalho.handsontables[$folha_trabalho.tab].loadData(data);
             });
 
             if (data && data.selected && data.selected.length) {
