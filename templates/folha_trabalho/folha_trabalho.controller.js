@@ -242,48 +242,48 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
                 $folha_trabalho.handsontables[$folha_trabalho.tab].loadData(data);
             });
 
-            if (data && data.selected && data.selected.length) {
-                $.get('rep/fx.php?operation=get_content&id=' + data.selected.join(':'), function(d) {
-                    if (d && typeof d.type !== 'undefined') {
-                        $('#data .content').hide();
-                        switch (d.type) {
-                            case 'text':
-                            case 'txt':
-                            case 'md':
-                            case 'htaccess':
-                            case 'log':
-                            case 'sql':
-                            case 'php':
-                            case 'js':
-                            case 'json':
-                            case 'css':
-                            case 'html':
-                                $('#data .code').show();
-                                $('#code').val(d.content);
-                                break;
-                            case 'png':
-                            case 'jpg':
-                            case 'jpeg':
-                            case 'bmp':
-                            case 'gif':
-                                $('#data .image img').one('load', function() {
-                                    $(this).css({
-                                        'marginTop': '-' + $(this).height() / 2 + 'px',
-                                        'marginLeft': '-' + $(this).width() / 2 + 'px'
-                                    });
-                                }).attr('src', d.content);
-                                $('#data .image').show();
-                                break;
-                            default:
-                                $('#data .default').html(d.content).show();
-                                break;
-                        }
-                    }
-                });
-            } else {
-                $('#data .content').hide();
-                $('#data .default').html('Select a file from the tree.').show();
-            }
+            // if (data && data.selected && data.selected.length) {
+            //     $.get('rep/fx.php?operation=get_content&id=' + data.selected.join(':'), function(d) {
+            //         if (d && typeof d.type !== 'undefined') {
+            //             $('#data .content').hide();
+            //             switch (d.type) {
+            //                 case 'text':
+            //                 case 'txt':
+            //                 case 'md':
+            //                 case 'htaccess':
+            //                 case 'log':
+            //                 case 'sql':
+            //                 case 'php':
+            //                 case 'js':
+            //                 case 'json':
+            //                 case 'css':
+            //                 case 'html':
+            //                     $('#data .code').show();
+            //                     $('#code').val(d.content);
+            //                     break;
+            //                 case 'png':
+            //                 case 'jpg':
+            //                 case 'jpeg':
+            //                 case 'bmp':
+            //                 case 'gif':
+            //                     $('#data .image img').one('load', function() {
+            //                         $(this).css({
+            //                             'marginTop': '-' + $(this).height() / 2 + 'px',
+            //                             'marginLeft': '-' + $(this).width() / 2 + 'px'
+            //                         });
+            //                     }).attr('src', d.content);
+            //                     $('#data .image').show();
+            //                     break;
+            //                 default:
+            //                     $('#data .default').html(d.content).show();
+            //                     break;
+            //             }
+            //         }
+            //     });
+            // } else {
+            //     $('#data .content').hide();
+            //     $('#data .default').html('Select a file from the tree.').show();
+            // }
         });
 
     $folha_trabalho.iniciar_folha_trabalho();
