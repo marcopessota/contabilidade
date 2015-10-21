@@ -2,9 +2,11 @@ var app = angular.module('app');
 
 app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_vars) {
     var $folha_trabalho = this;
-    $folha_trabalho.titulo = "Folhas de Trabalho";
+    $folha_trabalho.titulo = 'Folhas de Trabalho';
     $folha_trabalho.handsontables = [];
-    $folha_trabalho.treeVisible = true;
+    $folha_trabalho.treeVisible = false;
+
+    $folha_trabalho.htmlContent = ''; // textAngular
 
     // Manipulação das Tabs
     $folha_trabalho.tab = 0;
@@ -33,7 +35,7 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
                 // minSpareRows: 1,
                 comments: true,
                 startRows: 10,
-                startCols: 10,
+                startCols: 20,
                 minSpareRows: 1,
                 rowHeaders: true,
                 colHeaders: true,
