@@ -16,7 +16,8 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-12">
-    	<div text-angular ng-model="folhaTrabalhoCtrl.htmlContent" name="demo-editor" ta-text-editor-class="border-around container" ta-html-editor-class="border-around"></div>
+	<div class="col-md-4" style="float: right;">
+		<img ng-repeat="image in folhaTrabalhoCtrl.images_folha_trabalho" class="img-group-05" src="rep/images_id_cliente/{{image.thumb}}" href="rep/images_id_cliente/{{image.small}}">
+		<colorbox box-for=".img-group-05" open="zoom05" options="{rel:'img-group-05', slideshow:false, open:false}"></colorbox>
 	</div>
 </div>
