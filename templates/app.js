@@ -18,6 +18,11 @@ app.config(['$routeProvider',
             controller: 'folhaTrabalhoController',
             controllerAs: 'folhaTrabalhoCtrl'
         }).
+        when('/flowchart', {
+            templateUrl: 'templates/flowchart/flowchart.html',
+            controller: 'flowchartController',
+            controllerAs: 'flowchartCtrl'
+        }).
         otherwise({
             redirectTo: '/diario'
         });

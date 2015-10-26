@@ -10,22 +10,22 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
     $folha_trabalho.tab = 0;
     $folha_trabalho.tabs = [];
 
-    $folha_trabalho.images_folha_trabalho = [{
-        thumb: 'thumb/image1.jpg',
-        small: 'small/image1.jpg'
-    }, {
-        thumb: 'thumb/image2.jpg',
-        small: 'small/image2.jpg'
-    }, {
-        thumb: 'thumb/image3.jpg',
-        small: 'small/image3.jpg'
-    }, {
-        thumb: 'thumb/image4.jpg',
-        small: 'small/image4.jpg'
-    }, {
-        thumb: 'thumb/image5.jpg',
-        small: 'small/image5.jpg'
-    }];
+    // $folha_trabalho.images_folha_trabalho = [{
+    //     thumb: 'thumb/image1.jpg',
+    //     small: 'small/image1.jpg'
+    // }, {
+    //     thumb: 'thumb/image2.jpg',
+    //     small: 'small/image2.jpg'
+    // }, {
+    //     thumb: 'thumb/image3.jpg',
+    //     small: 'small/image3.jpg'
+    // }, {
+    //     thumb: 'thumb/image4.jpg',
+    //     small: 'small/image4.jpg'
+    // }, {
+    //     thumb: 'thumb/image5.jpg',
+    //     small: 'small/image5.jpg'
+    // }];
 
     $folha_trabalho.setTab = function(tabId) {
         $folha_trabalho.tab = tabId;
@@ -254,7 +254,7 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
             obj_ajax._p = data;
             $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
                 // var data = JSON.parse(data);
-                // $folha_trabalho.handsontables[$folha_trabalho.tab].loadData(data);
+                $folha_trabalho.handsontables[$folha_trabalho.tab].loadData(data);
             });
 
             // if (data && data.selected && data.selected.length) {
