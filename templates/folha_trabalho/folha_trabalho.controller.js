@@ -9,6 +9,7 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
     // Manipulação das Tabs
     $folha_trabalho.tab = 0;
     $folha_trabalho.tabs = [];
+    $folha_trabalho.textAngular = 'texto';
 
     // $folha_trabalho.images_folha_trabalho = [{
     //     thumb: 'thumb/image1.jpg',
@@ -268,16 +269,25 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
             obj_ajax._f = 'carrega_folha_trabalho';
             obj_ajax._p = data;
             $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
-                // var data = JSON.parse(data);
                 if (data != "can't open file") {
                     var prox = $folha_trabalho.tabs.length;
 
+                    // Variável para mostrar ou não a reticências
                     if (obj_ajax._p.length > 15) {
-                        var mostra = true;
+                        var mostra = true; 
                     } else {
                         var mostra = false;
                     }
 
+                    // Verifica se existe a folha de trabalho já aberta
+                    for (var i = 0; i < $folha_trabalho.tabs.length; i++) {
+                        if ($folha_trabalho.tabs[i].nome == obj_ajax._p) {
+                            alert('Folha de Trabalho já aberta');
+                            return false;
+                        }
+                    }
+
+                    // Senão abre esta folha
                     $folha_trabalho.tabs.push({
                         id: prox,
                         nome: obj_ajax._p,
@@ -289,7 +299,6 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
 
                         $folha_trabalho.handsontables.push(new Handsontable(container, {
                             // data: data,
-                            // minSpareRows: 1,
                             comments: true,
                             startRows: 15,
                             startCols: 20,
@@ -300,7 +309,7 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
                             manualColumnResize: true,
                             manualRowResize: true,
                             formulas: true,
-                            // stretchH: 'all'
+                            stretchH: 'all'
                         }));
                         $folha_trabalho.handsontables[$folha_trabalho.tabs.length - 1].loadData(data);
                     }, 100);

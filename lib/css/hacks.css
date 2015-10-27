@@ -55,11 +55,11 @@ border-left-color: #666;
 }
 
 .tabs_folha_trabalho.plus {
-    background-color: #3D5971;
+    background-color: #3D5971 !important;
     color: #fff;
 }
 
 .tabs_folha_trabalho.plus:hover {
-    background-color: #414B54;
+    background-color: #414B54 !important;
     color: #fff;
 }
