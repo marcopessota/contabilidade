@@ -10,6 +10,7 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
     $folha_trabalho.tab = 0;
     $folha_trabalho.tabs = [];
     $folha_trabalho.textAngular = 'texto';
+    $folha_trabalho.first_tab = true;
 
     // $folha_trabalho.images_folha_trabalho = [{
     //     thumb: 'thumb/image1.jpg',
@@ -39,42 +40,50 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
     $folha_trabalho.addTab = function() {
         var prox = $folha_trabalho.tabs.length;
 
-        var nome_folha_trabalho = prompt('Insira o nome da Folha de Trabalho');
-
-        if (nome_folha_trabalho.length > 15) {
-            var mostra = true;
+        if ($folha_trabalho.first_tab == true) {
+            nome_folha_trabalho = 'Nova folha ' + (prox + 1);
+            $folha_trabalho.first_tab = false;
         } else {
-            var mostra = false;
+            var nome_folha_trabalho = prompt('Insira o nome da Folha de Trabalho');
         }
 
-        if (nome_folha_trabalho != null) {
-
-            $folha_trabalho.tabs.push({
-                id: prox,
-                nome: nome_folha_trabalho,
-                mostra: mostra
-            });
-
-            $timeout(function() {
-                var container = document.getElementById('handsontable_' + prox);
-
-                $folha_trabalho.handsontables.push(new Handsontable(container, {
-                    // data: data,
-                    // minSpareRows: 1,
-                    comments: true,
-                    startRows: 15,
-                    startCols: 20,
-                    minSpareRows: 1,
-                    rowHeaders: true,
-                    colHeaders: true,
-                    contextMenu: true,
-                    manualColumnResize: true,
-                    manualRowResize: true,
-                    formulas: true,
-                    // stretchH: 'all'
-                }));
-            }, 100);
+        // Se o nome da folha for vazia, colocar como Nova folha + Número
+        if (nome_folha_trabalho == '') {
+            nome_folha_trabalho = 'Nova folha ' + (prox + 1);
         }
+
+        // Se o nome da folha for maior que 15 caracteres, colocar reticencias
+        if (nome_folha_trabalho.length > 15) {
+            var mostra_reticencias = true;
+        } else {
+            var mostra_reticencias = false;
+        }
+
+        $folha_trabalho.tabs.push({
+            id: prox,
+            nome: nome_folha_trabalho,
+            mostra_reticencias: mostra_reticencias
+        });
+
+        $timeout(function() {
+            var container = document.getElementById('handsontable_' + prox);
+
+            $folha_trabalho.handsontables.push(new Handsontable(container, {
+                // data: data,
+                // minSpareRows: 1,
+                comments: true,
+                startRows: 15,
+                startCols: 20,
+                minSpareRows: 1,
+                rowHeaders: true,
+                colHeaders: true,
+                contextMenu: true,
+                manualColumnResize: true,
+                manualRowResize: true,
+                formulas: true,
+                // stretchH: 'all'
+            }));
+        }, 100);
     };
     // Fim Manipulação das Tabs
 
@@ -92,11 +101,6 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
     };
 
     $folha_trabalho.salvar_folha_trabalho = function(tab, nome) {
-        // var nome_folha_trabalho = prompt('Insira o nome da Folha de Trabalho');
-
-        // console.log(nome);
-        // return false;
-        // if (nome_folha_trabalho != null) {
         var mydata = $folha_trabalho.handsontables[tab].getData();
         mydata = JSON.stringify(mydata);
 
@@ -110,7 +114,6 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
             alert('Nota salva com sucesso!');
             $('#tree').jstree(true).refresh();
         });
-        // }
     };
 
     $('#tree')
@@ -274,9 +277,9 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
 
                     // Variável para mostrar ou não a reticências
                     if (obj_ajax._p.length > 15) {
-                        var mostra = true; 
+                        var mostra_reticencias = true;
                     } else {
-                        var mostra = false;
+                        var mostra_reticencias = false;
                     }
 
                     // Verifica se existe a folha de trabalho já aberta
@@ -291,7 +294,7 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
                     $folha_trabalho.tabs.push({
                         id: prox,
                         nome: obj_ajax._p,
-                        mostra: mostra
+                        mostra_reticencias: mostra_reticencias
                     });
 
                     $timeout(function() {
@@ -312,6 +315,7 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
                             stretchH: 'all'
                         }));
                         $folha_trabalho.handsontables[$folha_trabalho.tabs.length - 1].loadData(data);
+                        $folha_trabalho.setTab($folha_trabalho.tabs.length - 1);
                     }, 100);
                 }
             });

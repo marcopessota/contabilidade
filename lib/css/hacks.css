@@ -63,3 +63,6 @@ border-left-color: #666;
     background-color: #414B54 !important;
     color: #fff;
 }
+.ta-hidden-input{
+    display: none;
+}

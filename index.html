@@ -34,7 +34,7 @@
   </head>
   <body ng-app="app">
   	<div ng-controller="appController as appCtrl">
-		<nav class="navbar navbar-inverse  navbar-fixed-top">
+		<nav class="navbar navbar-inverse navbar-fixed-top">
 			<!--<div class="container"> -->
 				<div>
 					<div class="navbar-header navbar-left">
@@ -94,9 +94,6 @@
 	                </li>
 	                <li>
 	                    <a href="#folha_trabalho">Folhas de Trabalho</a>
-	                </li>
-	                <li>
-	                    <a href="#flowchart">Flowchart</a>
 	                </li>
 	            </ul>
 	            <ul ng-show="appCtrl.selected_menu == 'planejamento'" class="sidebar-nav">
@@ -178,14 +175,12 @@
 	<script src="templates/diario/diario.controller.js"></script>
 	<script src="templates/balancete/balancete.controller.js"></script>
 	<script src="templates/folha_trabalho/folha_trabalho.controller.js"></script>
-	<script src="templates/flowchart/flowchart.controller.js"></script>
 
 	<!-- Services -->
 	<script src="templates/services.js"></script>
 	<script src="templates/diario/diario.service.js"></script>
 	<script src="templates/balancete/balancete.service.js"></script>
 	<script src="templates/folha_trabalho/folha_trabalho.service.js"></script>
-	<script src="templates/flowchart/flowchart.service.js"></script>
 
 	<script>
 	$(document).ready(function(){
