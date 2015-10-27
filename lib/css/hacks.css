@@ -47,3 +47,19 @@ border-left-color: #666;
 .navbar-inverse .navbar-nav>li>a {
     color: #fff;
 }
+
+.tabs_folha_trabalho {
+    padding: 0px 15px !important;
+    width: 150px;
+    text-align: center;
+}
+
+.tabs_folha_trabalho.plus {
+    background-color: #3D5971;
+    color: #fff;
+}
+
+.tabs_folha_trabalho.plus:hover {
+    background-color: #414B54;
+    color: #fff;
+}
