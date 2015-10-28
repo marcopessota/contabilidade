@@ -10,6 +10,7 @@
 		</ul>
 		<div ng-repeat="tab in folhaTrabalhoCtrl.tabs" ng-show="folhaTrabalhoCtrl.isSet(tab.id)">
 			<div id="handsontable_{{tab.id}}"></div>
+			<!-- <div id="textAngular_{{tab.id}}" text-angular ng-model="tab.textAngular"></div> -->
 			<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.salvar_folha_trabalho(tab.id, tab.nome)">Salvar</button>
 			<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.exportar_folha_trabalho(tab.id)">Exportar CSV</button>
 		</div>
@@ -21,4 +22,3 @@
 		<colorbox box-for=".img-group-05" open="zoom05" options="{rel:'img-group-05', slideshow:false, open:false}"></colorbox>
 	</div>
 </div> -->
-<div text-angular ng-model="folhaTrabalhoCtrl.textAngular"></div>

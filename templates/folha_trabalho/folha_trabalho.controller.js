@@ -9,7 +9,7 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
     // Manipulação das Tabs
     $folha_trabalho.tab = 0;
     $folha_trabalho.tabs = [];
-    $folha_trabalho.textAngular = 'texto';
+    $folha_trabalho.textAngular = [];
     $folha_trabalho.first_tab = true;
 
     // $folha_trabalho.images_folha_trabalho = [{
@@ -41,15 +41,15 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
         var prox = $folha_trabalho.tabs.length;
 
         if ($folha_trabalho.first_tab == true) {
-            nome_folha_trabalho = 'Nova folha ' + (prox + 1);
+            nome_folha_trabalho = 'Nova folha ' + (prox + 1) + '.json';
             $folha_trabalho.first_tab = false;
         } else {
             var nome_folha_trabalho = prompt('Insira o nome da Folha de Trabalho');
         }
 
-        // Se o nome da folha for vazia, colocar como Nova folha + Número
+        // Se o nome da folha de trabalho for vazia, colocar como Nova folha + Número
         if (nome_folha_trabalho == '') {
-            nome_folha_trabalho = 'Nova folha ' + (prox + 1);
+            nome_folha_trabalho = 'Nova folha ' + (prox + 1) + '.json';
         }
 
         // Se o nome da folha for maior que 15 caracteres, colocar reticencias
@@ -312,7 +312,7 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
                             manualColumnResize: true,
                             manualRowResize: true,
                             formulas: true,
-                            stretchH: 'all'
+                            // stretchH: 'all'
                         }));
                         $folha_trabalho.handsontables[$folha_trabalho.tabs.length - 1].loadData(data);
                         $folha_trabalho.setTab($folha_trabalho.tabs.length - 1);
