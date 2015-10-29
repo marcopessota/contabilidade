@@ -95,6 +95,9 @@
 	                <li>
 	                    <a href="#folha_trabalho">Folhas de Trabalho</a>
 	                </li>
+	                <li>
+	                    <a href="#master_detail">Master Detail</a>
+	                </li>
 	            </ul>
 	            <ul ng-show="appCtrl.selected_menu == 'planejamento'" class="sidebar-nav">
 	                <li class="sidebar-brand">
@@ -175,12 +178,14 @@
 	<script src="templates/diario/diario.controller.js"></script>
 	<script src="templates/balancete/balancete.controller.js"></script>
 	<script src="templates/folha_trabalho/folha_trabalho.controller.js"></script>
+	<script src="templates/master_detail/master_detail.controller.js"></script>
 
 	<!-- Services -->
 	<script src="templates/services.js"></script>
 	<script src="templates/diario/diario.service.js"></script>
 	<script src="templates/balancete/balancete.service.js"></script>
 	<script src="templates/folha_trabalho/folha_trabalho.service.js"></script>
+	<script src="templates/master_detail/master_detail.service.js"></script>
 
 	<script>
 	$(document).ready(function(){

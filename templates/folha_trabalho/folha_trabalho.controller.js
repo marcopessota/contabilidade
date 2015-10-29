@@ -9,8 +9,8 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
     // Manipulação das Tabs
     $folha_trabalho.tab = 0;
     $folha_trabalho.tabs = [];
-    $folha_trabalho.textAngular = [];
     $folha_trabalho.first_tab = true;
+    $folha_trabalho.textAngular = 'Insira o texto aqui';
 
     // $folha_trabalho.images_folha_trabalho = [{
     //     thumb: 'thumb/image1.jpg',

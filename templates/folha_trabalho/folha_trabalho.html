@@ -10,12 +10,12 @@
 		</ul>
 		<div ng-repeat="tab in folhaTrabalhoCtrl.tabs" ng-show="folhaTrabalhoCtrl.isSet(tab.id)">
 			<div id="handsontable_{{tab.id}}"></div>
-			<!-- <div id="textAngular_{{tab.id}}" text-angular ng-model="tab.textAngular"></div> -->
 			<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.salvar_folha_trabalho(tab.id, tab.nome)">Salvar</button>
 			<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.exportar_folha_trabalho(tab.id)">Exportar CSV</button>
 		</div>
 	</div>
 </div>
+<div text-angular ng-model="folhaTrabalhoCtrl.textAngular"></div>
 <!-- <div class="row">
 	<div class="col-md-12">
 		<img ng-repeat="image in folhaTrabalhoCtrl.images_folha_trabalho" class="img-group-05" src="rep/images_id_cliente/{{image.thumb}}" href="rep/images_id_cliente/{{image.small}}">

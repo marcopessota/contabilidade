@@ -18,6 +18,11 @@ app.config(['$routeProvider',
             controller: 'folhaTrabalhoController',
             controllerAs: 'folhaTrabalhoCtrl'
         }).
+        when('/master_detail', {
+            templateUrl: 'templates/master_detail/master_detail.html',
+            controller: 'masterDetailController',
+            controllerAs: 'masterDetailCtrl'
+        }).
         otherwise({
             redirectTo: '/diario'
         });
