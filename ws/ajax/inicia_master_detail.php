@@ -6,7 +6,10 @@
     $sdgg = new C_DataGrid("SELECT * FROM teste_teste_details", "id", "teste_teste_details");
 
     // enable edit
-    $dg->enable_edit("INLINE", "CRUD"); 
+    $dg->enable_edit("INLINE", "CRUD");
+    $sdg->enable_edit("INLINE", "CRUD");
+    $sdgg->enable_edit("INLINE", "CRUD");
+    
     $dg->set_masterdetail($sdg, "testeId");
     $sdg->set_masterdetail($sdgg, "id");
     $dg->display();

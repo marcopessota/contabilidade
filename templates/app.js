@@ -23,6 +23,11 @@ app.config(['$routeProvider',
             controller: 'masterDetailController',
             controllerAs: 'masterDetailCtrl'
         }).
+        when('/inventario', {
+            templateUrl: 'templates/inventario/inventario.html',
+            controller: 'inventarioController',
+            controllerAs: 'inventarioCtrl'
+        }).
         otherwise({
             redirectTo: '/diario'
         });
