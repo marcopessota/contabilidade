@@ -14,19 +14,22 @@
 	<!-- Handsontable -->
 	<link rel="stylesheet" media="screen" href="lib/css/handsontable.full.min.css">
 
-	<!-- datable -->
+	<!-- dataTable -->
 	<link rel="stylesheet" media="screen" href="lib/css/datatable.min.css">
 
 	<!-- jsTree -->
 	<link rel="stylesheet" media="screen" href="lib/css/style.min.css">
 
+    <!-- Angular Colorbox -->
+	<link rel="stylesheet" media="screen" href="lib/css/colorbox-darkertheme.css">
+
 	<!-- textAngular -->
-	<link rel="stylesheet" media="screen" href="lib/css/textAngular.css">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
 
 	<!-- AngularRangeSlider -->
 	<link rel="stylesheet" media="screen" href="lib/js/range_slider/angular.rangeSlider.css">
 
+    <link rel="stylesheet" href="http://textangular.com/css/style.css" type="text/css">
 	<!-- MAIN -->
 	<link href="lib/css/main.css" rel="stylesheet">
 	<link href="lib/css/hacks.css" rel="stylesheet">
@@ -34,7 +37,7 @@
   </head>
   <body ng-app="app">
   	<div ng-controller="appController as appCtrl">
-		<nav class="navbar navbar-inverse  navbar-fixed-top">
+		<nav class="navbar navbar-inverse navbar-fixed-top">
 			<!--<div class="container"> -->
 				<div>
 					<div class="navbar-header navbar-left">
@@ -97,6 +100,11 @@
 	                </li>
 	                 <li>
 	                    <a href="#sped">SPED</a>
+	                <li>
+	                    <a href="#master_detail">Master Detail</a>
+	                </li>
+	                <li>
+	                    <a href="#inventario">Inventário</a>
 	                </li>
 	            </ul>
 	            <ul ng-show="appCtrl.selected_menu == 'planejamento'" class="sidebar-nav">
@@ -147,7 +155,7 @@
 	<script src="lib/js/handsontable.full.min.js"></script>
 	<script src="lib/js/ruleJS.all.full.js"></script>
 	<script src="lib/js/handsontable.formula.js"></script>
-
+	
 	<!-- Export to CSV -->
 	<script src="lib/js/jquery.handsontable.csv.js"></script>
 	
@@ -156,6 +164,11 @@
 	<script src="lib/js/angular-route.js"></script>
 	<script src="lib/js/angular-resource.js"></script>
 	
+	<!-- textAngular -->
+	<script src="lib/js/textAngular-rangy.min.js"></script>
+	<script src="lib/js/textAngular-sanitize.min.js"></script>
+    <script src="lib/js/textAngular.min.js"></script>
+	
 	<!-- dataTable -->
 	<script src="lib/js/jquery.dataTables.min.js"></script>
 	<script src="lib/js/angular-datatables.js"></script>
@@ -163,10 +176,9 @@
 	<!-- jsTree -->
 	<script src="lib/js/jstree.min.js"></script>
 
-	<!-- textAngular -->
-	<script src="lib/js/textAngular.min.js"></script>
-	<script src="lib/js/textAngular-rangy.min.js"></script>
-	<script src="lib/js/textAngular-sanitize.min.js"></script>
+	<!-- Angular Colorbox -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.colorbox/1.4.33/jquery.colorbox.js'></script>
+	<script src="lib/js/angular-colorbox.js"></script>
 
 	<!-- AngularRangeSlider -->
 	<script src="lib/js/range_slider/angular.rangeSlider.js"></script>
@@ -177,12 +189,16 @@
 	<script src="templates/diario/diario.controller.js"></script>
 	<script src="templates/balancete/balancete.controller.js"></script>
 	<script src="templates/folha_trabalho/folha_trabalho.controller.js"></script>
+	<script src="templates/master_detail/master_detail.controller.js"></script>
+	<script src="templates/inventario/inventario.controller.js"></script>
 
 	<!-- Services -->
 	<script src="templates/services.js"></script>
 	<script src="templates/diario/diario.service.js"></script>
 	<script src="templates/balancete/balancete.service.js"></script>
 	<script src="templates/folha_trabalho/folha_trabalho.service.js"></script>
+	<script src="templates/master_detail/master_detail.service.js"></script>
+	<script src="templates/inventario/inventario.service.js"></script>
 
 	<script>
 	$(document).ready(function(){

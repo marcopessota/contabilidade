@@ -2,15 +2,32 @@ var app = angular.module('app');
 
 app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_vars) {
     var $folha_trabalho = this;
-    $folha_trabalho.titulo = 'Folhas de Trabalho';
+    $folha_trabalho.titulo = 'Dados da Folha de Trabalho';
     $folha_trabalho.handsontables = [];
     $folha_trabalho.treeVisible = false;
-
-    $folha_trabalho.htmlContent = ''; // textAngular
 
     // Manipulação das Tabs
     $folha_trabalho.tab = 0;
     $folha_trabalho.tabs = [];
+    $folha_trabalho.first_tab = true;
+    $folha_trabalho.textAngular = 'Insira o texto aqui';
+
+    // $folha_trabalho.images_folha_trabalho = [{
+    //     thumb: 'thumb/image1.jpg',
+    //     small: 'small/image1.jpg'
+    // }, {
+    //     thumb: 'thumb/image2.jpg',
+    //     small: 'small/image2.jpg'
+    // }, {
+    //     thumb: 'thumb/image3.jpg',
+    //     small: 'small/image3.jpg'
+    // }, {
+    //     thumb: 'thumb/image4.jpg',
+    //     small: 'small/image4.jpg'
+    // }, {
+    //     thumb: 'thumb/image5.jpg',
+    //     small: 'small/image5.jpg'
+    // }];
 
     $folha_trabalho.setTab = function(tabId) {
         $folha_trabalho.tab = tabId;
@@ -23,8 +40,29 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
     $folha_trabalho.addTab = function() {
         var prox = $folha_trabalho.tabs.length;
 
+        if ($folha_trabalho.first_tab == true) {
+            nome_folha_trabalho = 'Nova folha ' + (prox + 1) + '.json';
+            $folha_trabalho.first_tab = false;
+        } else {
+            var nome_folha_trabalho = prompt('Insira o nome da Folha de Trabalho');
+        }
+
+        // Se o nome da folha de trabalho for vazia, colocar como Nova folha + Número
+        if (nome_folha_trabalho == '') {
+            nome_folha_trabalho = 'Nova folha ' + (prox + 1) + '.json';
+        }
+
+        // Se o nome da folha for maior que 15 caracteres, colocar reticencias
+        if (nome_folha_trabalho.length > 15) {
+            var mostra_reticencias = true;
+        } else {
+            var mostra_reticencias = false;
+        }
+
         $folha_trabalho.tabs.push({
-            id: prox
+            id: prox,
+            nome: nome_folha_trabalho,
+            mostra_reticencias: mostra_reticencias
         });
 
         $timeout(function() {
@@ -34,7 +72,7 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
                 // data: data,
                 // minSpareRows: 1,
                 comments: true,
-                startRows: 10,
+                startRows: 15,
                 startCols: 20,
                 minSpareRows: 1,
                 rowHeaders: true,
@@ -62,24 +100,20 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
         $folha_trabalho.addTab();
     };
 
-    $folha_trabalho.salvar_folha_trabalho = function(tab) {
-        var nome_folha_trabalho = prompt('Insira o nome da Folha de Trabalho');
+    $folha_trabalho.salvar_folha_trabalho = function(tab, nome) {
+        var mydata = $folha_trabalho.handsontables[tab].getData();
+        mydata = JSON.stringify(mydata);
 
-        if (nome_folha_trabalho != null) {
-            var mydata = $folha_trabalho.handsontables[tab].getData();
-            mydata = JSON.stringify(mydata);
-
-            var obj_ajax = {};
-            obj_ajax._f = 'salva_folha_trabalho';
-            obj_ajax._p = {
-                mydata: mydata,
-                nome_folha_trabalho: nome_folha_trabalho
-            };
-            $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
-                alert('Nota salva com sucesso!');
-                $('#tree').jstree(true).refresh();
-            });
-        }
+        var obj_ajax = {};
+        obj_ajax._f = 'salva_folha_trabalho';
+        obj_ajax._p = {
+            mydata: mydata,
+            nome_folha_trabalho: nome
+        };
+        $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
+            alert('Nota salva com sucesso!');
+            $('#tree').jstree(true).refresh();
+        });
     };
 
     $('#tree')
@@ -238,52 +272,53 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
             obj_ajax._f = 'carrega_folha_trabalho';
             obj_ajax._p = data;
             $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
-                // var data = JSON.parse(data);
-                $folha_trabalho.handsontables[$folha_trabalho.tab].loadData(data);
-            });
+                if (data != "can't open file") {
+                    var prox = $folha_trabalho.tabs.length;
 
-            if (data && data.selected && data.selected.length) {
-                $.get('rep/fx.php?operation=get_content&id=' + data.selected.join(':'), function(d) {
-                    if (d && typeof d.type !== 'undefined') {
-                        $('#data .content').hide();
-                        switch (d.type) {
-                            case 'text':
-                            case 'txt':
-                            case 'md':
-                            case 'htaccess':
-                            case 'log':
-                            case 'sql':
-                            case 'php':
-                            case 'js':
-                            case 'json':
-                            case 'css':
-                            case 'html':
-                                $('#data .code').show();
-                                $('#code').val(d.content);
-                                break;
-                            case 'png':
-                            case 'jpg':
-                            case 'jpeg':
-                            case 'bmp':
-                            case 'gif':
-                                $('#data .image img').one('load', function() {
-                                    $(this).css({
-                                        'marginTop': '-' + $(this).height() / 2 + 'px',
-                                        'marginLeft': '-' + $(this).width() / 2 + 'px'
-                                    });
-                                }).attr('src', d.content);
-                                $('#data .image').show();
-                                break;
-                            default:
-                                $('#data .default').html(d.content).show();
-                                break;
+                    // Variável para mostrar ou não a reticências
+                    if (obj_ajax._p.length > 15) {
+                        var mostra_reticencias = true;
+                    } else {
+                        var mostra_reticencias = false;
+                    }
+
+                    // Verifica se existe a folha de trabalho já aberta
+                    for (var i = 0; i < $folha_trabalho.tabs.length; i++) {
+                        if ($folha_trabalho.tabs[i].nome == obj_ajax._p) {
+                            alert('Folha de Trabalho já aberta');
+                            return false;
                         }
                     }
-                });
-            } else {
-                $('#data .content').hide();
-                $('#data .default').html('Select a file from the tree.').show();
-            }
+
+                    // Senão abre esta folha
+                    $folha_trabalho.tabs.push({
+                        id: prox,
+                        nome: obj_ajax._p,
+                        mostra_reticencias: mostra_reticencias
+                    });
+
+                    $timeout(function() {
+                        var container = document.getElementById('handsontable_' + prox);
+
+                        $folha_trabalho.handsontables.push(new Handsontable(container, {
+                            // data: data,
+                            comments: true,
+                            startRows: 15,
+                            startCols: 20,
+                            minSpareRows: 1,
+                            rowHeaders: true,
+                            colHeaders: true,
+                            contextMenu: true,
+                            manualColumnResize: true,
+                            manualRowResize: true,
+                            formulas: true,
+                            // stretchH: 'all'
+                        }));
+                        $folha_trabalho.handsontables[$folha_trabalho.tabs.length - 1].loadData(data);
+                        $folha_trabalho.setTab($folha_trabalho.tabs.length - 1);
+                    }, 100);
+                }
+            });
         });
 
     $folha_trabalho.iniciar_folha_trabalho();
