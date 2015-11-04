@@ -1,5 +1,18 @@
 var app = angular.module('app');
 
+
+// $( "#slider-range" ).slider({
+//     range: true,
+//     min: 0,
+//     max: 500,
+//     values: [ 75, 300 ],
+//     slide: function( event, ui ) {
+//         if ( ( ui.values[ 0 ] + 20 ) >= ui.values[ 1 ] ) {
+//             return false;
+//         }
+//     }
+// });
+
 app.controller('diarioController', function($scope, $http, S_vars, S_http_validate, S_fx) {
 	var $diario = this;
 	$diario.S_fx = S_fx;
@@ -12,10 +25,57 @@ app.controller('diarioController', function($scope, $http, S_vars, S_http_valida
 	$diario.selected = {};
 	$diario.import_answers = {};
 	$diario.questions = [];
+	$diario.format_date = "";
+	$diario.digit_cases = "";
+	$diario.account_cases = "";
+	$diario.case_table = "";
+	$diario.active_case_table = {};
 
+	$diario.model_range_min = 0;
+	$diario.models = {};
+	$diario.models.min = 0;
+	$diario.slider_ratio = 0;
+
+	$scope.$watch('diarioCtrl.models.min', function(){
+		if($diario.case_table != ""){
+			// console.log($diario.models.min, $diario.models.min * $diario.slider_ratio);
+			$(".range_selected."+$diario.case_table).css("left", $diario.models.min * $diario.slider_ratio+"%");
+			$diario.active_case_table[$diario.case_table] = true;
+			$diario.import_answers[$diario.answers][$diario.case_table].min = $diario.models.min -1 ;
+		}
+
+	});
+
+	$scope.$watch('diarioCtrl.models.max', function(){
+		if($diario.case_table != ""){
+			$(".range_selected."+$diario.case_table).css("right", ($diario.max_range_slider - $diario.models.max) * $diario.slider_ratio+"%");
+			$diario.active_case_table[$diario.case_table] = true;
+			$diario.import_answers[$diario.answers][$diario.case_table].max = $diario.models.max - 1;
+		}
+	});
+
+
+	$diario.selection_remove = function(){
+		$diario.active_case_table[$diario.case_table] = false;
+		$diario.import_answers[$diario.answers][$diario.case_table].min = -1;
+		$diario.import_answers[$diario.answers][$diario.case_table].max = -1;
+		$diario.case_table = "";
+	}
 
 	$diario.set_answer = function(question, answer, next_question){
 		switch(next_question){
+			case "question0.1":
+				$diario.import_answers[question] = answer;
+				$diario.answers = next_question;
+				break;
+			case "question0.1.1":
+				$diario.import_answers[question] = answer;
+				$diario.answers = next_question;
+				break;
+			case "question1.1":
+				$diario.import_answers[question] = $diario.format_date;
+				$diario.answers = next_question;
+				break;
 			case "question1.1.1":
 				$diario.import_answers[question] = answer;
 				$diario.answers = next_question;
@@ -36,7 +96,30 @@ app.controller('diarioController', function($scope, $http, S_vars, S_http_valida
 					$diario.import_answers[question] = $diario.line_numbers_date;
 				}
 				break;
+			case "question2.2":
+				$diario.import_answers[question] = answer;
+				$diario.answers = next_question;
+				break;
+			case "question2.3":
+				$diario.import_answers[question] = answer;
+				$diario.answers = next_question;
+				break;
+			case "question2.1.1":
+				$diario.import_answers[question] = answer;
+				$diario.answers = next_question;
+				break;
+			case "question2.1.2":
+				$diario.import_answers[question] = answer;
+				$diario.answers = next_question;
+				break;
 			case "question3.1":
+				if($diario.digit_cases != ""){
+					$diario.import_answers[question] = $diario.digit_cases;
+				}
+				if($diario.account_cases != ""){
+					$diario.import_answers[question] = $diario.account_cases;
+				}
+
 				$diario.answers = next_question;
 				break;
 			case "question4.1":
@@ -47,8 +130,20 @@ app.controller('diarioController', function($scope, $http, S_vars, S_http_valida
 				break;
 		}
 		switch(next_question){
+			case "question0.1.1":
+				$diario.import_answers[next_question] = {};
+				$diario.import_answers[next_question].date = {"min" : 0, "max" : 0};
+				$diario.import_answers[next_question].entry = {"min" : 0, "max" : 0};
+				$diario.import_answers[next_question].account = {"min" : 0, "max" : 0};
+				$diario.import_answers[next_question].debt_account = {"min" : 0, "max" : 0};
+				$diario.import_answers[next_question].credit_account = {"min" : 0, "max" : 0};
+				$diario.import_answers[next_question].value = {"min" : 0, "max" : 0};
+				$diario.import_answers[next_question].debt_value = {"min" : 0, "max" : 0};
+				$diario.import_answers[next_question].credit_value = {"min" : 0, "max" : 0};
+				$diario.import_answers[next_question].concept = {"min" : 0, "max" : 0};
+				break;
 			case "question1.1.1":
-			case "question2.1":
+			case "question2.3":
 			case "question3.1":
 			case "question4.1":
 				$diario.import_answers[next_question] = {};
@@ -57,7 +152,6 @@ app.controller('diarioController', function($scope, $http, S_vars, S_http_valida
 				$diario.table_line = $diario.preview_import_items[$diario.table_index];
 				break;
 		}
-		console.log($diario.answers);
 	}
 
 	$diario.select_date_row = function(){
@@ -79,7 +173,7 @@ app.controller('diarioController', function($scope, $http, S_vars, S_http_valida
 					$diario.set_answer($diario.answer, '', 'question2.1');
 					return;
 				}
-				if($diario.answers == "question2.1"){
+				if($diario.answers == "question2.3"){
 					$diario.set_answer($diario.answer, '', 'question3.1');
 					return;
 				}
@@ -113,7 +207,7 @@ app.controller('diarioController', function($scope, $http, S_vars, S_http_valida
 	}
 
 	$diario.importar_diario = function(preview){
-		console.log(S_http_validate);
+		// console.log(S_http_validate);
 		var obj_ajax = {};
 		obj_ajax._f = "importar_diario";
 		obj_ajax._p = {"answers" : $diario.import_answers, "preview" : preview};
@@ -122,6 +216,9 @@ app.controller('diarioController', function($scope, $http, S_vars, S_http_valida
 			if(validation == true){
 				if(preview == true){
 					$diario.preview_import_items = data.value;
+					$diario.max_range_slider = parseInt(data.range);
+					$diario.models.max = parseInt(data.range);
+					$diario.slider_ratio = 100/$diario.models.max;
 					$diario.action = "import";
 				}
             }else{
