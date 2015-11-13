@@ -133,14 +133,28 @@
 				<td><input type="radio" ng-model="diarioCtrl.case_table" value="concept"></td>
 				<td><div class="type_color brown"></div></td>
 				<td>Conceito</td>
-
+			</tr>
+			<tr>
+				<td><input type="radio" ng-model="diarioCtrl.case_table" value="title"></td>
+				<td><div class="type_color soft_red"></div></td>
+				<td>Título</td>
+			</tr>
+			<tr>
+				<td><input type="radio" ng-model="diarioCtrl.case_table" value="doc1"></td>
+				<td><div class="type_color soft_blue"></div></td>	
+				<td>Doc 1</td>
+			</tr>
+			<tr>
+				<td><input type="radio" ng-model="diarioCtrl.case_table" value="doc2"></td>
+				<td><div class="type_color soft_green"></div></td>
+				<td>Doc 2</td>
 			</tr>
 		</table>
 
 		<div class="preview_select_line full">
-			<div range-slider min="0" max="diarioCtrl.max_range_slider" model-min="diarioCtrl.models.min" model-max="diarioCtrl.models.max"></div>
 			<div class="div_lines">
-				<pre ng-repeat="item in diarioCtrl.preview_import_items track by $index">{{item}}<div ng-show="diarioCtrl.case_table == 'date' || diarioCtrl.active_case_table.date == true" class="range_selected type_color date blue"></div><div ng-show="diarioCtrl.case_table == 'entry' || diarioCtrl.active_case_table.entry == true" class="range_selected type_color entry purple"></div><div ng-show="diarioCtrl.case_table == 'account' || diarioCtrl.active_case_table.account == true" class="range_selected type_color account pink"></div><div ng-show="diarioCtrl.case_table == 'debt_account' || diarioCtrl.active_case_table.debt_account == true" class="range_selected type_color debt_account red"></div><div ng-show="diarioCtrl.case_table == 'credit_account' || diarioCtrl.active_case_table.credit_account == true" class="range_selected type_color credit_account orange"></div><div ng-show="diarioCtrl.case_table == 'value' || diarioCtrl.active_case_table.value == true" class="range_selected type_color value yellow"></div><div ng-show="diarioCtrl.case_table == 'debt_value' || diarioCtrl.active_case_table.debt_value == true" class="range_selected type_color debt_value green"></div><div ng-show="diarioCtrl.case_table == 'credit_value' || diarioCtrl.active_case_table.credit_value == true" class="range_selected type_color credit_value ocean"></div><div ng-show="diarioCtrl.case_table == 'concept' || diarioCtrl.active_case_table.concept == true" class="range_selected type_color concept brown"></div></pre>
+				<div range-slider min="0" max="diarioCtrl.max_range_slider" model-min="diarioCtrl.models.min" model-max="diarioCtrl.models.max"></div>
+				<pre ng-repeat="item in diarioCtrl.preview_import_items track by $index">{{item}}<div ng-show="diarioCtrl.case_table == 'date' || diarioCtrl.active_case_table.date == true" class="range_selected type_color date blue"></div><div ng-show="diarioCtrl.case_table == 'entry' || diarioCtrl.active_case_table.entry == true" class="range_selected type_color entry purple"></div><div ng-show="diarioCtrl.case_table == 'account' || diarioCtrl.active_case_table.account == true" class="range_selected type_color account pink"></div><div ng-show="diarioCtrl.case_table == 'debt_account' || diarioCtrl.active_case_table.debt_account == true" class="range_selected type_color debt_account red"></div><div ng-show="diarioCtrl.case_table == 'credit_account' || diarioCtrl.active_case_table.credit_account == true" class="range_selected type_color credit_account orange"></div><div ng-show="diarioCtrl.case_table == 'value' || diarioCtrl.active_case_table.value == true" class="range_selected type_color value yellow"></div><div ng-show="diarioCtrl.case_table == 'debt_value' || diarioCtrl.active_case_table.debt_value == true" class="range_selected type_color debt_value green"></div><div ng-show="diarioCtrl.case_table == 'credit_value' || diarioCtrl.active_case_table.credit_value == true" class="range_selected type_color credit_value ocean"></div><div ng-show="diarioCtrl.case_table == 'concept' || diarioCtrl.active_case_table.concept == true" class="range_selected type_color concept brown"></div><div ng-show="diarioCtrl.case_table == 'title' || diarioCtrl.active_case_table.title == true" class="range_selected type_color title soft_red"></div><div ng-show="diarioCtrl.case_table == 'doc1' || diarioCtrl.active_case_table.doc1 == true" class="range_selected type_color doc1 soft_blue"></div><div ng-show="diarioCtrl.case_table == 'doc2' || diarioCtrl.active_case_table.doc2 == true" class="range_selected type_color doc2 soft_green"></div></pre>
 			</div>
 		</div>
 		<br clear="All">
@@ -284,6 +298,7 @@
 pre{
 	word-wrap: normal;
 	position: relative;
+	overflow: visible !important;
 }
 
 .import_diario_holder{
@@ -321,9 +336,11 @@ pre{
 	margin: 0 0 0.5em 0;
 }
 .preview_select_line .div_lines{
-	overflow-x: auto;
+	/*overflow-x: auto;
+	overflow-y: auto;*/
+	overflow-x: visible;
+	overflow-y: visible;
 	white-space: nowrap;
-	overflow-y: auto;
 	height: 16.4em;
 	position: relative;
 }
@@ -339,8 +356,8 @@ pre{
 
 .preview_select_line.full{
 	height: 23em;
-	overflow:hidden;
-	width: 75%;
+	overflow:visible;
+	/*width: 75%;*/
 	float: left;
 }
 
@@ -359,7 +376,7 @@ pre{
 
 }
 
-.type_color.blue{ background-color: #00CCFF; }
+.type_color.blue{ background-color: #020092; }
 
 .type_color.purple{ background-color: #AA00FF; }
 
@@ -376,6 +393,14 @@ pre{
 .type_color.ocean{ background-color: #29716A; }
 
 .type_color.brown{ background-color: #8A6D3B; }
+
+.type_color.soft_green{ background-color: #8BC34A; }
+
+.type_color.soft_blue{ background-color: #00CCFF; }
+
+.type_color.soft_red{ background-color: #FF6C6C; }
+
+
 
 .table_type_fields tr td{
 	margin: 0 auto;

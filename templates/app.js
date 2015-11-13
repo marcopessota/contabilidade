@@ -8,6 +8,11 @@ app.config(['$routeProvider',
             controller: 'diarioController',
             controllerAs: 'diarioCtrl'
         }).
+        when('/sped', {
+            templateUrl: 'templates/sped/sped.html',
+            controller: 'spedController',
+            controllerAs: 'spedCtrl'
+        }).
         when('/balancete', {
             templateUrl: 'templates/balancete/balancete.html',
             controller: 'balanceteController',
@@ -38,7 +43,6 @@ app.controller('appController', function($scope) {
     var $app = this;
     $app.titulo = "App";
     $app.selected_menu = "contabilidade";
-
     $app.select_menu = function(menu) {
         $app.selected_menu = menu;
     };
