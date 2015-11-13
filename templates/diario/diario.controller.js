@@ -294,4 +294,15 @@ app.controller('diarioController', function($scope, $http, S_vars, S_http_valida
 			vm.selectAll = true;
 		}
 	}
+
+	$diario.sendData = function(){
+        var obj_ajax = {};
+        obj_ajax._f = "envia_folha_trabalho";
+        obj_ajax._p = {
+            "data": $diario.selected
+        };
+        $http.post(S_vars.url_ajax + "ajax.php", obj_ajax).success(function(data, status) {
+        	// alert('Enviado com sucesso!');
+        });
+	}
 });

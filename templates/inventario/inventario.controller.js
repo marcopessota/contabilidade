@@ -9,7 +9,6 @@ app.controller('inventarioController', function($scope, $http, S_vars, $sce) {
         obj_ajax._f = 'inicia_inventario';
         obj_ajax._p = {};
         $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
-        	// console.log(data);
             $inventario.grid = $sce.trustAsHtml(data);
         });
     }
