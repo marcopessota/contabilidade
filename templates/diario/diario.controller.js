@@ -13,7 +13,7 @@ var app = angular.module('app');
 //     }
 // });
 
-app.controller('diarioController', function($scope, $http, S_vars, S_http_validate, S_fx) {
+app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_http_validate, S_fx) {
 	var $diario = this;
 	$diario.S_fx = S_fx;
 	$diario.titulo = "Diario";
@@ -69,8 +69,15 @@ app.controller('diarioController', function($scope, $http, S_vars, S_http_valida
 				$diario.answers = next_question;
 				break;
 			case "question0.1.1":
+				waitingDialog.show('Aguarde um momento...');
 				$diario.import_answers[question] = answer;
 				$diario.answers = next_question;
+				$timeout( function(){
+					var holder_table_width = $(".preview_select_line.full").width();
+					$(".div_lines").css("width", holder_table_width+"px");
+					$(".preview_select_line.full").css({"overflow": "auto", "width" : "75%"});
+					waitingDialog.hide();
+				}, 3000);
 				break;
 			case "question1.1":
 				$diario.import_answers[question] = $diario.format_date;
@@ -141,6 +148,9 @@ app.controller('diarioController', function($scope, $http, S_vars, S_http_valida
 				$diario.import_answers[next_question].debt_value = {"min" : 0, "max" : 0};
 				$diario.import_answers[next_question].credit_value = {"min" : 0, "max" : 0};
 				$diario.import_answers[next_question].concept = {"min" : 0, "max" : 0};
+				$diario.import_answers[next_question].title = {"min" : 0, "max" : 0};
+				$diario.import_answers[next_question].doc1 = {"min" : 0, "max" : 0};
+				$diario.import_answers[next_question].doc2 = {"min" : 0, "max" : 0};
 				break;
 			case "question1.1.1":
 			case "question2.3":

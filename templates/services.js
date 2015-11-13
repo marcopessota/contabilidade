@@ -26,6 +26,7 @@ app.factory('S_errors_message', [function() {
 	$S_errors_message.e["404"] = "File not found";
 	$S_errors_message.e["erro"] = "Script error";
 	$S_errors_message.e["required_field"] = "Required Field";
+	$S_errors_message.e["insert_DB"] = "Database command insert failed";
 
 	$S_errors_message.error = function(e){
 		return $S_errors_message.e[e];

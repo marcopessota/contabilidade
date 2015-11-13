@@ -1,138 +1,226 @@
 <?php
 	set_time_limit(0);
+	$time_start = microtime(true);
 	$return = new stdClass();
- 
+
+
+
+		// $obj->a = convert_money('100.000.000,00');
+		// $obj->b = 100000000.00;
+		// 	$_M->diario_teste3->insert($obj);exit();
+		// 	exit();
+		$_MYSQL = cria_conexao();
+		// grava('UPDATE diario SET debt = 1.9');
+		MongoCursor::$timeout = -1;
+		// $b = $_M->diario_teste->count();
+		// /$b = $_M->diario_teste->find(array('_id' => new Mongoid("5640f493f791ea6c23224454")))->getNext();
+		 // $b = $_M->diario_teste->update(array(), array('$set' => array("debt_value" => 1.9)),array("multiple" => true));
+		// $b = $_M->diario_teste->update(array(), array('$set' => array("credit_value" => 2)),array("multiple" => true));
+		// $b->timeout(-1);
+
+
+
+
+
+	// // "SUM"
+	// $b = $_M->diario_teste->aggregate(array(
+ //    	array(
+	//         '$project' => array(
+	//             "account" => 1,
+	//             "credit_value" => 1
+	//         )
+ //    	),
+ //    	array('$group' => array('_id' => '$account',
+	// 							'soma' => array('$sum' => '$credit_value'),
+	// 							'count' => array('$sum' => 1)
+	// 						    )
+ //    	)
+	// ));
+
+
+ // 	// SUM 2 fields
+	// $b = $_M->diario_teste->aggregate(array(
+ //    	array(
+	//         '$project' => array(
+	//             "account" => 1,
+	//             "credit_value" => 1,
+	//             "debt_value" => 1,
+	//             "total" => array('$subtract' => array('$credit_value', '$debt_value'))
+	//         )
+ //    	),
+ //    	array('$group' => array('_id' => '$account',
+	// 							'soma' => array('$sum' => '$total'),
+	// 							'count' => array('$sum' => 1)
+	// 						    )
+ //    	)
+	// ));
+
+
+
+	// print_r($b);
+	// $aaa = query('SELECT account, SUM(credit) as saldo FROM diario group by account');
+	// print_r($aaa).PHP_EOL;
+
+	// $aaa = query('SELECT account, SUM(credit - debt) as saldo FROM diario group by account');
+	// print_r($aaa).PHP_EOL;
+
+	// $time_end = microtime(true);
+
+	// //dividing with 60 will give the execution time in minutes other wise seconds
+	// $execution_time = ($time_end - $time_start)/60;
+
+	// //execution time of the script
+	// echo '<b>Total Execution Time:</b> '.$execution_time.' Mins';
+	// // echo json_encode($return);
+
+	// exit();
+	$sql = 'INSERT INTO diario VALUES';
+
 	// print_r($post);exit;
 	// $filename = "../rep/diario/diario_1610_2015.txt";
 	// $filename = "../rep/diario/diario_completo.xlsx";
 	// $filename = "../rep/diario/02.csv";
-	$filename = "../rep/diario/Texto4.txt";
-
-	$original_extension = (false === $pos = strrpos($filename, '.')) ? '' : substr($filename, $pos);
-
-	$f = fopen($filename, "r");
-	$preview_lines = array();
-	$count_preview_lines = 0;
-	$cont_obj = 0;
-	$date_start_position = NULL;
-	$date_end_position = NULL;
-	$date_regex = "(?:\d{1,2})\/(?:\d{1,2})\/\d{4}";
-
-	$cc_regex = "";
-	$cc_start_position = NULL;
-	$cc_end_position = NULL;
-	$cc_digits = NULL;
-
-	$side_debt = "";
-	$line_length = 0;
-
-	$columned = false;
+	// for($aaa = 0; $aaa<10;$aaa++){
 
 
+		$filename = "../rep/diario/2.txt";
+
+		$original_extension = (false === $pos = strrpos($filename, '.')) ? '' : substr($filename, $pos);
+
+		$f = fopen($filename, "r");
+		$preview_lines = array();
+		$count_preview_lines = 0;
+		$cont_obj = 0;
+		$date_start_position = NULL;
+		$date_end_position = NULL;
+		$date_regex = "(?:\d{1,2})\/(?:\d{1,2})\/\d{4}";
+
+		$cc_regex = "";
+		$cc_start_position = NULL;
+		$cc_end_position = NULL;
+		$cc_digits = NULL;
+
+		$side_debt = "";
+		$line_length = 0;
+
+		$columned = false;
 
 
-	if($f) {
-		if($post["preview"] == true){
 
-			switch ($original_extension) {
-				case '.csv':
-					while (($line = fgetcsv($f)) !== false){
-						if(count($line) > 1){
-							$line = implode(",", $line);
-						}else{
-							$line = $line[0];
-						}
-						$line = str_replace(";", " ", $line);
-						if(!empty($line)){
-							if(validate_line($line)){
-								if($line_length < strlen($line)){
-									$line_length = strlen($line);
+
+		if($f) {
+			if($post["preview"] == true){
+
+				switch ($original_extension) {
+					case '.csv':
+						while (($line = fgetcsv($f)) !== false){
+							if(count($line) > 1){
+								$line = implode(",", $line);
+							}else{
+								$line = $line[0];
+							}
+							$line = str_replace(";", " ", $line);
+							if(!empty($line)){
+								if(validate_line($line)){
+									if($line_length < strlen($line)){
+										$line_length = strlen($line);
+									}
+									// $preview_lines[] = ($line);
+									if($count_preview_lines <= 40){
+										$preview_lines[] = utf8_encode($line);
+										// break;
+									}
+									$count_preview_lines++;
 								}
-								// $preview_lines[] = ($line);
-								if($count_preview_lines <= 40){
-									$preview_lines[] = utf8_encode($line);
-									// break;
-								}
-								$count_preview_lines++;
 							}
 						}
-					}
-					break;
-				case '.xls':
-				case '.xlsx':
-					# code...
-					break;
-				case '.txt':
-					while (($line = fgets($f)) !== false){
-						$line_trim = trim($line);
-						if(!empty($line_trim)){
-							if(validate_line($line)){
-								if($line_length < strlen($line)){
-									$line_length = strlen($line);
+						break;
+					case '.xls':
+					case '.xlsx':
+						# code...
+						break;
+					case '.txt':
+						while (($line = fgets($f)) !== false){
+							$line_trim = trim($line);
+							if(!empty($line_trim)){
+								if(validate_line($line)){
+									if($line_length < strlen($line)){
+										$line_length = strlen($line);
+									}
+									// $line = $line." - ".strlen($line);
+									// $preview_lines[] = ($line);
+									if($count_preview_lines <= 40){
+										// echo $line;
+										$preview_lines[] = utf8_encode($line);
+										// break;
+									}else{
+										break;
+									}
+									$count_preview_lines++;
 								}
-								// $line = $line." - ".strlen($line);
-								// $preview_lines[] = ($line);
-								if($count_preview_lines <= 40){
-									$preview_lines[] = utf8_encode($line);
-									// break;
-								}
-								$count_preview_lines++;
 							}
 						}
-					}
-				break;
-			}
-			$return->success = "ok";
-			$return->error = "no_error";
-			$return->range = $line_length;
-			$return->value = $preview_lines;
-		}else{
-			do_process();
-			switch ($original_extension) {
-				case '.csv':
-					while (($line = fgetcsv($f)) !== false){
-						if(count($line) > 1){
-							$line = implode(",", $line);
-						}else{
-							$line = $line[0];
+					break;
+				}
+				$return->success = "ok";
+				$return->error = "no_error";
+				$return->range = $line_length;
+				$return->value = $preview_lines;
+			}else{
+				do_process();
+				switch ($original_extension) {
+					case '.csv':
+						while (($line = fgetcsv($f)) !== false){
+							if(count($line) > 1){
+								$line = implode(",", $line);
+							}else{
+								$line = $line[0];
+							}
+							$line = str_replace(";", " ", $line);
+							if(!empty($line)){
+								if(validate_line($line)){
+									if($columned){
+										main_columned($line);
+									}else{
+										main($line);
+									}
+								}
+							}
 						}
-						$line = str_replace(";", " ", $line);
-						if(!empty($line)){
-							if(validate_line($line)){
+						break;
+					case '.xls':
+					case '.xlsx':
+						# code...
+						break;
+					case '.txt':
+						while (($line = fgets($f)) !== false){
+							if(!empty($line)){
 								if($columned){
 									main_columned($line);
 								}else{
+									$line = trim($line);
 									main($line);
 								}
 							}
 						}
-					}
-					break;
-				case '.xls':
-				case '.xlsx':
-					# code...
-					break;
-				case '.txt':
-					while (($line = fgets($f)) !== false){
-						if(!empty($line)){
-							if($columned){
-								main_columned($line);
-							}else{
-								$line = trim($line);
-								main($line);
-							}
-						}
-					}
-					break;
+						break;
+				}
 			}
-		}
-		fclose($f);
+			fclose($f);
 
-	}else{
-		$return->success = "error";
-		$return->error = "file_open";
-		$return->value = array();
-	}
+		}else{
+			$return->success = "error";
+			$return->error = "file_open";
+			$return->value = array();
+		}
+	// }
+	// $time_end = microtime(true);
+
+	// //dividing with 60 will give the execution time in minutes other wise seconds
+	// $execution_time = ($time_end - $time_start)/60;
+
+	// //execution time of the script
+	// echo '<b>Total Execution Time:</b> '.$execution_time.' Mins';
 	echo json_encode($return);
 
 	// Valida linhas até encontrar a primeira linha que tenha valor valido para iniciar o processo de importação
@@ -165,6 +253,7 @@
 		global $side_debt;
 		global $cont_obj;
 		global $cc_regex;
+		global $_M;
 		$final_obj = new stdClass();
 
 		$date_match = get_date_line($line);
@@ -173,11 +262,11 @@
 		$final_obj->account = $account_match[0];
 		$values = get_debito_credito_linha($line);
 		if($side_debt == "left"){
-			$final_obj->debt = $values[0][0][0];
-			$final_obj->credit = $values[0][1][0];
+			$final_obj->debt = convert_money($values[0][0][0]);
+			$final_obj->credit = convert_money($values[0][1][0]);
 		}else{
-			$final_obj->credit = $values[0][0][0];
-			$final_obj->debt = $values[0][1][0];
+			$final_obj->credit = convert_money($values[0][0][0]);
+			$final_obj->debt = convert_money($values[0][1][0]);
 		}
 
 		$count_remove = 0;
@@ -197,18 +286,20 @@
 		$cont_obj++;
 		// $aaa->b = "aaa";$_M->diario_teste->insert($aaa);exit();
 		// $_M->diario_teste->insert($final_obj);
+		// echo 'INSERT INTO diario VALUES(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt.'", "'.$final_obj->credit.'", "'.addslashes($final_obj->concept).'")';exit;
+		// grava('INSERT INTO diario VALUES(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt.'", "'.$final_obj->credit.'", "'.addslashes($final_obj->concept).'")');
 		// exit();
-		print_r($final_obj);
-		if($cont_obj == 20){
-			exit();
-		}
+		// print_r($final_obj);
+		// if($cont_obj == 20){
+		// 	exit();
+		// }
 	}
 
 	function main_columned($line){
 		global $post;
 		global $cont_obj;
 		global $_M;
-
+		global $sql;
 		$final_obj = new stdClass();
 		$answers = $post["answers"];
 
@@ -220,7 +311,7 @@
 		$lines_replace = new stdClass();
 		$lines_replace->line_date = substr($line, (int) $answers["question0.1.1"]["date"]["min"], (int) ($answers["question0.1.1"]["date"]["max"] - $answers["question0.1.1"]["date"]["min"]));
 		$date_match = get_date_line($lines_replace->line_date);
-		$final_obj->date = $date_match[0];
+		$final_obj->date =  str_replace('"', "",$date_match[0]);
 
 
 		// BEGIN ACCOUNTS
@@ -230,7 +321,7 @@
 		}else{
 			$lines_replace->line_account = substr($line, (int) $answers["question0.1.1"]["account"]["min"], (int) ($answers["question0.1.1"]["account"]["max"] - $answers["question0.1.1"]["account"]["min"]));
 			$account_match = get_numero_conta($lines_replace->line_account);
-			$final_obj->account = $account_match;
+			$final_obj->account =  str_replace('"', "",$account_match);
 		}
 
 		if($answers["question0.1.1"]["debt_account"]["min"] == $answers["question0.1.1"]["debt_account"]["max"]){
@@ -238,7 +329,7 @@
 		}else{
 			$lines_replace->line_debt_account = substr($line, (int) $answers["question0.1.1"]["debt_account"]["min"], (int) ($answers["question0.1.1"]["debt_account"]["max"] - $answers["question0.1.1"]["debt_account"]["min"]));
 			$account_match = get_numero_conta($lines_replace->line_debt_account);
-			$final_obj->debt_account = $account_match;
+			$final_obj->debt_account =  str_replace('"', "",$account_match);
 		}
 
 		if($answers["question0.1.1"]["credit_account"]["min"] == $answers["question0.1.1"]["credit_account"]["max"]){
@@ -246,7 +337,7 @@
 		}else{
 			$lines_replace->line_credit_account = substr($line, (int) $answers["question0.1.1"]["credit_account"]["min"], (int) ($answers["question0.1.1"]["credit_account"]["max"] - $answers["question0.1.1"]["credit_account"]["min"]));
 			$account_match = get_numero_conta($lines_replace->line_credit_account);
-			$final_obj->credit_account = $account_match;
+			$final_obj->credit_account =  str_replace('"', "",$account_match);
 		}
 
 		// END ACCOUNTS
@@ -259,7 +350,7 @@
 			$lines_replace->line_value = substr($line, (int) $answers["question0.1.1"]["value"]["min"], (int) ($answers["question0.1.1"]["value"]["max"] - $answers["question0.1.1"]["value"]["min"]));
 			$value_match = get_debito_credito_linha($lines_replace->line_value);
 			if(!empty($value_match[0][0][0])){
-				$final_obj->value = $value_match[0][0][0];
+				$final_obj->value = convert_money(str_replace('"', "",$value_match[0][0][0]));
 			}else{
 				$final_obj->value = 0;
 			}
@@ -271,7 +362,7 @@
 			$lines_replace->line_debt_value = substr($line, (int) $answers["question0.1.1"]["debt_value"]["min"], (int) ($answers["question0.1.1"]["debt_value"]["max"] - $answers["question0.1.1"]["debt_value"]["min"]));
 			$value_match = get_debito_credito_linha($lines_replace->line_debt_value);
 			if(!empty($value_match[0][0][0])){
-				$final_obj->debt_value = $value_match[0][0][0];
+				$final_obj->debt_value = convert_money(str_replace('"', "",$value_match[0][0][0]));
 			}else{
 				$final_obj->debt_value = 0;
 			}
@@ -284,7 +375,7 @@
 			$value_match = get_debito_credito_linha($lines_replace->line_credit_value);
 			// echo $line." - ".$line_credit_value.PHP_EOL;
 			if(!empty($value_match[0][0][0])){
-				$final_obj->credit_value = $value_match[0][0][0];
+				$final_obj->credit_value = convert_money(str_replace('"', "",$value_match[0][0][0]));
 			}else{
 				$final_obj->credit_value = 0;
 			}
@@ -293,8 +384,13 @@
 		if($final_obj->value == 0 &&  $final_obj->debt_value == 0 &&  $final_obj->credit_value == 0 || (!is_numeric(str_replace(",",".", str_replace(".","", $final_obj->value))) || !is_numeric(str_replace(",",".", str_replace(".","", $final_obj->debt_value))) || !is_numeric(str_replace(",",".", str_replace(".","", $final_obj->credit_value))))){
 			return false;
 		}
-		$final_obj->entry = $lines_replace->entry = trim(substr($line, (int) $answers["question0.1.1"]["entry"]["min"], (int) ($answers["question0.1.1"]["entry"]["max"] - $answers["question0.1.1"]["entry"]["min"])));
-		$final_obj->concept =  utf8_encode($lines_replace->concept = trim(substr($line, (int) $answers["question0.1.1"]["concept"]["min"], (int) ($answers["question0.1.1"]["concept"]["max"] - $answers["question0.1.1"]["concept"]["min"]))));
+		$final_obj->entry = $lines_replace->entry = str_replace('"', "",trim(substr($line, (int) $answers["question0.1.1"]["entry"]["min"], (int) ($answers["question0.1.1"]["entry"]["max"] - $answers["question0.1.1"]["entry"]["min"]))));
+		$final_obj->doc1 = $lines_replace->doc1 = str_replace('"', "",trim(substr($line, (int) $answers["question0.1.1"]["doc1"]["min"], (int) ($answers["question0.1.1"]["doc1"]["max"] - $answers["question0.1.1"]["doc1"]["min"]))));
+		$final_obj->doc2 = $lines_replace->doc2 = str_replace('"', "",trim(substr($line, (int) $answers["question0.1.1"]["doc2"]["min"], (int) ($answers["question0.1.1"]["doc2"]["max"] - $answers["question0.1.1"]["doc2"]["min"]))));
+		$final_obj->title = utf8_encode($lines_replace->title = str_replace('"', "",trim(substr($line, (int) $answers["question0.1.1"]["title"]["min"], (int) ($answers["question0.1.1"]["title"]["max"] - $answers["question0.1.1"]["title"]["min"])))));
+		$final_obj->concept =  utf8_encode($lines_replace->concept = str_replace('"', "",trim(substr($line, (int) $answers["question0.1.1"]["concept"]["min"], (int) ($answers["question0.1.1"]["concept"]["max"] - $answers["question0.1.1"]["concept"]["min"])))));
+
+
 
 		// $line2 = $line;
 		// foreach($lines_replace as $k => $v){
@@ -308,13 +404,27 @@
 		// echo $line2.PHP_EOL;
 		// $final_obj->information = trim(substr($line, (int) $answers["question0.1.1"]["concept"]["min"], (int) ($answers["question0.1.1"]["concept"]["max"] - $answers["question0.1.1"]["concept"]["min"])));
 		// $aaa->b = "aaa";$_M->diario_teste->insert($aaa);exit();
-		$_M->diario_teste->insert($final_obj);
+		// print_r($final_obj);exit;
+		$_M->diario_teste3->insert($final_obj);
+		// if($cont_obj == 10000){
+		// 	$sql .= '(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt.'", "'.$final_obj->credit.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'")';
+		// 	grava($sql);
+		// 	// fecha_conexao();
+		// 	// cria_conexao();
+		// 	$cont_obj = 0;
+		// 	$sql = 'INSERT INTO diario VALUES';
+
+		// 	// echo 'INSERT INTO diario VALUES(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt.'", "'.$final_obj->credit.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'")';
+		// 	// exit();
+		// }else{
+		// 	$sql .= '(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt.'", "'.$final_obj->credit.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'"), ';
+		// }
 		// exit();
 		// print_r($final_obj);
-		// $cont_obj++;
+		$cont_obj++;
 		// echo $cont_obj.PHP_EOL;
 		// if($cont_obj == 40){
-			// exit();
+		// 	exit();
 		// }
 	}
 
@@ -479,6 +589,46 @@
 
 	function sort_regex($a,$b){
     	return strlen($b)-strlen($a);
+	}
+
+
+	function cria_conexao(){
+		$_MYSQL = mysql_connect('localhost', 'root', '');
+		if (!$_MYSQL) {
+		    die('Could not connect: ' . mysql_error());
+		}
+		$db_selected = mysql_select_db('test', $_MYSQL);
+		if (!$db_selected) {
+		    die ('Can\'t use foo : ' . mysql_error());
+		}
+
+		return $_MYSQL;
+	}
+
+	function fecha_conexao(){
+		global $_MYSQL;
+		mysql_close($_MYSQL);
+	}
+
+
+	function query($sql){
+		global $_MYSQL;
+		$result = mysql_query($sql, $_MYSQL);
+		while ($row = mysql_fetch_array($result)) {
+		    $obj_return[] = $row;
+		}
+		return $obj_return;
+	}
+
+	function grava($sql){
+		global $_MYSQL;
+		$result = mysql_query($sql, $_MYSQL);
+		return $result;
+	}
+
+	function convert_money($value){
+		$v_value = str_replace(",", ".", str_replace(".", "", $value));
+		return (double) $v_value;
 	}
 
 ?>
