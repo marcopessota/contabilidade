@@ -63,19 +63,19 @@
 							<li>
 								<a ng-click="appCtrl.select_menu('contabilidade')">
 									<span class="glyphicon icon_menu glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-									<p>Circuito Contábil</p>
+									<p class="done">Circuito Contábil</p>
 								</a>
 							</li>
 							<li>
 								<a ng-click="appCtrl.select_menu('auditoria')">
 									<span class="glyphicon icon_menu glyphicon glyphicon glyphicon-check" aria-hidden="true"></span>
-									<p>Auditoria</p>
+									<p class="undone">Auditoria</p>
 								</a>
 							</li>
 							<li>
 								<a ng-click="appCtrl.select_menu('planejamento')">
 									<span class="glyphicon icon_menu glyphicon glyphicon glyphicon-stats" aria-hidden="true"></span>
-									<p>Planejamento</p>
+									<p class="undone">Planejamento</p>
 								</a>
 							</li>
 					  </ul>
@@ -92,21 +92,21 @@
 						<span class="icone_sidebar_menu in glyphicon glyphicon-menu-hamburger menu-toggle" aria-hidden="true"></span>
 	                </li>
 	                <li>
-	                    <a href="#diario">Diário</a>
+	                    <a class="done" href="#diario">Diário</a>
 	                </li>
 	                <li>
-	                    <a href="#balancete">Balancete</a>
+	                    <a class="done" href="#balancete">Balancete</a>
 	                </li>
 	                <li>
-	                    <a href="#folha_trabalho">Folhas de Trabalho</a>
+	                    <a class="done" href="#folha_trabalho">Folhas de Trabalho</a>
 	                </li>
 	                <li>
-	                    <a href="#sped">SPED</a>
+	                    <a class="done" href="#sped">SPED</a>
 	                <li>
-	                    <a href="#master_detail">Master Detail</a>
+	                    <a class="done" href="#master_detail">Master Detail</a>
 	                </li>
 	                <li>
-	                    <a href="#inventario">Inventário</a>
+	                    <a class="done" href="#inventario">Inventário</a>
 	                </li>
 	            </ul>
 	            <ul ng-show="appCtrl.selected_menu == 'planejamento'" class="sidebar-nav">

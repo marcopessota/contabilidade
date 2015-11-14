@@ -47,3 +47,10 @@ border-left-color: #666;
 .navbar-inverse .navbar-nav>li>a {
     color: #fff;
 }
+
+.undone {
+	color: red;
+}
+.done {
+	color: #00E400 !important;
+}
