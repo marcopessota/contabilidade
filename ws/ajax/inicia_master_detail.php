@@ -7,6 +7,7 @@
 
     // enable edit
     $dg->enable_edit("INLINE", "CRUD");
+    $dg->set_multiselect(true);
     // $sdg->enable_edit("INLINE", "CRUD");
     // $sdgg->enable_edit("INLINE", "CRUD");
     
