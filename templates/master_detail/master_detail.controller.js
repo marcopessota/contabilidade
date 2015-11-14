@@ -10,7 +10,7 @@ app.controller('masterDetailController', function($scope, $http, S_vars, $sce) {
         obj_ajax._f = 'inicia_master_detail';
         obj_ajax._p = {};
         $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
-        	// console.log(data);
+            // console.log(data);
             $master_detail.grid = $sce.trustAsHtml(data);
         });
     }
