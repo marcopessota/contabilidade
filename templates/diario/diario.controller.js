@@ -1,18 +1,5 @@
 var app = angular.module('app');
 
-
-// $( "#slider-range" ).slider({
-//     range: true,
-//     min: 0,
-//     max: 500,
-//     values: [ 75, 300 ],
-//     slide: function( event, ui ) {
-//         if ( ( ui.values[ 0 ] + 20 ) >= ui.values[ 1 ] ) {
-//             return false;
-//         }
-//     }
-// });
-
 app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_http_validate, S_fx) {
 	var $diario = this;
 	$diario.S_fx = S_fx;
@@ -248,6 +235,26 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
 		$diario.questions.push('Selecione na linha abaixo onde está o campo <b>crédito</b> e pressione "OK"? (Será necessário fazer essa ação 3 veze)');
 	}
 
+	$diario.listar_diario = function(){
+		var obj_ajax = {};
+		obj_ajax._f = "get_diario";
+		// obj_ajax._p = {"answers" : $diario.import_answers, "preview" : preview};
+		$http.post(S_vars.url_ajax + "ajax.php", obj_ajax).success(function(data, status) {
+			console.log(data);
+			// var validation = S_http_validate.validate_success(data.error, status);
+			// if(validation == true){
+			// 	if(preview == true){
+			// 		$diario.preview_import_items = data.value;
+			// 		$diario.max_range_slider = parseInt(data.range);
+			// 		$diario.models.max = parseInt(data.range);
+			// 		$diario.slider_ratio = 100/$diario.models.max;
+			// 		$diario.action = "import";
+			// 	}
+   //          }else{
+   //          	alert(validation);
+   //          }
+        });
+	};
 
 	$diario.ServerSideProcessingCtrl = function($compile, $scope, $resource, DTOptionsBuilder, DTColumnBuilder) {
 		var vm = this;
@@ -260,7 +267,7 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
 
 
 		vm.dtOptions = DTOptionsBuilder.fromFnPromise(function() {
-			return $resource('templates/diario/data.json').query().$promise;
+			return $resource(S_vars.url_ajax + "ajax/get_diario.php").query().$promise;
 		})
 		.withOption('createdRow', function(row, data, dataIndex) {
 			// Recompiling so we can bind Angular directive to the DT

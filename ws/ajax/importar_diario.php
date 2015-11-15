@@ -80,10 +80,10 @@
 	// $filename = "../rep/diario/diario_1610_2015.txt";
 	// $filename = "../rep/diario/diario_completo.xlsx";
 	// $filename = "../rep/diario/02.csv";
-	// for($aaa = 0; $aaa<10;$aaa++){
+	for($aaa = 0; $aaa<1;$aaa++){
 
 
-		$filename = "../rep/diario/2.txt";
+		$filename = "../rep/diario/3.txt";
 
 		$original_extension = (false === $pos = strrpos($filename, '.')) ? '' : substr($filename, $pos);
 
@@ -91,6 +91,7 @@
 		$preview_lines = array();
 		$count_preview_lines = 0;
 		$cont_obj = 0;
+		$cont_obj_master = 0;
 		$date_start_position = NULL;
 		$date_end_position = NULL;
 		$date_regex = "(?:\d{1,2})\/(?:\d{1,2})\/\d{4}";
@@ -187,6 +188,9 @@
 								}
 							}
 						}
+						if($columned){
+							grava($sql);
+						}
 						break;
 					case '.xls':
 					case '.xlsx':
@@ -203,6 +207,9 @@
 								}
 							}
 						}
+						if($columned){
+							grava($sql);
+						}
 						break;
 				}
 			}
@@ -213,7 +220,7 @@
 			$return->error = "file_open";
 			$return->value = array();
 		}
-	// }
+	}
 	// $time_end = microtime(true);
 
 	// //dividing with 60 will give the execution time in minutes other wise seconds
@@ -298,6 +305,7 @@
 	function main_columned($line){
 		global $post;
 		global $cont_obj;
+		global $cont_obj_master;
 		global $_M;
 		global $sql;
 		$final_obj = new stdClass();
@@ -405,23 +413,24 @@
 		// $final_obj->information = trim(substr($line, (int) $answers["question0.1.1"]["concept"]["min"], (int) ($answers["question0.1.1"]["concept"]["max"] - $answers["question0.1.1"]["concept"]["min"])));
 		// $aaa->b = "aaa";$_M->diario_teste->insert($aaa);exit();
 		// print_r($final_obj);exit;
-		$_M->diario_teste3->insert($final_obj);
-		// if($cont_obj == 10000){
-		// 	$sql .= '(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt.'", "'.$final_obj->credit.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'")';
-		// 	grava($sql);
-		// 	// fecha_conexao();
-		// 	// cria_conexao();
-		// 	$cont_obj = 0;
-		// 	$sql = 'INSERT INTO diario VALUES';
+		// $_M->diario_teste3->insert($final_obj);
+		if($cont_obj == 7000){
+			$sql .= '(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt_value.'", "'.$final_obj->credit_value.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'")';
+			grava($sql);
+			// fecha_conexao();
+			// cria_conexao();
+			$cont_obj = 0;
+			$sql = 'INSERT INTO diario2 VALUES';
 
-		// 	// echo 'INSERT INTO diario VALUES(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt.'", "'.$final_obj->credit.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'")';
-		// 	// exit();
-		// }else{
-		// 	$sql .= '(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt.'", "'.$final_obj->credit.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'"), ';
-		// }
+			// echo 'INSERT INTO diario VALUES(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt_value.'", "'.$final_obj->credit_value.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'")';
+			// exit();
+		}else{
+			$sql .= '(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt_value.'", "'.$final_obj->credit_value.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'"), ';
+		}
 		// exit();
 		// print_r($final_obj);
 		$cont_obj++;
+		$cont_obj_master++;
 		// echo $cont_obj.PHP_EOL;
 		// if($cont_obj == 40){
 		// 	exit();

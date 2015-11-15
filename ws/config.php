@@ -10,6 +10,6 @@ function __autoload($class_name) {
 // REALIZA CONEXÃO COM O BANCO DE DADOS
 $m = new MongoClient();
 $_M = $m->contabilidade; // selectiona o banco
-
+MongoCursor::$timeout = -1;
 
 ?>
