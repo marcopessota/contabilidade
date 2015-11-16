@@ -1,5 +1,7 @@
-<button class="btn btn-primary" ng-click="diarioCtrl.listar_diario()">Lista de diários</button>
+<button class="btn btn-primary" ng-click="diarioCtrl.action = 'list'">Diário</button>
 <button ng-click="diarioCtrl.importar_diario(true)" class="btn btn-warning">Importar diário</button>
+<!-- <button ng-click="diarioCtrl.sped_import()" class="btn btn-warning">Importar SPED</button> -->
+
 
 <!-- <div>
 	<div>LINHAS SELECIONADAS</div>
@@ -284,8 +286,8 @@
 	<div ng-controller="diarioCtrl.ServerSideProcessingCtrl as showCase">
 		<table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" class="row-border hover"></table>
 	</div>
-	<button ng-click="diarioCtrl.action = 'list'" class="btn btn-warning">Cancelar importação</button>
-	<button ng-click="diarioCtrl.sendData()" class="btn btn-warning">Enviar para Folha de Trabalho</button>
+	<!-- <button ng-click="diarioCtrl.action = 'list'" class="btn btn-warning">Cancelar importação</button>
+	<button ng-click="diarioCtrl.sendData()" class="btn btn-warning">Enviar para Folha de Trabalho</button> -->
 </div>
 
 <style>

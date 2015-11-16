@@ -49,7 +49,7 @@ border-left-color: #666;
 }
 
 .undone {
-	color: red;
+	color: red !important;
 }
 .done {
 	color: #00E400 !important;

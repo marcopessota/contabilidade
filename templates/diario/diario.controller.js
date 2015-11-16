@@ -210,17 +210,19 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
 		obj_ajax._p = {"answers" : $diario.import_answers, "preview" : preview};
 		$http.post(S_vars.url_ajax + "ajax.php", obj_ajax).success(function(data, status) {
 			var validation = S_http_validate.validate_success(data.error, status);
-			if(validation == true){
+			// if(validation == true){
 				if(preview == true){
 					$diario.preview_import_items = data.value;
 					$diario.max_range_slider = parseInt(data.range);
 					$diario.models.max = parseInt(data.range);
 					$diario.slider_ratio = 100/$diario.models.max;
 					$diario.action = "import";
+				}else{
+					alert(data.linhas + " importadas com sucesso");
 				}
-            }else{
-            	alert(validation);
-            }
+            // }else{
+            	// alert(validation);
+            // }
         });
 	}
 
@@ -262,7 +264,7 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
 		$diario.toggleAll = toggleAll;
 		$diario.toggleOne = toggleOne;
 
-		var titleHtml = '<input type="checkbox" ng-model="diarioCtrl.selectAll" ng-click="diarioCtrl.toggleAll(diarioCtrl.selectAll, diarioCtrl.selected)">';
+		// var titleHtml = '<input type="checkbox" ng-model="diarioCtrl.selectAll" ng-click="diarioCtrl.toggleAll(diarioCtrl.selectAll, diarioCtrl.selected)">';
 
 
 
@@ -283,14 +285,23 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
 		.withPaginationType('full_numbers');
 
 		vm.dtColumns = [
-			DTColumnBuilder.newColumn(null).withTitle(titleHtml).notSortable()
-				.renderWith(function(data, type, full, meta) {
-					$diario.selected[full.id] = false;
-					return '<input type="checkbox" ng-model="diarioCtrl.selected[' + data.id + ']" ng-click="diarioCtrl.toggleOne(diarioCtrl.selected)">';
-				}),
-			DTColumnBuilder.newColumn('id').withTitle('ID'),
-			DTColumnBuilder.newColumn('firstName').withTitle('First name'),
-			DTColumnBuilder.newColumn('lastName').withTitle('Last name').notVisible()
+			// DTColumnBuilder.newColumn(null).withTitle(titleHtml).notSortable()
+			// 	.renderWith(function(data, type, full, meta) {
+			// 		$diario.selected[full.id] = false;
+			// 		return '<input type="checkbox" ng-model="diarioCtrl.selected[' + data.id + ']" ng-click="diarioCtrl.toggleOne(diarioCtrl.selected)">';
+			// 	}),
+			DTColumnBuilder.newColumn('_id').withTitle('ID').notVisible(),
+			DTColumnBuilder.newColumn('date').withTitle('Date').withOption('width', '10%'),
+			DTColumnBuilder.newColumn('account').withTitle('Conta').withOption('width', '10%'),
+			// DTColumnBuilder.newColumn('debt_account').withTitle('Conta débito'),
+			// DTColumnBuilder.newColumn('credit_account').withTitle('Conta crédito'),
+			// DTColumnBuilder.newColumn('value').withTitle('Valor'),
+			DTColumnBuilder.newColumn('debt_value').withTitle('Débito').withOption('width', '10%'),
+			DTColumnBuilder.newColumn('credit_value').withTitle('Crédito').withOption('width', '10%'),
+			DTColumnBuilder.newColumn('concept').withTitle('Conceito').withOption('width', '15%'),
+			DTColumnBuilder.newColumn('title').withTitle('Titulo').withOption('width', '20%'),
+			DTColumnBuilder.newColumn('doc1').withTitle('Doc1').withOption('width', '20%'),
+			DTColumnBuilder.newColumn('doc2').withTitle('Doc2').withOption('width', '5%')
 		];
 		function toggleAll (selectAll, selectedItems) {
 		for (var id in selectedItems) {
@@ -320,6 +331,19 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
         };
         $http.post(S_vars.url_ajax + "ajax.php", obj_ajax).success(function(data, status) {
         	// alert('Enviado com sucesso!');
+        });
+	}
+
+	$diario.sped_import = function(){
+		var obj_ajax = {};
+		obj_ajax._f = "importar_sped";
+		$http.post(S_vars.url_ajax + "ajax.php", obj_ajax).success(function(data, status) {
+			var validation = S_http_validate.validate_success(data.error, status);
+			if(validation == true){
+				console.log(data);
+            }else{
+            	alert(validation);
+            }
         });
 	}
 });

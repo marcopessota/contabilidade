@@ -32,6 +32,7 @@
 	<link rel="stylesheet" media="screen" href="lib/js/range_slider/angular.rangeSlider.css">
     <link rel="stylesheet" href="http://textangular.com/css/style.css" type="text/css">
 	
+
 	<!-- MAIN -->
 	<link href="lib/css/main.css" rel="stylesheet">
 	<link href="lib/css/hacks.css" rel="stylesheet">
@@ -52,7 +53,7 @@
 								</div>
 								<div class="avatar_texto">
 									<a href=""><div class="brand">Tomas Marcus</div></a>
-									<div class="brand logout"> <span>Logout</span> </div>
+									<div class="undone brand logout"> <span>Logout</span> </div>
 								</div>
 							</a>
 						  </div>
@@ -62,19 +63,19 @@
 					  <ul class="nav navbar-nav">
 							<li>
 								<a ng-click="appCtrl.select_menu('contabilidade')">
-									<span class="glyphicon icon_menu glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+									<span class="done glyphicon icon_menu glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 									<p class="done">Circuito Contábil</p>
 								</a>
 							</li>
 							<li>
 								<a ng-click="appCtrl.select_menu('auditoria')">
-									<span class="glyphicon icon_menu glyphicon glyphicon glyphicon-check" aria-hidden="true"></span>
+									<span class="undone glyphicon icon_menu glyphicon glyphicon glyphicon-check" aria-hidden="true"></span>
 									<p class="undone">Auditoria</p>
 								</a>
 							</li>
 							<li>
 								<a ng-click="appCtrl.select_menu('planejamento')">
-									<span class="glyphicon icon_menu glyphicon glyphicon glyphicon-stats" aria-hidden="true"></span>
+									<span class="undone glyphicon icon_menu glyphicon glyphicon glyphicon-stats" aria-hidden="true"></span>
 									<p class="undone">Planejamento</p>
 								</a>
 							</li>
@@ -95,13 +96,14 @@
 	                    <a class="done" href="#diario">Diário</a>
 	                </li>
 	                <li>
-	                    <a class="done" href="#balancete">Balancete</a>
+	                    <a class="undone" href="#balancete">Balancete</a>
+	                </li>
+	                 <li>
+	                    <a class="done" href="#sped">Gráfico</a>
 	                </li>
 	                <li>
 	                    <a class="done" href="#folha_trabalho">Folhas de Trabalho</a>
 	                </li>
-	                <li>
-	                    <a class="done" href="#sped">SPED</a>
 	                <li>
 	                    <a class="done" href="#master_detail">Master Detail</a>
 	                </li>
@@ -150,6 +152,9 @@
 	
 	<script src="lib/js/jq.min.js"></script>
 	
+	<script src="lib/js/highchart/highcharts.js"></script>
+
+
 	<!-- Bootstrap -->
 	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
 
