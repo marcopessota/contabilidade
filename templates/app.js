@@ -23,16 +23,6 @@ app.config(['$routeProvider',
             controller: 'folhaTrabalhoController',
             controllerAs: 'folhaTrabalhoCtrl'
         }).
-        when('/master_detail', {
-            templateUrl: 'templates/master_detail/master_detail.html',
-            controller: 'masterDetailController',
-            controllerAs: 'masterDetailCtrl'
-        }).
-        when('/inventario', {
-            templateUrl: 'templates/inventario/inventario.html',
-            controller: 'inventarioController',
-            controllerAs: 'inventarioCtrl'
-        }).
         otherwise({
             redirectTo: '/diario'
         });

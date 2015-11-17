@@ -1,7 +1,7 @@
 <?php
     require_once("phpGrid/conf.php"); // relative path to conf.php without leading slash
 
-    $dg = new C_DataGrid("SELECT * FROM diario2", "id", "diario2");
+    $dg = new C_DataGrid("SELECT * FROM diario", "id", "diario");
     // $sdg = new C_DataGrid("SELECT * FROM teste_details", "id", "teste_details");
     // $sdgg = new C_DataGrid("SELECT * FROM teste_teste_details", "id", "teste_teste_details");
 
