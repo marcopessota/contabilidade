@@ -286,7 +286,8 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
 		vm.dtColumns = [
 			DTColumnBuilder.newColumn(null).withTitle(titleHtml).notSortable()
 				.renderWith(function(data, type, full, meta) {
-					$diario.selected[full.id] = false;
+					// $diario.selected[full.id] = false;
+					// console.log(full.id);
 					return '<input type="checkbox" ng-model="diarioCtrl.selected[\'' + data._id.$id + '\']" ng-click="diarioCtrl.toggleOne(diarioCtrl.selected)">';
 				}),
 			DTColumnBuilder.newColumn('_id').withTitle('ID').notVisible(),

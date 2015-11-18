@@ -3,7 +3,10 @@
 	if ($post['tipo'] == 'mongodb') {
 		// unset($post[key($post['data']['undefined'])]);
 		// print_r($post);
-		print_r(array_shift($post['data']));
+		// print_r($post['data']);
+		foreach ($post['data'] as $key => $value) {
+			print_r($key);
+		}
 	} else {
 		$_MYSQL = cria_conexao();
 
