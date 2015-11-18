@@ -261,12 +261,11 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
 	$diario.ServerSideProcessingCtrl = function($compile, $scope, $resource, DTOptionsBuilder, DTColumnBuilder) {
 		var vm = this;
 		vm.selectAll = false;
+		$diario.selected = {};
 		$diario.toggleAll = toggleAll;
 		$diario.toggleOne = toggleOne;
 
-		// var titleHtml = '<input type="checkbox" ng-model="diarioCtrl.selectAll" ng-click="diarioCtrl.toggleAll(diarioCtrl.selectAll, diarioCtrl.selected)">';
-
-
+		var titleHtml = '<input type="checkbox" ng-model="diarioCtrl.selectAll" ng-click="diarioCtrl.toggleAll(diarioCtrl.selectAll, diarioCtrl.selected)">';
 
 		vm.dtOptions = DTOptionsBuilder.fromFnPromise(function() {
 			return $resource(S_vars.url_ajax + "ajax/get_diario.php").query().$promise;
@@ -285,11 +284,11 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
 		.withPaginationType('full_numbers');
 
 		vm.dtColumns = [
-			// DTColumnBuilder.newColumn(null).withTitle(titleHtml).notSortable()
-			// 	.renderWith(function(data, type, full, meta) {
-			// 		$diario.selected[full.id] = false;
-			// 		return '<input type="checkbox" ng-model="diarioCtrl.selected[' + data.id + ']" ng-click="diarioCtrl.toggleOne(diarioCtrl.selected)">';
-			// 	}),
+			DTColumnBuilder.newColumn(null).withTitle(titleHtml).notSortable()
+				.renderWith(function(data, type, full, meta) {
+					$diario.selected[full.id] = false;
+					return '<input type="checkbox" ng-model="diarioCtrl.selected[\'' + data._id.$id + '\']" ng-click="diarioCtrl.toggleOne(diarioCtrl.selected)">';
+				}),
 			DTColumnBuilder.newColumn('_id').withTitle('ID').notVisible(),
 			DTColumnBuilder.newColumn('date').withTitle('Date').withOption('width', '10%'),
 			DTColumnBuilder.newColumn('account').withTitle('Conta').withOption('width', '10%'),
@@ -327,7 +326,8 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
         var obj_ajax = {};
         obj_ajax._f = "envia_folha_trabalho";
         obj_ajax._p = {
-            "data": $diario.selected
+            "data": $diario.selected,
+            "tipo": "mongodb"
         };
         $http.post(S_vars.url_ajax + "ajax.php", obj_ajax).success(function(data, status) {
         	// alert('Enviado com sucesso!');

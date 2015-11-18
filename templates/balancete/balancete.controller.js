@@ -28,7 +28,7 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce) {
             nome_folha_trabalho: nome_folha_trabalho
         };
         $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
-            // console.log(data);
+            alert('Enviado para folha de trabalho com sucesso');
         });
     }
 
