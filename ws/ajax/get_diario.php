@@ -18,7 +18,7 @@
 	$fields->doc1 = 1;
 	$fields->doc2 = 1;
 
-	$lines_obj_mongo = $_M->diario_teste->find(array(), $fields)->limit(500);
+	$lines_obj_mongo = $_M->diario_teste3->find(array(), $fields);
 	$lines = iterator_to_array($lines_obj_mongo, false);
 	echo json_encode($lines);
 ?>
