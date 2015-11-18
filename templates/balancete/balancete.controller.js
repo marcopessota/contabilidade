@@ -12,7 +12,7 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce) {
             // console.log(data);
             $balancete.grid = $sce.trustAsHtml(data);
         });
-    }
+    }//
 
     $balancete.sendData = function() {
         var nome_folha_trabalho = prompt('Insira o nome da Folha de Trabalho');
