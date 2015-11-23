@@ -4,86 +4,14 @@
 	$return = new stdClass();
 
 
-			
-		// $obj->a = convert_money('100.000.000,00');
-		// $obj->b = 100000000.00;
-		// 	$_M->diario_teste3->insert($obj);exit();
-		// 	exit();
-		$_MYSQL = cria_conexao();
-		// grava('UPDATE diario SET debt = 1.9');
-		MongoCursor::$timeout = -1;
-		// $b = $_M->diario_teste->count();
-		// /$b = $_M->diario_teste->find(array('_id' => new Mongoid("5640f493f791ea6c23224454")))->getNext();
-		 // $b = $_M->diario_teste->update(array(), array('$set' => array("debt_value" => 1.9)),array("multiple" => true));
-		// $b = $_M->diario_teste->update(array(), array('$set' => array("credit_value" => 2)),array("multiple" => true));
-		// $b->timeout(-1);
+	$collection = "diario_teste3";
+	$tabela = "diario2";
+	$filename = "../rep/diario/3.txt";
 
-
-
-
-
-	// // "SUM"
-	// $b = $_M->diario_teste->aggregate(array(
- //    	array(
-	//         '$project' => array(
-	//             "account" => 1,
-	//             "credit_value" => 1
-	//         )
- //    	),
- //    	array('$group' => array('_id' => '$account',
-	// 							'soma' => array('$sum' => '$credit_value'),
-	// 							'count' => array('$sum' => 1)
-	// 						    )
- //    	)
-	// ));
-
-
- // 	// SUM 2 fields
-	// $b = $_M->diario_teste->aggregate(array(
- //    	array(
-	//         '$project' => array(
-	//             "account" => 1,
-	//             "credit_value" => 1,
-	//             "debt_value" => 1,
-	//             "total" => array('$subtract' => array('$credit_value', '$debt_value'))
-	//         )
- //    	),
- //    	array('$group' => array('_id' => '$account',
-	// 							'soma' => array('$sum' => '$total'),
-	// 							'count' => array('$sum' => 1)
-	// 						    )
- //    	)
-	// ));
-
-
-
-	// print_r($b);
-	// $aaa = query('SELECT account, SUM(credit) as saldo FROM diario group by account');
-	// print_r($aaa).PHP_EOL;
-
-	// $aaa = query('SELECT account, SUM(credit - debt) as saldo FROM diario group by account');
-	// print_r($aaa).PHP_EOL;
-
-	// $time_end = microtime(true);
-
-	// //dividing with 60 will give the execution time in minutes other wise seconds
-	// $execution_time = ($time_end - $time_start)/60;
-
-	// //execution time of the script
-	// echo '<b>Total Execution Time:</b> '.$execution_time.' Mins';
-	// // echo json_encode($return);
-
-	// exit();
+	MongoCursor::$timeout = -1;
 	$sql = 'INSERT INTO diario VALUES';
 
-	// print_r($post);exit;
-	// $filename = "../rep/diario/diario_1610_2015.txt";
-	// $filename = "../rep/diario/diario_completo.xlsx";
-	// $filename = "../rep/diario/02.csv";
 	for($aaa = 0; $aaa<1;$aaa++){
-
-
-		$filename = "../rep/diario/2.txt";
 
 		$original_extension = (false === $pos = strrpos($filename, '.')) ? '' : substr($filename, $pos);
 
@@ -189,7 +117,7 @@
 							}
 						}
 						if($columned){
-							grava($sql);
+							$_MY->query($sql);
 						}
 						break;
 					case '.xls':
@@ -208,7 +136,7 @@
 							}
 						}
 						if($columned){
-							grava($sql);
+							$_MY->query($sql);
 						}
 						break;
 				}
@@ -260,6 +188,8 @@
 	}
 
 	function main($line){
+		global $collection;
+		global $tabela;
 		global $side_debt;
 		global $cont_obj;
 		global $cc_regex;
@@ -303,9 +233,26 @@
 		// if($cont_obj == 20){
 		// 	exit();
 		// }
+		if(CONNECTOR_DB == "MONGODB"){
+			$_M->$collection->insert($final_obj);
+		}
+
+		if(CONNECTOR_DB == "MYSQL"){
+			if($cont_obj == 7000){
+				$sql .= '(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt_value.'", "'.$final_obj->credit_value.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'")';
+				$_MY->query($sql);
+
+				$cont_obj = 0;
+				$sql = 'INSERT INTO '.$tabela.' VALUES';
+			}else{
+				$sql .= '(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt_value.'", "'.$final_obj->credit_value.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'"), ';
+			}
+		}
 	}
 
 	function main_columned($line){
+		global $collection;
+		global $tabela;
 		global $post;
 		global $cont_obj;
 		global $cont_obj_master;
@@ -314,11 +261,6 @@
 		$final_obj = new stdClass();
 		$answers = $post["answers"];
 
-		// if($cont_obj > 12){
-		// 	echo $line_date . PHP_EOL;
-		// }
-		// echo $date_match[0].PHP_EOL;
-		// exit;
 		$lines_replace = new stdClass();
 		$lines_replace->line_date = substr($line, (int) $answers["question0.1.1"]["date"]["min"], (int) ($answers["question0.1.1"]["date"]["max"] - $answers["question0.1.1"]["date"]["min"]));
 		$date_match = get_date_line($lines_replace->line_date);
@@ -402,42 +344,24 @@
 		$final_obj->concept =  utf8_encode($lines_replace->concept = str_replace('"', "",trim(substr($line, (int) $answers["question0.1.1"]["concept"]["min"], (int) ($answers["question0.1.1"]["concept"]["max"] - $answers["question0.1.1"]["concept"]["min"])))));
 
 
+		if(CONNECTOR_DB == "MONGODB"){
+			$_M->$collection->insert($final_obj);
+		}
 
-		// $line2 = $line;
-		// foreach($lines_replace as $k => $v){
-		// 	if($k == "line_credit_value"){
-		// 		$line2 = str_replace(trim($v), str_pad("", strlen($v), "-", STR_PAD_LEFT), $line2);
-		// 	}else{
-		// 		$line2 = str_replace($v, str_pad("", strlen($v), "-", STR_PAD_LEFT), $line2);
-		// 	}
-		// 	// echo trim($v).PHP_EOL.$line2.PHP_EOL;
-		// }
-		// echo $line2.PHP_EOL;
-		// $final_obj->information = trim(substr($line, (int) $answers["question0.1.1"]["concept"]["min"], (int) ($answers["question0.1.1"]["concept"]["max"] - $answers["question0.1.1"]["concept"]["min"])));
-		// $aaa->b = "aaa";$_M->diario_teste->insert($aaa);exit();
-		// print_r($final_obj);exit;
-		$_M->diario_teste3->insert($final_obj);
-		// if($cont_obj == 7000){
-		// 	$sql .= '(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt_value.'", "'.$final_obj->credit_value.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'")';
-		// 	grava($sql);
-		// 	// fecha_conexao();
-		// 	// cria_conexao();
-		// 	$cont_obj = 0;
-		// 	$sql = 'INSERT INTO diario2 VALUES';
+		if(CONNECTOR_DB == "MYSQL"){
+			if($cont_obj == 7000){
+				$sql .= '(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt_value.'", "'.$final_obj->credit_value.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'")';
+				$_MY->query($sql);
 
-		// 	// echo 'INSERT INTO diario VALUES(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt_value.'", "'.$final_obj->credit_value.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'")';
-		// 	// exit();
-		// }else{
-		// 	$sql .= '(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt_value.'", "'.$final_obj->credit_value.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'"), ';
-		// }
-		// exit();
-		// print_r($final_obj);
+				$cont_obj = 0;
+				$sql = 'INSERT INTO '.$tabela.' VALUES';
+			}else{
+				$sql .= '(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt_value.'", "'.$final_obj->credit_value.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'"), ';
+			}
+		}
+
 		$cont_obj++;
 		$cont_obj_master++;
-		// echo $cont_obj.PHP_EOL;
-		// if($cont_obj == 40){
-		// 	exit();
-		// }
 	}
 
 
@@ -601,41 +525,6 @@
 
 	function sort_regex($a,$b){
     	return strlen($b)-strlen($a);
-	}
-
-
-	function cria_conexao(){
-		$_MYSQL = mysql_connect('localhost', 'root', '');
-		if (!$_MYSQL) {
-		    die('Could not connect: ' . mysql_error());
-		}
-		$db_selected = mysql_select_db('test', $_MYSQL);
-		if (!$db_selected) {
-		    die ('Can\'t use foo : ' . mysql_error());
-		}
-
-		return $_MYSQL;
-	}
-
-	function fecha_conexao(){
-		global $_MYSQL;
-		mysql_close($_MYSQL);
-	}
-
-
-	function query($sql){
-		global $_MYSQL;
-		$result = mysql_query($sql, $_MYSQL);
-		while ($row = mysql_fetch_array($result)) {
-		    $obj_return[] = $row;
-		}
-		return $obj_return;
-	}
-
-	function grava($sql){
-		global $_MYSQL;
-		$result = mysql_query($sql, $_MYSQL);
-		return $result;
 	}
 
 	function convert_money($value){

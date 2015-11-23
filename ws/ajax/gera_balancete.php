@@ -2,6 +2,9 @@
 set_time_limit(0);
 require_once("../config.php");
 
+$collection = "diario_teste4";
+$tabela = "diario2";
+
 $time_start = microtime(true);
 
 do_trial_balance();
@@ -15,10 +18,12 @@ echo '<b>Total Execution Time:</b> '.$execution_time.' Mins';
 function do_trial_balance(){
 	global $_M;
 	global $_MY;
+	global $collection;
+	global $tabela;
 
 	if(CONNECTOR_DB == "MYSQL"){
 		$sql_insert = 'INSERT INTO trial_balance VALUES ';
-		$result = $_MY->query('SELECT account, SUM(credit) as credit_sum, SUM(debt) as debt_sum FROM diario2 group by account');
+		$result = $_MY->query('SELECT account, SUM(credit) as credit_sum, SUM(debt) as debt_sum FROM '.$tabela.' group by account');
 		$cont_insert = 0;
 		$id_diario = 1;
 		while($row = $result->fetch_assoc()){
@@ -36,7 +41,7 @@ function do_trial_balance(){
 			$_MY->query(rtrim($sql_insert, ","));
 		}
 	}elseif(CONNECTOR_DB == "MONGODB"){
-		$mongo_obj = $_M->diario_teste->aggregate(array(
+		$mongo_obj = $_M->$collection->aggregate(array(
 		array(
 		'$project' => array(
 		    "account" => 1,

@@ -54,3 +54,13 @@ border-left-color: #666;
 .done {
 	color: #00E400 !important;
 }
+
+/* DATATABLES*/
+.dataTables_processing{
+    height: 100% !important;
+    color: rgb(255, 255, 255) !important;
+    vertical-align: middle !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    top: 4em !important;
+    position: absolute !important;
+}

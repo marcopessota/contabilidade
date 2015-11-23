@@ -33,7 +33,7 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce) {
     if (S_vars.soft == true) {
         $balancete.iniciar_master_detail();
     } else {
-        $balancete.datatables = function($compile, $scope, $resource, DTOptionsBuilder, DTColumnBuilder) {
+        $balancete.datatables = function($filter, $compile, $scope, $resource, DTOptionsBuilder, DTColumnBuilder) {
             var vm = this;
             vm.selectAll = false;
             $balancete.selected = {};
@@ -42,9 +42,37 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce) {
 
             var titleHtml = '<input type="checkbox" ng-model="balanceteCtrl.selectAll" ng-click="balanceteCtrl.toggleAll(balanceteCtrl.selectAll, balanceteCtrl.selected)">';
 
-            vm.dtOptions = DTOptionsBuilder.fromFnPromise(function() {
-                    return $resource(S_vars.url_ajax + "ajax/get_balancete.php").query().$promise;
+            vm.dtOptions = DTOptionsBuilder.newOptions()
+                .withOption('ajax', {
+                    url: S_vars.url_ajax + "ajax/get_balancete.php",
+                    type: 'POST'
                 })
+                .withLanguage({
+                        "sEmptyTable": "Nenhum registro encontrado",
+                        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sInfoThousands": ".",
+                        "sLengthMenu": "_MENU_ resultados por página",
+                        "sLoadingRecords": "Carregando...",
+                        "sProcessing": "Processando...",
+                        "sZeroRecords": "Nenhum registro encontrado",
+                        "sSearch": "Pesquisar (Conta)",
+                        "oPaginate": {
+                            "sNext": "Próximo",
+                            "sPrevious": "Anterior",
+                            "sFirst": "Primeiro",
+                            "sLast": "Último"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Ordenar colunas de forma ascendente",
+                            "sSortDescending": ": Ordenar colunas de forma descendente"
+                        }
+                })
+                .withDataProp('data')
+                .withOption('processing', true)
+                .withOption('serverSide', true)
                 .withOption('createdRow', function(row, data, dataIndex) {
                     // Recompiling so we can bind Angular directive to the DT
                     $compile(angular.element(row).contents())($scope);
@@ -68,9 +96,15 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce) {
                 DTColumnBuilder.newColumn('_id').notVisible(),
                 DTColumnBuilder.newColumn('id_diario').notVisible(),
                 DTColumnBuilder.newColumn('account').withTitle('Conta').withOption('width', '20%'),
-                DTColumnBuilder.newColumn('debt').withTitle('Débito').withOption('width', '20%'),
-                DTColumnBuilder.newColumn('credit').withTitle('Crédito').withOption('width', '20%'),
-                DTColumnBuilder.newColumn('outstanding_balance').withTitle('Saldo').withOption('width', '20%'),
+                DTColumnBuilder.newColumn('debt').withTitle('Débito').withOption('width', '20%').renderWith(function(data, type, full) {
+                    return $filter('currency')(data, 'R$', 2);
+                }),
+                DTColumnBuilder.newColumn('credit').withTitle('Crédito').withOption('width', '20%').renderWith(function(data, type, full) {
+                    return $filter('currency')(data, 'R$', 2);
+                }),
+                DTColumnBuilder.newColumn('outstanding_balance').withTitle('Saldo').withOption('width', '20%').renderWith(function(data, type, full) {
+                    return $filter('currency')(data, 'R$', 2);
+                })
             ];
 
             function toggleAll(selectAll, selectedItems) {
