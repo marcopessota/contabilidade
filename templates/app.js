@@ -29,9 +29,11 @@ app.config(['$routeProvider',
     }
 ]);
 
-app.controller('appController', function($scope) {
+app.controller('appController', function($scope, S_vars){
     var $app = this;
     $app.titulo = "App";
+
+    $app.vars = S_vars;
     $app.selected_menu = "contabilidade";
     $app.select_menu = function(menu) {
         $app.selected_menu = menu;
