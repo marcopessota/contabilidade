@@ -16,7 +16,7 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce) {
     $balancete.sendData = function() {
         var nome_folha_trabalho = prompt('Insira o nome da Folha de Trabalho');
 
-        if (nome_folha_trabalho == '') return false;
+        if (nome_folha_trabalho === null || nome_folha_trabalho == '') return false;
 
         var rows = getSelRows();
 
