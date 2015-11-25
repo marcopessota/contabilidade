@@ -374,14 +374,18 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
     }
 
     $diario.sendData = function() {
+        var nome_folha_trabalho = prompt('Insira o nome da Folha de Trabalho');
+
+        if (nome_folha_trabalho === null || nome_folha_trabalho == '') return false;
+
         var obj_ajax = {};
-        obj_ajax._f = "envia_folha_trabalho";
+        obj_ajax._f = 'envia_folha_trabalho';
         obj_ajax._p = {
-            "data": $diario.selected,
-            "tipo": "mongodb"
+            rows: $diario.selected,
+            nome_folha_trabalho: nome_folha_trabalho
         };
-        $http.post(S_vars.url_ajax + "ajax.php", obj_ajax).success(function(data, status) {
-            // alert('Enviado com sucesso!');
+        $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
+            alert('Enviado para folha de trabalho com sucesso');
         });
     }
 
