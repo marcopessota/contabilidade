@@ -1,0 +1,56 @@
+<h3>{{planoContasCtrl.titulo}}</h3>
+<div ng-controller="planoContasCtrl.angularWayChangeDataCtrl as showCase">
+    <form class="form-inline" ng-submit="showCase.add_chart_account()">
+        <table datatable="ng" dt-options="showCase.dtOptions" dt-column-defs="showCase.dtColumnDefs" dt-instance="showCase.dtInstance" class="row-border hover">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Incluir plano de conta</button>
+                        </div>
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>Conta</th>
+                    <th>Título</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in showCase.items">
+                    <td>{{ item.account }}</td>
+                    <td>{{ item.desc }}</td>
+                    <td>
+                        <button type="button" ng-click="showCase.modify_chart_account($index)" class="btn btn-warning"><i class="fa fa-edit"></i></button>
+                        <button type="button" ng-click="showCase.remove_chart_account($index)" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+                    </td>
+                    <td>{{ item._id.$id }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<script type="text/ng-template" id="modal_chart_account.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{{showCase.title}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label>Conta
+                <input class="form-control" type="text" name="account" ng-model="showCase.itemAdd.account" value="">
+            </label>
+        </div>
+        <div class="form-group">
+            <label>Título
+                <input class="form-control" type="text" name="desc" ng-model="showCase.itemAdd.desc" value="">
+            </label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>

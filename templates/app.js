@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute', 'ngResource', 'datatables', 'textAngular', 'colorbox', 'ui-rangeSlider']);
+var app = angular.module('app', ['ngDialog','ngAnimate', 'ngRoute', 'ngResource', 'ui.bootstrap',  'datatables', 'textAngular', 'colorbox', 'ui-rangeSlider']);
 
 app.config(['$routeProvider',
     function($routeProvider) {
@@ -22,6 +22,11 @@ app.config(['$routeProvider',
             templateUrl: 'templates/folha_trabalho/folha_trabalho.html',
             controller: 'folhaTrabalhoController',
             controllerAs: 'folhaTrabalhoCtrl'
+        }).
+        when('/plano_contas', {
+            templateUrl: 'templates/plano_contas/plano_contas.html',
+            controller: 'planoContasController',
+            controllerAs: 'planoContasCtrl'
         }).
         otherwise({
             redirectTo: '/diario'
