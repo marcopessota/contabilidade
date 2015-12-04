@@ -23,7 +23,12 @@ function get_chart_account(){
 	global $tabela;
 
 	if(CONNECTOR_DB == "MYSQL"){
-		$result = $_MY->query('SELECT * FROM '.$tabela);
+		$result_obj = $_MY->query('SELECT * FROM '.$tabela);
+		$result = array();
+		while ($row = $result_obj->fetch_object()) {
+			$row->desc = utf8_encode($row->desc);
+			$result[] = $row;
+		}
 	}elseif(CONNECTOR_DB == "MONGODB"){
 		$result = iterator_to_array($_M->$collection->find(), false);
 	}

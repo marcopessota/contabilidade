@@ -1,0 +1,103 @@
+<h1>{{ratioCtrl.titulo}}</h1>
+<button class="btn btn-warning" type="button" ng-click="ratioCtrl.insert_edit_ratio()">+</button>
+<script type="text/ng-template" id="modal_chart_account.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{{ratioCtrl.title}}</h3>
+        <h5>Selecione um plano de contas, clicando na linha, para adicionar o valor como váriavel para cálculo do IEF</h5>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                <input type="text" class="form-control" placeholder="Busca" ng-model="ratioCtrl.busca">
+            </div>
+        </div>
+        <div style="height:300px; overflow-y: scroll;">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Conta</th>
+                        <th>Titulo</th>
+                        <th>Saldo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-click="ratioCtrl.selected_line = item" ng-repeat="item in ratioCtrl.itens | filter:ratioCtrl.busca">
+                        <td>{{item.chart_account}}</td>
+                        <td>{{item.desc_account}}</td>
+                        <td>{{item.outstanding_balance_sum | currency:"R$ ":2}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div style="float:left; text-align:left;">
+            <div>Conta selecionada: <b>{{ratioCtrl.selected_line.chart_account}}</b></div>
+            <div>Título selecionado: <b>{{ratioCtrl.selected_line.desc_account}}</b></div>
+            <div>Valor selecionado: <b>{{ratioCtrl.selected_line.outstanding_balance_sum | currency:"R$ ":2}}</b></div>
+        </div>
+        <button class="btn btn-primary" type="button" ng-click="ok()">Confirmar</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+<script type="text/ng-template" id="modal_chart_number.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{{ratioCtrl.title}}</h3>
+        <h5>Digite valor para adicionar como váriavel para cálculo do IEF</h5>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Valor (R$)" ng-model="ratioCtrl.valor_reais">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">Confirmar</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+<script type="text/ng-template" id="insert_edit_ratio.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{{ratioCtrl.title}}</h3>
+        <h5>Digite valor para adicionar como váriavel para cálculo do IEF</h5>
+    </div>
+    <div class="modal-body">
+        <uib-tabset justified="true">
+            <uib-tab heading="Monte sua fórmula">
+		        <span>Fórmula</span>
+		        <div class="formula" ng-bind-html="ratioCtrl.formula"></div>
+		        <span>Preview (valores do diário atual): </span>
+		        <div class="formula">{{ratioCtrl.formula_preview}}</div>
+		        <div>
+		            <button ng-click="ratioCtrl.add_variable('field', 'chart_account')">Titulo de conta</button>
+		            <button ng-click="ratioCtrl.add_variable('field', 'number_field')">Números</button>
+		            <button ng-click="ratioCtrl.add_variable('operator', '(')">(</button>
+		            <button ng-click="ratioCtrl.add_variable('operator', ')')">)</button>
+		            <button ng-click="ratioCtrl.add_variable('operator', '+')">+</button>
+		            <button ng-click="ratioCtrl.add_variable('operator', '-')">-</button>
+		            <button ng-click="ratioCtrl.add_variable('operator', '*')">*</button>
+		            <button ng-click="ratioCtrl.add_variable('operator', '/')">/</button>
+		            <button ng-click="ratioCtrl.add_variable('clear', 'C')">C</button>
+		        </div>
+		       	<button class="btn btn-primary" type="button" ng-click="ratioCtrl.calculate()">Calcular</button>
+		        <div class="result">Resultado: {{ratioCtrl.result}}</div>
+            </uib-tab>
+            <uib-tab heading="SJ">Short Labeled Justified content</uib-tab>
+            <uib-tab heading="Long Justified">Long Labeled Justified content</uib-tab>
+        </uib-tabset>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ratioCtrl.ok()">Salvar fórmula</button>
+        <button class="btn btn-warning" type="button" ng-click="ratioCtrl.cancel()">Cancel</button>
+    </div>
+</script>
+<style>
+.formula,
+.formula_preview {
+    height: 30px;
+    border: 1px solid black;
+    background: #FFF;
+}
+</style>

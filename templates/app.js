@@ -18,6 +18,15 @@ app.config(['$routeProvider',
             controller: 'balanceteController',
             controllerAs: 'balanceteCtrl'
         }).
+        when('/balanco', {
+            templateUrl: 'templates/balanco/balanco.html',
+            controller: 'balancoController',
+            controllerAs: 'balancoCtrl'
+        }).when('/ratio', {
+            templateUrl: 'templates/ratio/ratio.html',
+            controller: 'ratioController',
+            controllerAs: 'ratioCtrl'
+        }).
         when('/folha_trabalho', {
             templateUrl: 'templates/folha_trabalho/folha_trabalho.html',
             controller: 'folhaTrabalhoController',

@@ -4,12 +4,12 @@
 	$return = new stdClass();
 
 
-	$collection = "diario_teste3";
+	$collection = "diario_teste4";
 	$tabela = "diario2";
 	$filename = "../rep/diario/3.txt";
 
 	MongoCursor::$timeout = -1;
-	$sql = 'INSERT INTO diario VALUES';
+	$sql = 'INSERT INTO '.$tabela.' VALUES';
 
 	for($aaa = 0; $aaa<1;$aaa++){
 
@@ -117,7 +117,9 @@
 							}
 						}
 						if($columned){
-							$_MY->query($sql);
+							if($cont_obj > 0){
+								$_MY->query(rtrim($sql, ","));
+							}
 						}
 						break;
 					case '.xls':
@@ -136,7 +138,9 @@
 							}
 						}
 						if($columned){
-							$_MY->query($sql);
+							if($cont_obj > 0){
+								$_MY->query(rtrim($sql, ","));
+							}
 						}
 						break;
 				}
@@ -245,7 +249,7 @@
 				$cont_obj = 0;
 				$sql = 'INSERT INTO '.$tabela.' VALUES';
 			}else{
-				$sql .= '(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt_value.'", "'.$final_obj->credit_value.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'"), ';
+				$sql .= '(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt_value.'", "'.$final_obj->credit_value.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'"),';
 			}
 		}
 	}
@@ -256,7 +260,7 @@
 		global $post;
 		global $cont_obj;
 		global $cont_obj_master;
-		global $_M;
+		global $_MY;
 		global $sql;
 		$final_obj = new stdClass();
 		$answers = $post["answers"];
@@ -264,7 +268,7 @@
 		$lines_replace = new stdClass();
 		$lines_replace->line_date = substr($line, (int) $answers["question0.1.1"]["date"]["min"], (int) ($answers["question0.1.1"]["date"]["max"] - $answers["question0.1.1"]["date"]["min"]));
 		$date_match = get_date_line($lines_replace->line_date);
-		$final_obj->date =  str_replace('"', "",$date_match[0]);
+		$final_obj->date =  date("Y-m-d", strtotime(str_replace('"', "",$date_match[0])));
 
 
 		// BEGIN ACCOUNTS
@@ -345,6 +349,7 @@
 
 
 		if(CONNECTOR_DB == "MONGODB"){
+			// print_r($final_obj);
 			$_M->$collection->insert($final_obj);
 		}
 
@@ -356,7 +361,7 @@
 				$cont_obj = 0;
 				$sql = 'INSERT INTO '.$tabela.' VALUES';
 			}else{
-				$sql .= '(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt_value.'", "'.$final_obj->credit_value.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'"), ';
+				$sql .= '(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt_value.'", "'.$final_obj->credit_value.'", "'.addslashes($final_obj->concept).'", "'.addslashes($final_obj->title).'", "'.addslashes($final_obj->doc1).'", "'.addslashes($final_obj->doc2).'"),';
 			}
 		}
 

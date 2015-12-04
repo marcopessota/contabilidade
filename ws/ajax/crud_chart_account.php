@@ -30,8 +30,9 @@ function add_chart_account(){
 
 	if(CONNECTOR_DB == "MYSQL"){
 		$obj_mysql = $_MY->query('SELECT * FROM '.$tabela. ' WHERE account	=' . trim($post["account"]));
+		$obj_mysql = $obj_mysql->fetch_all();
 		if(empty($obj_mysql)){
-			$_MY->query('INSERT INTO ' . $tabela . ' VALUES (null, "'.trim($post["account"]).'", "'.trim($post["desc"]).'")');
+			$_MY->query('INSERT INTO ' . $tabela . ' VALUES (null, 1, "'.trim($post["account"]).'", "'.trim($post["desc"]).'")');
 			$return->success = "ok";
 			$return->error = "no_error";
 		}else{
@@ -64,11 +65,13 @@ function edit_chart_account(){
 
 	if(CONNECTOR_DB == "MYSQL"){
 		$obj_mysql = $_MY->query('SELECT * FROM '.$tabela. ' WHERE id	=' . trim($post["id"]));
+		$obj_mysql = $obj_mysql->fetch_all();
+
 		if(empty($obj_mysql)){
 			$return->success = "error";
-			$returnrn->error = "not_exists";
+			$return->error = "not_exists";
 		}else{
-			$_MY->query('UPDATE ' . $tabela . ' SET  account = "'.trim($post["account"]).'", desc = "'.trim($post["desc"]).'"');
+			$_MY->query('UPDATE ' . $tabela . ' SET  account = "'.trim($post["account"]).'", `desc` = "'.trim($post["desc"]).'" WHERE id	=' . trim($post["id"]));
 			$return->success = "ok";
 			$return->error = "no_error";
 		}
@@ -97,6 +100,8 @@ function remove_chart_account(){
 
 	if(CONNECTOR_DB == "MYSQL"){
 		$obj_mysql = $_MY->query('SELECT * FROM '.$tabela. ' WHERE id	=' . trim($post["id"]));
+		$obj_mysql = $obj_mysql->fetch_all();
+
 		if(empty($obj_mysql)){
 			$return->success = "error";
 			$returnrn->error = "not_exists";
