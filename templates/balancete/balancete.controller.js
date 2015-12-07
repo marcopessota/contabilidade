@@ -3,6 +3,7 @@ var app = angular.module('app');
 app.controller('balanceteController', function($scope, $http, S_vars, $sce) {
     var $balancete = this;
     $balancete.titulo = "Balancete";
+
     $balancete.iniciar_master_detail = function() {
         var obj_ajax = {};
         obj_ajax._f = 'inicia_balancete';
@@ -10,6 +11,16 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce) {
         $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
             // console.log(data);
             $balancete.grid = $sce.trustAsHtml(data);
+        });
+    }
+
+    $balancete.exportExcel = function() {
+        waitingDialog.show('Preparando dados para realizar exportação...');
+        var obj_ajax = {};
+        obj_ajax._f = 'exporta_excel_balancete';
+        obj_ajax._p = {};
+        $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
+            waitingDialog.hide();
         });
     }
 
@@ -30,6 +41,7 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce) {
             alert('Enviado para folha de trabalho com sucesso');
         });
     }
+
     if (S_vars.soft == true) {
         $balancete.iniciar_master_detail();
     } else {
@@ -48,27 +60,27 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce) {
                     type: 'POST'
                 })
                 .withLanguage({
-                        "sEmptyTable": "Nenhum registro encontrado",
-                        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-                        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-                        "sInfoPostFix": "",
-                        "sInfoThousands": ".",
-                        "sLengthMenu": "_MENU_ resultados por página",
-                        "sLoadingRecords": "Carregando...",
-                        "sProcessing": "Processando...",
-                        "sZeroRecords": "Nenhum registro encontrado",
-                        "sSearch": "Pesquisar (Conta)",
-                        "oPaginate": {
-                            "sNext": "Próximo",
-                            "sPrevious": "Anterior",
-                            "sFirst": "Primeiro",
-                            "sLast": "Último"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": Ordenar colunas de forma ascendente",
-                            "sSortDescending": ": Ordenar colunas de forma descendente"
-                        }
+                    "sEmptyTable": "Nenhum registro encontrado",
+                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "_MENU_ resultados por página",
+                    "sLoadingRecords": "Carregando...",
+                    "sProcessing": "Processando...",
+                    "sZeroRecords": "Nenhum registro encontrado",
+                    "sSearch": "Pesquisar (Conta)",
+                    "oPaginate": {
+                        "sNext": "Próximo",
+                        "sPrevious": "Anterior",
+                        "sFirst": "Primeiro",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    }
                 })
                 .withDataProp('data')
                 .withOption('processing', true)
@@ -127,6 +139,6 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce) {
                 vm.selectAll = true;
             }
         }
-
     }
+
 });

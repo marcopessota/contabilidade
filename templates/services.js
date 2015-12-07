@@ -41,7 +41,7 @@ app.factory('S_vars', [function() {
 	$S_vars = this;
 
 	$S_vars.url_ajax = "ws/";
-	$S_vars.soft = false;
+	$S_vars.soft = true;
 
 	return $S_vars;
 }]);
