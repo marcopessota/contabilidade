@@ -44,6 +44,13 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce, $uib
             $balancete.cancel = function() {
                 $balancete.modalInstance.dismiss('cancel');
             };
+    $balancete.exportExcel = function() {
+        waitingDialog.show('Preparando dados para realizar exportação...');
+        var obj_ajax = {};
+        obj_ajax._f = 'exporta_excel_balancete';
+        obj_ajax._p = {};
+        $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
+            waitingDialog.hide();
         });
     }
 
@@ -64,6 +71,7 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce, $uib
             alert('Enviado para folha de trabalho com sucesso');
         });
     }
+
     if (S_vars.soft == true) {
         $balancete.iniciar_master_detail();
     } else {
@@ -162,6 +170,6 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce, $uib
                 vm.selectAll = true;
             }
         }
-
     }
+
 });

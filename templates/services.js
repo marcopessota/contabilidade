@@ -45,6 +45,7 @@ app.factory('S_vars', function() {
 	$S_vars.id_business = "111";
 	$S_vars.name_business = "";
 	$S_vars.soft = false;
+	// $S_vars.soft = true;
 
 	return $S_vars;
 });
