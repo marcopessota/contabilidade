@@ -17,5 +17,64 @@
 <div class="row">
     <div class="col-md-12">
         <button ng-click="balanceteCtrl.sendData()" class="btn btn-warning">Enviar Seleção</button>
+        <button ng-click="balanceteCtrl.composition_balance()" class="btn btn-warning">Gerar Composição de Saldo</button>
     </div>
 </div>
+<script type="text/ng-template" id="modal_composicao_saldo.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Composição de Saldo</h3>
+    </div>
+    <div class="modal-body">
+        <uib-tabset justified="true">
+            <uib-tab heading="Saldos nulos">
+                <div class="scrolling">
+                    <table id="table_nulos" class="mT-5 table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th ng-click="balanceteCtrl.composition_balance_data.data_oks = balanceteCtrl.sort.sort_column('date', balanceteCtrl.composition_balance_data.data_oks)">Período<i class="fa fa-fw fa-{{balanceteCtrl.sort.get_sort('date')}}"></i></th>
+                                <th ng-click="balanceteCtrl.composition_balance_data.data_oks = balanceteCtrl.sort.sort_column('account', balanceteCtrl.composition_balance_data.data_oks)">Conta<i class="fa fa-fw fa-{{balanceteCtrl.sort.get_sort('account')}}"></i></th>
+                                <th ng-click="balanceteCtrl.composition_balance_data.data_oks = balanceteCtrl.sort.sort_column('debt_value', balanceteCtrl.composition_balance_data.data_oks)">Débito<i class="fa fa-fw fa-{{balanceteCtrl.sort.get_sort('debt_value')}}"></i></th>
+                                <th ng-click="balanceteCtrl.composition_balance_data.data_oks = balanceteCtrl.sort.sort_column('credit_value', balanceteCtrl.composition_balance_data.data_oks)">Crédito<i class="fa fa-fw fa-{{balanceteCtrl.sort.get_sort('credit_value')}}"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in balanceteCtrl.composition_balance_data.data_oks">
+                                <td>{{item.date  | date : 'dd/MM/yyyy'}}</td>
+                                <td>{{item.account}}</td>
+                                <td>{{item.debt_value | currency:"R$ ":2}}</td>
+                                <td>{{item.credit_value | currency:"R$ ":2}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn btn-success" type="button" ng-click="balanceteCtrl.export.do('table_nulos', 'excel')">Exportar Tabela</button>
+            </uib-tab>
+            <uib-tab heading="Saldos não nulos">
+                <div class="scrolling">
+                    <table id="table_nao_nulos" class="mT-5 table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th ng-click="balanceteCtrl.composition_balance_data.data_entrys = balanceteCtrl.sort.sort_column('date', balanceteCtrl.composition_balance_data.data_entrys)">Período<i class="fa fa-fw fa-{{balanceteCtrl.sort.get_sort('date')}}"></i></th>
+                                <th ng-click="balanceteCtrl.composition_balance_data.data_entrys = balanceteCtrl.sort.sort_column('account', balanceteCtrl.composition_balance_data.data_entrys)">Conta<i class="fa fa-fw fa-{{balanceteCtrl.sort.get_sort('account')}}"></i></th>
+                                <th ng-click="balanceteCtrl.composition_balance_data.data_entrys = balanceteCtrl.sort.sort_column('debt_value', balanceteCtrl.composition_balance_data.data_entrys)">Débito<i class="fa fa-fw fa-{{balanceteCtrl.sort.get_sort('debt_value')}}"></i></th>
+                                <th ng-click="balanceteCtrl.composition_balance_data.data_entrys = balanceteCtrl.sort.sort_column('credit_value', balanceteCtrl.composition_balance_data.data_entrys)">Crédito<i class="fa fa-fw fa-{{balanceteCtrl.sort.get_sort('credit_value')}}"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in balanceteCtrl.composition_balance_data.data_entrys track by $index | orderBy:'item.date'">
+                                <td>{{item.date | date : 'dd/MM/yyyy'}}</td>
+                                <td>{{item.account}}</td>
+                                <td>{{item.debt_value | currency:"R$ ":2}}</td>
+                                <td>{{item.credit_value | currency:"R$ ":2}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn btn-success" type="button" ng-click="balanceteCtrl.export.do('table_nao_nulos', 'excel')">Exportar Tabela</button>
+            </uib-tab>
+        </uib-tabset>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" type="button" ng-click="balanceteCtrl.cancel()">Fechar</button>
+    </div>
+</script>

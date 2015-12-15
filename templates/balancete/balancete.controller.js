@@ -1,8 +1,13 @@
 var app = angular.module('app');
 
-app.controller('balanceteController', function($scope, $http, S_vars, $sce) {
+app.controller('balanceteController', function($scope, $http, S_vars, $sce, $uibModal, S_sort_table, S_export) {
     var $balancete = this;
     $balancete.titulo = "Balancete";
+    $balancete.export = S_export;
+    $balancete.sort = S_sort_table;
+    $balancete.sort.columns = ['date', 'account', 'debt_value', 'credit_value'];
+    $balancete.sort.init();
+
     $balancete.iniciar_master_detail = function() {
         var obj_ajax = {};
         obj_ajax._f = 'inicia_balancete';
@@ -10,6 +15,35 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce) {
         $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
             // console.log(data);
             $balancete.grid = $sce.trustAsHtml(data);
+        });
+    }
+
+    $balancete.composition_balance = function() {
+        waitingDialog.show('Gerando Composição de Saldo...');
+        var obj_ajax = {};
+        obj_ajax._f = 'gera_composicao_saldo';
+        obj_ajax._p = {
+            rows: $balancete.selected
+        };
+        $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
+            $balancete.composition_balance_data = {};
+            $balancete.composition_balance_data.title = data.title;
+            $balancete.composition_balance_data.data_oks = data.data_oks;
+            $balancete.composition_balance_data.data_entrys = data.data_entrys;
+
+
+            $balancete.modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'modal_composicao_saldo.html',
+                scope: $scope
+            });
+
+            $balancete.modalInstance.opened.then(function(selectedItem) {
+                waitingDialog.hide();
+            });
+            $balancete.cancel = function() {
+                $balancete.modalInstance.dismiss('cancel');
+            };
         });
     }
 
@@ -48,27 +82,27 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce) {
                     type: 'POST'
                 })
                 .withLanguage({
-                        "sEmptyTable": "Nenhum registro encontrado",
-                        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-                        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-                        "sInfoPostFix": "",
-                        "sInfoThousands": ".",
-                        "sLengthMenu": "_MENU_ resultados por página",
-                        "sLoadingRecords": "Carregando...",
-                        "sProcessing": "Processando...",
-                        "sZeroRecords": "Nenhum registro encontrado",
-                        "sSearch": "Pesquisar (Conta)",
-                        "oPaginate": {
-                            "sNext": "Próximo",
-                            "sPrevious": "Anterior",
-                            "sFirst": "Primeiro",
-                            "sLast": "Último"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": Ordenar colunas de forma ascendente",
-                            "sSortDescending": ": Ordenar colunas de forma descendente"
-                        }
+                    "sEmptyTable": "Nenhum registro encontrado",
+                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "_MENU_ resultados por página",
+                    "sLoadingRecords": "Carregando...",
+                    "sProcessing": "Processando...",
+                    "sZeroRecords": "Nenhum registro encontrado",
+                    "sSearch": "Pesquisar (Conta)",
+                    "oPaginate": {
+                        "sNext": "Próximo",
+                        "sPrevious": "Anterior",
+                        "sFirst": "Primeiro",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    }
                 })
                 .withDataProp('data')
                 .withOption('processing', true)
@@ -95,6 +129,7 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce) {
                 }),
                 DTColumnBuilder.newColumn('_id').notVisible(),
                 DTColumnBuilder.newColumn('id_diario').notVisible(),
+                DTColumnBuilder.newColumn('title').withTitle('Título').withOption('width', '20%'),
                 DTColumnBuilder.newColumn('account').withTitle('Conta').withOption('width', '20%'),
                 DTColumnBuilder.newColumn('debt').withTitle('Débito').withOption('width', '20%').renderWith(function(data, type, full) {
                     return $filter('currency')(data, 'R$', 2);

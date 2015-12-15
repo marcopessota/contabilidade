@@ -1,0 +1,52 @@
+{{empresasCtrl.titulo}}
+<div ng-controller="empresasCtrl.angularWayChangeDataCtrl as showCase">
+    <form class="form-inline" ng-submit="showCase.add_business()">
+        <table datatable="ng" dt-options="showCase.dtOptions" dt-column-defs="showCase.dtColumnDefs" dt-instance="showCase.dtInstance" class="row-border hover">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Incluir empresa</button>
+                        </div>
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>Nome</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in showCase.items">
+                    <td>{{ item.nome }}</td>
+                    <td>
+                        <!-- <button type="button" ng-click="showCase.modify_business($index)" class="btn btn-warning"><i class="fa fa-edit"></i></button>
+                        <button type="button" ng-click="showCase.remove_business($index)" class="btn btn-danger"><i class="fa fa-trash-o"></i></button> -->
+                        <button type="button" ng-click="showCase.select_business($index)" class="table_button_size btn btn-primary">SELECIONAR</button>
+                        <button type="button" ng-click="showCase.modify_business($index)" class="table_button_size btn btn-warning">EDITAR</button>
+                        <button type="button" ng-click="showCase.remove_business($index)" class="table_button_size btn btn-danger">EXCLUIR</button>
+                    </td>
+                    <td>{{ item._id.$id }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<script type="text/ng-template" id="modal_business.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{{showCase.title}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="full_width">Nome da Empresa
+                <input class="form-control" type="text" name="nome" ng-model="showCase.itemAdd.nome" value="">
+            </label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>

@@ -27,6 +27,7 @@
 					    "account" => 1,
 					    "debt" => 1,
 					    "credit" => 1,
+					    "title" => 1,
 					    "outstanding_balance" => 1
 					)
 				),

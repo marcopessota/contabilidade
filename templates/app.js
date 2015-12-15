@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngDialog','ngAnimate', 'ngRoute', 'ngResource', 'ui.bootstrap',  'datatables', 'textAngular', 'colorbox', 'ui-rangeSlider']);
+var app = angular.module('app', ['ngDialog', 'highcharts-ng', 'ngAnimate', 'ngRoute', 'ngResource', 'ui.bootstrap',  'datatables', 'textAngular', 'colorbox', 'ui-rangeSlider']);
 
 app.config(['$routeProvider',
     function($routeProvider) {
@@ -7,6 +7,11 @@ app.config(['$routeProvider',
             templateUrl: 'templates/diario/diario.html',
             controller: 'diarioController',
             controllerAs: 'diarioCtrl'
+        }).
+        when('/empresas', {
+            templateUrl: 'templates/empresas/empresas.html',
+            controller: 'empresasController',
+            controllerAs: 'empresasCtrl'
         }).
         when('/sped', {
             templateUrl: 'templates/sped/sped.html',
@@ -26,6 +31,10 @@ app.config(['$routeProvider',
             templateUrl: 'templates/ratio/ratio.html',
             controller: 'ratioController',
             controllerAs: 'ratioCtrl'
+        }).when('/tipologia', {
+            templateUrl: 'templates/tipologia/tipologia.html',
+            controller: 'tipologiaController',
+            controllerAs: 'tipologiaCtrl'
         }).
         when('/folha_trabalho', {
             templateUrl: 'templates/folha_trabalho/folha_trabalho.html',
@@ -48,6 +57,14 @@ app.controller('appController', function($scope, S_vars){
     $app.titulo = "App";
 
     $app.vars = S_vars;
+    $scope.$watch('appCtrl.vars.id_business', function(data){
+       if(data != "" && data != null){
+            $app.wrapper_class = "";
+       }
+    });
+    if($app.vars.id_business == ""){
+            $app.wrapper_class = "toggled";
+       }
     $app.selected_menu = "contabilidade";
     $app.select_menu = function(menu) {
         $app.selected_menu = menu;

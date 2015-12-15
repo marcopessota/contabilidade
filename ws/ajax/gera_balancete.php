@@ -2,8 +2,11 @@
 set_time_limit(0);
 require_once("../config.php");
 
-$collection = "diario_teste4";
+$collection = "diario_teste5";
 $tabela = "diario2";
+
+
+
 
 $time_start = microtime(true);
 
@@ -41,6 +44,12 @@ function do_trial_balance(){
 			$_MY->query(rtrim($sql_insert, ","));
 		}
 	}elseif(CONNECTOR_DB == "MONGODB"){
+		$chart_accounts_obj = array();
+		$obj_for = $_M->chart_account->find();
+		foreach($obj_for as $v){
+			$chart_accounts_obj[$v["account"]] = $v["desc"];
+		}
+
 		$mongo_obj = $_M->$collection->aggregate(array(
 		array(
 		'$project' => array(
@@ -63,6 +72,8 @@ function do_trial_balance(){
 			$insert_obj->outstanding_balance = $v_obj["debt_sum"] - $v_obj["credit_sum"];
 			$insert_obj->debt = $v_obj["debt_sum"];
 			$insert_obj->credit = $v_obj["credit_sum"];
+			$insert_obj->title = $chart_accounts_obj[$v_obj["_id"]];
+			
 			$_M->trial_balance->insert($insert_obj);
 			unset($mongo_obj["result"][$k_obj]);
 		}

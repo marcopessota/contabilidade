@@ -4,7 +4,7 @@
 	$return = new stdClass();
 
 
-	$collection = "diario_teste4";
+	$collection = "diario_teste5";
 	$tabela = "diario2";
 	$filename = "../rep/diario/3.txt";
 
@@ -198,10 +198,13 @@
 		global $cont_obj;
 		global $cc_regex;
 		global $_M;
+		global $_MY;
 		$final_obj = new stdClass();
 
 		$date_match = get_date_line($line);
 		$final_obj->date = $date_match[0];
+		$date = new DateTime($final_obj->date, new DateTimeZone('UTC'));
+		$final_obj->ts =  new MongoDate($date->format("U"));
 		$account_match = get_numero_conta($line, $cc_regex);
 		$final_obj->account = $account_match[0];
 		$values = get_debito_credito_linha($line);
@@ -261,6 +264,7 @@
 		global $cont_obj;
 		global $cont_obj_master;
 		global $_MY;
+		global $_M;
 		global $sql;
 		$final_obj = new stdClass();
 		$answers = $post["answers"];
@@ -269,6 +273,9 @@
 		$lines_replace->line_date = substr($line, (int) $answers["question0.1.1"]["date"]["min"], (int) ($answers["question0.1.1"]["date"]["max"] - $answers["question0.1.1"]["date"]["min"]));
 		$date_match = get_date_line($lines_replace->line_date);
 		$final_obj->date =  date("Y-m-d", strtotime(str_replace('"', "",$date_match[0])));
+		
+		$date = new DateTime($final_obj->date, new DateTimeZone('UTC'));
+		$final_obj->ts =  new MongoDate($date->format("U"));
 
 
 		// BEGIN ACCOUNTS
