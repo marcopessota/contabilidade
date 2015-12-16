@@ -1,33 +1,27 @@
 var app = angular.module('app');
 
-app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_vars) {
+app.controller('folhaTrabalhoController', function($scope, $timeout, $http, $uibModal, S_vars) {
     var $folha_trabalho = this;
     $folha_trabalho.titulo = 'Dados da Folha de Trabalho';
     $folha_trabalho.handsontables = [];
-    $folha_trabalho.treeVisible = false;
+    $folha_trabalho.handsontable_selected = [];
+
+    // Manipulação das Tabs Primário
+    $folha_trabalho.tab_primario = 0;
+
+    $folha_trabalho.setTab_primario = function(tabId) {
+        $folha_trabalho.tab_primario = tabId;
+    };
+
+    $folha_trabalho.isSet_primario = function(tabId) {
+        return $folha_trabalho.tab_primario === tabId;
+    };
 
     // Manipulação das Tabs
     $folha_trabalho.tab = 0;
     $folha_trabalho.tabs = [];
     $folha_trabalho.first_tab = true;
-    $folha_trabalho.textAngular = 'Insira o texto aqui';
-
-    // $folha_trabalho.images_folha_trabalho = [{
-    //     thumb: 'thumb/image1.jpg',
-    //     small: 'small/image1.jpg'
-    // }, {
-    //     thumb: 'thumb/image2.jpg',
-    //     small: 'small/image2.jpg'
-    // }, {
-    //     thumb: 'thumb/image3.jpg',
-    //     small: 'small/image3.jpg'
-    // }, {
-    //     thumb: 'thumb/image4.jpg',
-    //     small: 'small/image4.jpg'
-    // }, {
-    //     thumb: 'thumb/image5.jpg',
-    //     small: 'small/image5.jpg'
-    // }];
+    $folha_trabalho.textAngular = '<ul><ul>';
 
     $folha_trabalho.setTab = function(tabId) {
         $folha_trabalho.tab = tabId;
@@ -41,39 +35,131 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
         var prox = $folha_trabalho.tabs.length;
 
         if ($folha_trabalho.first_tab == true) {
-            nome_folha_trabalho = 'Nova folha ' + (prox + 1) + '.json';
+            nome_folha_trabalho = 'Folha de Trabalho 1';
             $folha_trabalho.first_tab = false;
         } else {
-            var nome_folha_trabalho = prompt('Insira o nome da Folha de Trabalho');
+            var nome_folha_trabalho = prompt('Insira o nome da Folha de Trabalho:');
         }
 
-        // Se o nome da folha de trabalho for vazia, colocar como Nova folha + Número
-        if (nome_folha_trabalho == '') {
-            nome_folha_trabalho = 'Nova folha ' + (prox + 1) + '.json';
-        }
+        mydata = '[[]]';
 
-        // Se o nome da folha for maior que 15 caracteres, colocar reticencias
-        if (nome_folha_trabalho.length > 15) {
-            var mostra_reticencias = true;
-        } else {
-            var mostra_reticencias = false;
-        }
+        var obj_ajax = {};
+        obj_ajax._f = 'salva_folha_trabalho';
+        obj_ajax._p = {
+            mydata: mydata,
+            nome_folha_trabalho: nome_folha_trabalho
+        };
+        $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
+            $('#tree').jstree(true).refresh();
 
-        $folha_trabalho.tabs.push({
-            id: prox,
-            nome: nome_folha_trabalho,
-            mostra_reticencias: mostra_reticencias
+            $folha_trabalho.tabs.push({
+                id: prox,
+                id_caminho: data,
+                nome_folha_trabalho: nome_folha_trabalho
+            });
+
+            $timeout(function() {
+                var container = document.getElementById('handsontable_' + data);
+
+                $folha_trabalho.handsontables.push(new Handsontable(container, {
+                    comments: true,
+                    startRows: 15,
+                    startCols: 20,
+                    minSpareRows: 1,
+                    rowHeaders: true,
+                    colHeaders: true,
+                    contextMenu: true,
+                    manualColumnResize: true,
+                    manualRowResize: true,
+                    formulas: true,
+                    // stretchH: 'all'
+                }));
+
+                $folha_trabalho.handsontables[$folha_trabalho.handsontables.length - 1].updateSettings({
+                    beforeKeyDown: function(e) {
+                        // $folha_trabalho.textAngular += String.fromCharCode(e.keyCode);
+                        // console.log(this.getDataAtCell($folha_trabalho.handsontable_selected_row, $folha_trabalho.handsontable_selected_column));
+                        // console.log($folha_trabalho.handsontable_selected_row);
+                    },
+                    afterSelection: function(row, column) {
+                        // if (column == 0) {
+                        //     var texto = this.getDataAtCell($folha_trabalho.handsontable_selected_row, $folha_trabalho.handsontable_selected_column);
+                        //     $folha_trabalho.handsontable_selected_row = row;
+                        //     $folha_trabalho.handsontable_selected_column = column;
+                        // }
+                        // // console.log(texto);
+                        // if (texto != null) {
+                        //     // $('#' + row).remove();
+                        //     var text_edit_html_obj = $.parseHTML($folha_trabalho.textAngular);
+                        //     $(text_edit_html_obj).append('<li id="' + $folha_trabalho.handsontable_selected_row + '">' + texto + '</li>');
+                        //     $folha_trabalho.textAngular = $(text_edit_html_obj).prop('outerHTML');
+                        // }
+                        // $folha_trabalho.insert_note(row, column);
+                        $folha_trabalho.selected_row = row;
+                        $folha_trabalho.selected_column = column;
+                    },
+                    afterChange: function(changes, source) {
+                        // if (changes[0][1] == 0) {
+                        //     var text_edit_html_obj = $.parseHTML($folha_trabalho.textAngular);
+                        //     $(text_edit_html_obj).find('#' + changes[0][0]).remove();
+                        //     $(text_edit_html_obj).append('<li id="' + changes[0][0] + '">' + changes[0][3] + '</li>');
+                        //     $folha_trabalho.textAngular = $(text_edit_html_obj).prop('outerHTML');
+                        // }
+                    }
+                });
+            }, 500);
+        });
+    };
+    // Fim Manipulação das Tabs
+
+    $folha_trabalho.insert_note = function(row, column) {
+        var texto = $folha_trabalho.handsontables[$folha_trabalho.tab].getDataAtCell(row, column);
+        $folha_trabalho.modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'modal_textAngular.html',
+            scope: $scope,
+            size: 'lg'
         });
 
-        $timeout(function() {
-            var container = document.getElementById('handsontable_' + prox);
+        $folha_trabalho.modalInstance.rendered.then(function() {
+            return false;
+            var obj_ajax = {};
+            obj_ajax._f = 'busca_nota_folha_trabalho';
+            obj_ajax._p = {
+                row: row,
+                column: column
+            };
+            $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
+                alert('Sucesso!!!');
+            });
+        });
+        $scope.ok = function() {
+            $folha_trabalho.modalInstance.close();
+
+        };
+        $scope.cancel = function() {
+            $folha_trabalho.modalInstance.dismiss('cancel');
+        };
+    };
+
+    $folha_trabalho.inserir_nota_folha = function(id_caminho) {
+        console.log($folha_trabalho.selected_row);
+        console.log($folha_trabalho.selected_column);
+        // var texto = $folha_trabalho.handsontables[$folha_trabalho.tab].getDataAtCell(row, column);
+        $folha_trabalho.modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'modal_textAngular.html',
+            scope: $scope,
+            size: 'lg'
+        });
+
+        $folha_trabalho.modalInstance.rendered.then(function() {
+            var container = document.getElementById('handsontable__');
 
             $folha_trabalho.handsontables.push(new Handsontable(container, {
-                // data: data,
-                // minSpareRows: 1,
                 comments: true,
                 startRows: 15,
-                startCols: 20,
+                startCols: 10,
                 minSpareRows: 1,
                 rowHeaders: true,
                 colHeaders: true,
@@ -83,12 +169,24 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
                 formulas: true,
                 // stretchH: 'all'
             }));
-        }, 100);
-    };
-    // Fim Manipulação das Tabs
+            return false;
+            var obj_ajax = {};
+            obj_ajax._f = 'busca_nota_folha_trabalho';
+            obj_ajax._p = {
+                row: row,
+                column: column
+            };
+            $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
+                alert('Sucesso!!!');
+            });
+        });
+        $scope.ok = function() {
+            $folha_trabalho.modalInstance.close();
 
-    $folha_trabalho.setTreeVisible = function() {
-        $folha_trabalho.treeVisible = !$folha_trabalho.treeVisible;
+        };
+        $scope.cancel = function() {
+            $folha_trabalho.modalInstance.dismiss('cancel');
+        };
     };
 
     $folha_trabalho.exportar_folha_trabalho = function(tab) {
@@ -123,7 +221,7 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
                     'url': 'rep/fx.php?operation=get_node',
                     'data': function(node) {
                         return {
-                            'id': node.id
+                            'id': node.id,
                         };
                     }
                 },
@@ -266,11 +364,14 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
                 });
         })
         .on('changed.jstree', function(e, data) {
-            var data = data.selected[0];
+            if (data.node) {
+                var id_caminho = data.node.original.id_caminho;
+            }
+            var nome_arquivo = data.selected[0];
 
             var obj_ajax = {};
             obj_ajax._f = 'carrega_folha_trabalho';
-            obj_ajax._p = data;
+            obj_ajax._p = {nome_arquivo: nome_arquivo, id_caminho: id_caminho};
             $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
                 if (data != "can't open file") {
                     var prox = $folha_trabalho.tabs.length;
@@ -293,12 +394,13 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
                     // Senão abre esta folha
                     $folha_trabalho.tabs.push({
                         id: prox,
-                        nome: obj_ajax._p,
+                        id_caminho: data.caminho,
+                        nome: obj_ajax._p.nome_arquivo,
                         mostra_reticencias: mostra_reticencias
                     });
 
                     $timeout(function() {
-                        var container = document.getElementById('handsontable_' + prox);
+                        var container = document.getElementById('handsontable_' + data.caminho);
 
                         $folha_trabalho.handsontables.push(new Handsontable(container, {
                             // data: data,
@@ -314,7 +416,16 @@ app.controller('folhaTrabalhoController', function($scope, $timeout, $http, S_va
                             formulas: true,
                             // stretchH: 'all'
                         }));
-                        $folha_trabalho.handsontables[$folha_trabalho.tabs.length - 1].loadData(data);
+
+                        $folha_trabalho.handsontables[$folha_trabalho.handsontables.length - 1].updateSettings({
+                            afterSelection: function(row, column) {
+                                $folha_trabalho.selected_row = row;
+                                $folha_trabalho.selected_column = column;
+                            }
+                        });
+
+                        var data_handsontable = JSON.parse(data.data);
+                        $folha_trabalho.handsontables[$folha_trabalho.tabs.length - 1].loadData(data_handsontable);
                         $folha_trabalho.setTab($folha_trabalho.tabs.length - 1);
                     }, 100);
                 }
