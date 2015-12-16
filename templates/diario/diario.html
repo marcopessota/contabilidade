@@ -273,14 +273,6 @@
 	</div>
 
 
-
-
-
-	<!-- <button class="btn btn-primary" ng-click="diarioCtrl.action = 'list'">Cancelar importação</button>
-
-
-
-	 -->
 </div>
 <div ng-show="diarioCtrl.action == 'list'" class="diario_holder">
 	<h1>{{diarioCtrl.titulo}} - 2014</h1>
@@ -290,7 +282,28 @@
 	<!-- <button ng-click="diarioCtrl.action = 'list'" class="btn btn-warning">Cancelar importação</button>
 	<button ng-click="diarioCtrl.sendData()" class="btn btn-warning">Enviar para Folha de Trabalho</button> -->
 </div>
+<script type="text/ng-template" id="modal_exporta_work_sheet.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Nova folha de trabalho</h3>
+    </div>
+    <div class="modal-body">
+            <div class="form-group">
+	            <label class="full_width">Nome</label>
+				<input class="form-control" type="text" name="sheet_name" ng-model="diarioCtrl.models.sheet_name" value="">
+			</div>
+			<div class="form-group">
+	            <label class="full_width">Importar partida e contrapartida?</label>
+				<input type="checkbox" ng-model="diarioCtrl.models.sheet_partidas" data-on-color="success" data-off-color="danger" data-on-text="Sim" data-off-text="Não">
+			</div>
+			{{diarioCtrl.models}}
+        </div>
 
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
 <style>
 .fR{
 	float: right;

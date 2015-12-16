@@ -44,6 +44,8 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce, $uib
             $balancete.cancel = function() {
                 $balancete.modalInstance.dismiss('cancel');
             };
+            });
+    }
     $balancete.exportExcel = function() {
         waitingDialog.show('Preparando dados para realizar exportação...');
         var obj_ajax = {};

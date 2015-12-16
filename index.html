@@ -27,6 +27,10 @@
     <!-- AngularRangeSlider -->
     <link rel="stylesheet" media="screen" href="lib/js/range_slider/angular.rangeSlider.css">
     <link rel="stylesheet" href="http://textangular.com/css/style.css" type="text/css">
+
+    <!-- Jquery Bootstrap Switch -->
+    <link rel="stylesheet" href="lib/css/bootstrap-switch.min.css" type="text/css">
+
     <!-- MAIN -->
     <link href="lib/css/main.css" rel="stylesheet">
     <link href="lib/css/hacks.css" rel="stylesheet">
@@ -106,7 +110,7 @@
                         <a class="done" href="#diario">Diário</a>
                     </li>
                     <li>
-                        <a class="undone" href="#tipologia">Tipologia</a>
+                        <a class="done" href="#tipologia">Tipologia</a>
                     </li>
                     <li>
                         <a class="done" href="#balancete">Balancete</a>
@@ -122,6 +126,9 @@
                     </li>
                     <li>
                         <a class="done" href="#folha_trabalho">Folhas de Trabalho</a>
+                    </li>
+                    <li>
+                        <a href="#plano_contas">Plano de Contas</a>
                     </li>
                 </ul>
                 <ul ng-show="appCtrl.selected_menu == 'planejamento'" class="sidebar-nav">
@@ -146,9 +153,6 @@
                     <li class="sidebar-brand">
                         <span>Geral</span>
                         <span class="done icone_sidebar_menu in glyphicon glyphicon-menu-hamburger menu-toggle" aria-hidden="true"></span>
-                    </li>
-                    <li>
-                        <a href="#plano_contas">Plano de Contas</a>
                     </li>
                 </ul>
             </div>
@@ -205,12 +209,16 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.colorbox/1.4.33/jquery.colorbox.js'></script>
     <script src="lib/js/angular-colorbox.js"></script>
 
+    <!-- Jquery Bootstrap Switch -->
+    <script src="lib/js/bootstrap-switch.min.js"></script>
+
     <!-- FILE SAVER -->
     <script src="lib/js/FileSaver.min.js"></script>
 
     <!-- AngularRangeSlider -->
     <script src="lib/js/range_slider/angular.rangeSlider.js"></script>
     <script src="templates/app.js"></script>
+    <script src="templates/directive.js"></script>
     <!-- Controlers -->
     <script src="templates/diario/diario.controller.js"></script>
     <script src="templates/sped/sped.controller.js"></script>

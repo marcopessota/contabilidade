@@ -1,6 +1,6 @@
 var app = angular.module('app');
 
-app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_http_validate, S_fx) {
+app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_http_validate, S_fx, $uibModal) {
     var $diario = this;
     $diario.S_fx = S_fx;
     $diario.titulo = "Diario";
@@ -20,8 +20,13 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
 
     $diario.model_range_min = 0;
     $diario.models = {};
+    $diario.models.sheet_partidas = false;
     $diario.models.min = 0;
     $diario.slider_ratio = 0;
+
+    $diario.teste= function(){
+        console.log('a');
+    }
 
     $scope.$watch('diarioCtrl.models.min', function() {
         if ($diario.case_table != "") {
@@ -287,15 +292,15 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
             console.log(data);
             // var validation = S_http_validate.validate_success(data.error, status);
             // if(validation == true){
-            // 	if(preview == true){
-            // 		$diario.preview_import_items = data.value;
-            // 		$diario.max_range_slider = parseInt(data.range);
-            // 		$diario.models.max = parseInt(data.range);
-            // 		$diario.slider_ratio = 100/$diario.models.max;
-            // 		$diario.action = "import";
-            // 	}
+            //  if(preview == true){
+            //      $diario.preview_import_items = data.value;
+            //      $diario.max_range_slider = parseInt(data.range);
+            //      $diario.models.max = parseInt(data.range);
+            //      $diario.slider_ratio = 100/$diario.models.max;
+            //      $diario.action = "import";
+            //  }
             //          }else{
-            //          	alert(validation);
+            //              alert(validation);
             //          }
         });
     };
@@ -374,19 +379,29 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
     }
 
     $diario.sendData = function() {
-        var nome_folha_trabalho = prompt('Insira o nome da Folha de Trabalho');
-
-        if (nome_folha_trabalho === null || nome_folha_trabalho == '') return false;
-
-        var obj_ajax = {};
-        obj_ajax._f = 'envia_folha_trabalho';
-        obj_ajax._p = {
-            rows: $diario.selected,
-            nome_folha_trabalho: nome_folha_trabalho
-        };
-        $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
-            alert('Enviado para folha de trabalho com sucesso');
+        $diario.modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'modal_exporta_work_sheet.html',
+            scope: $scope
         });
+
+        $scope.ok = function() {
+            var obj_ajax = {};
+            obj_ajax._f = 'envia_folha_trabalho';
+            obj_ajax._p = {
+                rows: $diario.selected,
+                values: $diario.models,
+
+            };
+            $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
+                alert('Enviado para folha de trabalho com sucesso');
+                $diario.modalInstance.dismiss('cancel');
+            });
+        };
+        $scope.cancel = function() {
+            $diario.modalInstance.dismiss('cancel');
+        };
+
     }
 
     $diario.sped_import = function() {
