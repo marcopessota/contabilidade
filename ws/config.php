@@ -19,7 +19,7 @@ define("CONNECTOR_DB", "MONGODB");
 define("SERVER_MYSQL", "localhost");
 define("USER_MYSQL", "root");
 define("PASSWORD_MYSQL", "");
-define("DATABASE_MYSQL", "test");
+define("DATABASE_MYSQL", "contabilidade");
 
 // define("SERVER_MONGODB", "127.0.0.1");
 // define("USER_MONGODB", "");

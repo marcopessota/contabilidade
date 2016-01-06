@@ -182,7 +182,7 @@ class fs
 }
 
 if(isset($_GET['operation'])) {
-	$fs = new fs(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'folhas_trabalho_id_cliente' . DIRECTORY_SEPARATOR);
+	$fs = new fs(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'tree_path/id_cliente' . DIRECTORY_SEPARATOR);
 
 	try {
 		$rslt = null;

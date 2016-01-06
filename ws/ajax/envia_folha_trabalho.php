@@ -48,7 +48,7 @@
 
 	function string_contruction ($string) {
 		global $post;
-		$myFile = "../rep/folhas_trabalho_id_cliente/" . $post['values']['sheet_name'] . ".json";
+		$myFile = "../rep/tree_path/id_cliente/" . $post['values']['sheet_name'] . ".json";
 		$fh = fopen($myFile, "w") or die("can't open file");
 		fwrite($fh, $string);
 		fclose($fh);

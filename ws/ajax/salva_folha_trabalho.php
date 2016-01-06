@@ -1,15 +1,14 @@
-<?php 
+<?php
 
-	$m = new MongoClient();
-	$_M = $m->contabilidade;
+	if (CONNECTOR_DB == "MYSQL") {
 
-	$myFile = "../rep/folhas_trabalho_id_cliente/" . $post["nome_folha_trabalho"] . ".json";
+	} elseif (CONNECTOR_DB == "MONGODB") {
+		$tree_path = $_M->folha_trabalho_teste->find(array("caminho" => $post["tree_path"], "tipo" => "folha_trabalho"))->getNext();
+	}
+	
+	$myFile = "../rep/tree_path_files/id_cliente/" . $tree_path["caminho"] . "/" . $tree_path["nome"] . ".json";
 	$fh = fopen($myFile, "w") or die("can't open file");
-	$stringData = $post["mydata"];
-	fwrite($fh, $stringData);
+	fwrite($fh, $post["mydata"]);
 	fclose($fh);
-
-	$arr_folha_trabalho = ["caminho" => $myFile];
-	$_M->folha_trabalho_teste->insert($arr_folha_trabalho);
 
 ?>
