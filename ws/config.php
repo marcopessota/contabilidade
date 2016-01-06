@@ -1,6 +1,6 @@
 <?php
 
-// error_reporting(0);
+error_reporting(0);
 
 function __autoload($class_name) {
     // require_once 'lib/classes/' . strtolower($class_name) . '.php';
@@ -13,8 +13,8 @@ function __autoload($class_name) {
 
 // CONSTANTES
 
-define("CONNECTOR_DB", "MYSQL");
-// define("CONNECTOR_DB", "MONGODB");
+// define("CONNECTOR_DB", "MYSQL");
+define("CONNECTOR_DB", "MONGODB");
 
 define("SERVER_MYSQL", "localhost");
 define("USER_MYSQL", "root");

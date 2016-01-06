@@ -18,23 +18,24 @@
 			</div>
 		</div>
 		<div ng-show="folhaTrabalhoCtrl.isSet_primario(1)">
-			<ul class="nav nav-pills">
+			<div id="handsontable"></div>
+			<!-- <ul class="nav nav-pills">
 				<li ng-repeat="tab in folhaTrabalhoCtrl.tabs" ng-class="{active:folhaTrabalhoCtrl.isSet(tab.id)}"><a class="tabs_folha_trabalho" href ng-click="folhaTrabalhoCtrl.setTab(tab.id)">{{tab.nome | limitTo:15}}<b ng-show="tab.mostra_reticencias">...</b></a></li>
 				<li><a class="tabs_folha_trabalho plus" href ng-click="folhaTrabalhoCtrl.addTab()">+</a></li>
-			</ul>
-			<div ng-repeat="tab in folhaTrabalhoCtrl.tabs" ng-show="folhaTrabalhoCtrl.isSet(tab.id)">
-				<div id="handsontable_{{tab.id_caminho}}"></div>
-				<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.salvar_folha_trabalho(tab.id, tab.nome)">Salvar</button>
-				<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.exportar_folha_trabalho(tab.id)">Exportar CSV</button>
-				<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.inserir_nota_folha(tab.id_caminho)">Inserir Nota/Folha</button>
-			</div>
+			</ul> -->
+			<!-- <div ng-repeat="tab in folhaTrabalhoCtrl.tabs" ng-show="folhaTrabalhoCtrl.isSet(tab.id)"> -->
+				<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.salvar_folha_trabalho()">Salvar</button>
+				<!-- <button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.exportar_folha_trabalho()">Exportar CSV</button> -->
+				<!-- <button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.inserir_nota_folha(tab.id_caminho)">Inserir Nota/Folha</button> -->
+			<!-- </div> -->
 		</div>
 		<div ng-show="folhaTrabalhoCtrl.isSet_primario(2)">
-			<div text-angular ng-model="folhaTrabalhoCtrl.textAngular"></div>
-			<button type="button" class="btn btn-default">Salvar3</button>
-			<button type="button" class="btn btn-default">Exportar CSV3</button>
+			<div text-angular ng-model="folhaTrabalhoCtrl.content_note"></div>
+			<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.salvar_nota_trabalho()">Salvar</button>
+			<!-- <button type="button" class="btn btn-default">Exportar CSV</button> -->
 		</div>
 	</div>
+	<button type="button" class="btn btn-default" ng-click="folhaTrabalhoCtrl.insert_note()">Inserir Nota/Folha</button>
 </div>
 <script type="text/ng-template" id="modal_textAngular.html">
     <div class="modal-header">
@@ -71,6 +72,22 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-click="ok()">Confirmar</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+<script type="text/ng-template" id="modal_insert_note.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Nova Folha de Trabalho</h3>
+    </div>
+    <div class="modal-body">
+            <div class="form-group">
+	            <label class="full_width">Nome</label>
+				<input class="form-control" type="text" name="note_name" ng-model="folhaTrabalhoCtrl.note_name" value="">
+			</div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>
