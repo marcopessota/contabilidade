@@ -19,6 +19,7 @@
         <button ng-click="balanceteCtrl.sendData()" class="btn btn-warning">Enviar Seleção</button>
         <button ng-click="balanceteCtrl.composition_balance()" class="btn btn-warning">Gerar Composição de Saldo</button>
         <button ng-click="balanceteCtrl.exportExcel()" class="btn btn-warning">Exportar Excel</button>
+        <button ng-click="balanceteCtrl.list_formulas()" class="btn btn-warning">Lista de fórmulas</button>
     </div>
 </div>
 <script type="text/ng-template" id="modal_composicao_saldo.html">
@@ -40,7 +41,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in balanceteCtrl.composition_balance_data.data_oks">
-                                <td>{{item.date  | date : 'dd/MM/yyyy'}}</td>
+                                <td>{{item.date | date : 'dd/MM/yyyy'}}</td>
                                 <td>{{item.account}}</td>
                                 <td>{{item.debt_value | currency:"R$ ":2}}</td>
                                 <td>{{item.credit_value | currency:"R$ ":2}}</td>
@@ -74,6 +75,171 @@
                 <button class="btn btn-success" type="button" ng-click="balanceteCtrl.export.do('table_nao_nulos', 'excel')">Exportar Tabela</button>
             </uib-tab>
         </uib-tabset>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" type="button" ng-click="balanceteCtrl.cancel()">Fechar</button>
+    </div>
+</script>
+<style>
+    
+.list_formulas{
+    -webkit-column-count: 5;
+    -webkit-column-gap: 35px;
+    -moz-column-count: 5;
+    -moz-column-gap: 35px;
+    -o-column-count: 5;
+    -o-column-gap: 35px;
+    column-count: 5;
+    column-gap: 35px;
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+</style>
+<script type="text/ng-template" id="modal_formulas.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Fórmulas aceitas</h3>
+    </div>
+    <div class="modal-body">
+        <ul class="list_formulas">
+            <li>ABS</li>
+            <li>ACCRINT</li>
+            <li>ACOS</li>
+            <li>ACOSH</li>
+            <li>ACOTH</li>
+            <li>AND</li>
+            <li>ARABIC</li>
+            <li>ASIN</li>
+            <li>ASINH</li>
+            <li>ATAN</li>
+            <li>ATAN2</li>
+            <li>ATANH</li>
+            <li>AVEDEV</li>
+            <li>AVERAGE</li>
+            <li>AVERAGEA</li>
+            <li>AVERAGEIF</li>
+            <li>BASE</li>
+            <li>BESSELI</li>
+            <li>BESSELJ</li>
+            <li>BESSELK</li>
+            <li>BESSELY</li>
+            <li>BETADIST</li>
+            <li>BETAINV</li>
+            <li>BIN2DEC</li>
+            <li>BIN2HEX</li>
+            <li>BIN2OCT</li>
+            <li>BINOMDIST</li>
+            <li>BINOMDISTRANGE</li>
+            <li>BINOMINV</li>
+            <li>BITAND</li>
+            <li>BITLSHIFT</li>
+            <li>BITOR</li>
+            <li>BITRSHIFT</li>
+            <li>BITXOR</li>
+            <li>CEILING</li>
+            <li>CEILINGMATH</li>
+            <li>CEILINGPRECISE</li>
+            <li>CHAR</li>
+            <li>CHISQDIST</li>
+            <li>CHISQINV</li>
+            <li>CODE</li>
+            <li>COMBIN</li>
+            <li>COMBINA</li>
+            <li>COMPLEX</li>
+            <li>CONCATENATE</li>
+            <li>CONFIDENCENORM</li>
+            <li>CONFIDENCET</li>
+            <li>CONVERT</li>
+            <li>CORREL</li>
+            <li>COS</li>
+            <li>COSH</li>
+            <li>COT</li>
+            <li>COTH</li>
+            <li>COUNT</li>
+            <li>COUNTA</li>
+            <li>COUNTBLANK</li>
+            <li>COUNTIF</li>
+            <li>COUNTIFS</li>
+            <li>COUNTIN</li>
+            <li>COUNTUNIQUE</li>
+            <li>COVARIANCEP</li>
+            <li>COVARIANCES</li>
+            <li>CSC</li>
+            <li>CSCH</li>
+            <li>CUMIPMT</li>
+            <li>CUMPRINC</li>
+            <li>DATE</li>
+            <li>DATEVALUE</li>
+            <li>DAY</li>
+            <li>DAYS</li>
+            <li>DAYS360</li>
+            <li>DB</li>
+            <li>DDB</li>
+            <li>DEC2BIN</li>
+            <li>DEC2HEX</li>
+            <li>DEC2OCT</li>
+            <li>DECIMAL</li>
+            <li>DEGREES</li>
+            <li>DELTA</li>
+            <li>DEVSQ</li>
+            <li>DOLLAR</li>
+            <li>DOLLARDE</li>
+            <li>DOLLARFR</li>
+            <li>E</a
+            <li>EDATE</li>
+            <li>EFFECT</li>
+            <li>EOMONTH</li>
+            <li>ERF</li>
+            <li>ERFC</li>
+            <li>EVEN</li>
+            <li>EXACT</li>
+            <li>EXPONDIST</li>
+            <li>FALSE</li>
+            <li>FDIST</li>
+            <li>FINV</li>
+            <li>FISHER</li>
+            <li>FISHERINV</li>
+            <li>IF</li>
+            <li>INT</li>
+            <li>ISEVEN</li>
+            <li>ISODD</li>
+            <li>LN</li>
+            <li>LOG</li>
+            <li>LOG10</li>
+            <li>MAX</li>
+            <li>MAXA</li>
+            <li>MEDIAN</li>
+            <li>MIN</li>
+            <li>MINA</li>
+            <li>MOD</li>
+            <li>NOT</li>
+            <li>ODD</li>
+            <li>OR</li>
+            <li>PI</li>
+            <li>POWER</li>
+            <li>ROUND</li>
+            <li>ROUNDDOWN</li>
+            <li>ROUNDUP</li>
+            <li>SIN</li>
+            <li>SINH</li>
+            <li>SPLIT</li>
+            <li>SQRT</li>
+            <li>SQRTPI</li>
+            <li>SUM</li>
+            <li>SUMIF</li>
+            <li>SUMIFS</li>
+            <li>SUMPRODUCT</li>
+            <li>SUMSQ</li>
+            <li>SUMX2MY2</li>
+            <li>SUMX2PY2</li>
+            <li>SUMXMY2</li>
+            <li>TAN</li>
+            <li>TANH</li>
+            <li>TRUE</li>
+            <li>TRUNC</li>
+            <li>XOR</li>
+        </ul>
     </div>
     <div class="modal-footer">
         <button class="btn btn-warning" type="button" ng-click="balanceteCtrl.cancel()">Fechar</button>

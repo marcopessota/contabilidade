@@ -18,6 +18,20 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce, $uib
         });
     }
 
+        $balancete.list_formulas = function() {
+
+        $balancete.modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'modal_formulas.html',
+            scope: $scope,
+            size : "lg"
+        });
+
+        $balancete.cancel = function() {
+            $balancete.modalInstance.dismiss('cancel');
+        };
+    }
+
     $balancete.composition_balance = function() {
         waitingDialog.show('Gerando Composição de Saldo...');
         var obj_ajax = {};
