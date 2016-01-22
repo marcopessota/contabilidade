@@ -1,9 +1,7 @@
 <?php
 set_time_limit(0);
-require_once("../config.php");
-
-$collection = "diario_teste5";
-$tabela = "diario2";
+$collection = "diario";
+$tabela = "diario";
 
 
 

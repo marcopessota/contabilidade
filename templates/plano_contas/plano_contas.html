@@ -1,5 +1,26 @@
 <h3>{{planoContasCtrl.titulo}}</h3>
-<div ng-controller="planoContasCtrl.angularWayChangeDataCtrl as showCase">
+
+<button ng-click="planoContasCtrl.gerar_plano_contas()" class="btn btn-positive">Gerar Plano de Contas</button>
+<button ng-click="planoContasCtrl.add_chart_account()" class="btn btn-success">Adicionar novo Plano de Conta</button>
+
+<div ng-if="appCtrl.vars.soft == true">
+    <div class="row">
+        <div class="col-md-12">
+            <div ng-bind-html="planoContasCtrl.grid"></div>
+        </div>
+    </div>
+</div>
+<div ng-if="appCtrl.vars.soft == false">
+    <!-- MONGO -->
+    <table ng-init="planoContasCtrl.usar_plano_contas()" id="plano_contas_mongo">
+        <tr>
+            <td></td>
+        </tr>
+    </table>
+    <div id="pager_plano_contas_mongo"></div>
+</div>
+
+<!-- <div ng-controller="planoContasCtrl.angularWayChangeDataCtrl as showCase">
     <form class="form-inline" ng-submit="showCase.add_chart_account()">
         <table datatable="ng" dt-options="showCase.dtOptions" dt-column-defs="showCase.dtColumnDefs" dt-instance="showCase.dtInstance" class="row-border hover">
             <thead>
@@ -32,20 +53,20 @@
             </tbody>
         </table>
     </form>
-</div>
+</div> -->
 <script type="text/ng-template" id="modal_chart_account.html">
     <div class="modal-header">
-        <h3 class="modal-title">{{showCase.title}}</h3>
+        <h3 class="modal-title">{{planoContasCtrl.modal_titulo}}</h3>
     </div>
     <div class="modal-body">
         <div class="form-group">
             <label>Conta
-                <input class="form-control" type="text" name="account" ng-model="showCase.itemAdd.account" value="">
+                <input class="form-control" type="text" name="account" ng-model="planoContasCtrl.models.account" value="">
             </label>
         </div>
         <div class="form-group">
             <label>Título
-                <input class="form-control" type="text" name="desc" ng-model="showCase.itemAdd.desc" value="">
+                <input class="form-control" type="text" name="desc" ng-model="planoContasCtrl.models.desc" value="">
             </label>
         </div>
     </div>

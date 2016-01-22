@@ -2,7 +2,10 @@ body{
 	padding-top: 85px; /* precisa desse padding por causa do menu fixed, referencia no site do bootstrap */
 } 
 table{
-	background: #EEE;
+	background: #EEE !important;
+}
+table tr{
+	white-space: nowrap;
 }
 .icon_menu{
 	font-size: 2.5em;

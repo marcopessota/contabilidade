@@ -1,7 +1,7 @@
 <button class="btn btn-primary" ng-click="diarioCtrl.action = 'list'">Diário</button>
 <button ng-click="diarioCtrl.importar_diario(true)" class="btn btn-warning">Importar diário</button>
 <button ng-click="diarioCtrl.sendData()" class="btn btn-warning">Enviar Seleção</button>
-<!-- <button ng-click="diarioCtrl.sped_import()" class="btn btn-warning">Importar SPED</button> -->
+<button ng-click="diarioCtrl.sped_import()" class="btn btn-warning">Importar SPED</button>
 
 
 <!-- <div>
@@ -276,9 +276,18 @@
 </div>
 <div ng-show="diarioCtrl.action == 'list'" class="diario_holder">
 	<h1>{{diarioCtrl.titulo}} - 2014</h1>
-	<div ng-controller="diarioCtrl.ServerSideProcessingCtrl as showCase">
+
+	<!-- MONGO -->
+	<table ng-init="diarioCtrl.usar_diario()" id="diario_mongo">
+	    <tr>
+	        <td></td>
+	    </tr>
+	</table>
+	<div id="pager_diario_mongo"></div>
+
+	<!-- <div ng-controller="diarioCtrl.ServerSideProcessingCtrl as showCase">
 		<table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" class="row-border hover"></table>
-	</div>
+	</div> -->
 	<!-- <button ng-click="diarioCtrl.action = 'list'" class="btn btn-warning">Cancelar importação</button>
 	<button ng-click="diarioCtrl.sendData()" class="btn btn-warning">Enviar para Folha de Trabalho</button> -->
 </div>

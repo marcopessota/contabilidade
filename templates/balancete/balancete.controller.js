@@ -1,6 +1,6 @@
 var app = angular.module('app');
 
-app.controller('balanceteController', function($scope, $http, S_vars, $sce, $uibModal, S_sort_table, S_export) {
+app.controller('balanceteController', function($scope, $http, S_vars, $sce, $uibModal, S_http_validate, S_sort_table, S_export) {
     var $balancete = this;
     $balancete.titulo = "Balancete";
     $balancete.export = S_export;
@@ -8,6 +8,58 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce, $uib
     $balancete.sort.columns = ['date', 'account', 'debt_value', 'credit_value'];
     $balancete.sort.init();
 
+    $balancete.usar_balancete = function(){
+        var currencyTemplate = {align: 'right', sorttype: 'number', editable: true,
+        searchoptions: { sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'nu', 'nn', 'in', 'ni']},
+        formatter: function (v) {
+            return Globalize.format(Number(v), "c");
+        },
+        unformat: function (v) {
+            return Globalize.parseFloat(v);
+        }};
+        var obj_ajax = {};
+        obj_ajax._f = 'get_balancete';
+        obj_ajax._p = {
+            a: 1
+        };
+        $("#balancete_mongo").jqGrid({
+            url: S_vars.url_ajax + 'ajax.php',
+            datatype: "json",
+            postData: obj_ajax,
+            colModel:[
+                {name:"Título", index:"title", sorttype: "string", formmater: "string"},
+                {name:"Conta", index:"account", sorttype: "string", formmater: "string"},
+                {name:"Débito", index:"debt", sorttype: "string",  formmater: "string"},
+                {name:"Crédito", index:"credit", sorttype: "string",  formmater: "string"},
+                {name:"Saldo", index:"outstanding_balance", sorttype: "string",  formmater: "string"}
+
+            ],
+            rowNum:30,
+            rowList:[30, 50, 100, 1000],
+            pager: '#pager_balancete_mongo',
+            sortname: 'accountt',
+            viewrecords: true,
+            multiselect: true,
+            autowidth: true,
+            height: 350,
+            sortorder: "desc"
+        }).navGrid("#pager2",{edit:false,add:false,del:false});
+
+        $('#balancete_mongo').jqGrid('filterToolbar',{"stringResult":true});
+    };
+
+    $balancete.gerar_balancete = function(preview) {
+        var obj_ajax = {};
+        obj_ajax._f = "gera_balancete";
+
+        $http.post(S_vars.url_ajax + "ajax.php", obj_ajax).success(function(data, status) {
+            var validation = S_http_validate.validate_success(data.error, status);
+            // if(validation == true){
+            // }else{
+            // alert(validation);
+            // }
+        });
+    }
     $balancete.iniciar_master_detail = function() {
         var obj_ajax = {};
         obj_ajax._f = 'inicia_balancete';

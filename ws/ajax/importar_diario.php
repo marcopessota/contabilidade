@@ -4,9 +4,9 @@
 	$return = new stdClass();
 
 
-	$collection = "diario_teste5";
-	$tabela = "diario2";
-	$filename = "../rep/diario/3.txt";
+	$collection = "diario";
+	$tabela = "diario";
+	$filename = "../rep/diario/diario.txt";
 
 	MongoCursor::$timeout = -1;
 	$sql = 'INSERT INTO '.$tabela.' VALUES';
@@ -18,6 +18,7 @@
 		$f = fopen($filename, "r");
 		$preview_lines = array();
 		$count_preview_lines = 0;
+		$obj_insert = [];
 		$cont_obj = 0;
 		$cont_obj_master = 0;
 		$date_start_position = NULL;
@@ -118,7 +119,12 @@
 						}
 						if($columned){
 							if($cont_obj > 0){
-								$_MY->query(rtrim($sql, ","));
+								if(CONNECTOR_DB == "MYSQL"){
+									$_MY->query(rtrim($sql, ","));
+								}
+								if(CONNECTOR_DB == "MONGODB"){
+									$_M->$collection->batchInsert($obj_insert);
+								}
 							}
 						}
 						break;
@@ -139,7 +145,12 @@
 						}
 						if($columned){
 							if($cont_obj > 0){
-								$_MY->query(rtrim($sql, ","));
+								if(CONNECTOR_DB == "MYSQL"){
+									$_MY->query(rtrim($sql, ","));
+								}
+								if(CONNECTOR_DB == "MONGODB"){
+									$_M->$collection->batchInsert($obj_insert);
+								}
 							}
 						}
 						break;
@@ -196,6 +207,7 @@
 		global $tabela;
 		global $side_debt;
 		global $cont_obj;
+		global $obj_insert;
 		global $cc_regex;
 		global $_M;
 		global $_MY;
@@ -231,17 +243,22 @@
 		$concept = trim(str_replace($account_match[0], '', $concept));
 		$final_obj->concept = utf8_encode($concept);
 		$cont_obj++;
-		// $aaa->b = "aaa";$_M->diario_teste->insert($aaa);exit();
-		// $_M->diario_teste->insert($final_obj);
-		// echo 'INSERT INTO diario VALUES(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt.'", "'.$final_obj->credit.'", "'.addslashes($final_obj->concept).'")';exit;
-		// grava('INSERT INTO diario VALUES(null, "'.$final_obj->date.'", "'.$final_obj->account.'", "'.$final_obj->debt.'", "'.$final_obj->credit.'", "'.addslashes($final_obj->concept).'")');
-		// exit();
-		// print_r($final_obj);
-		// if($cont_obj == 20){
-		// 	exit();
-		// }
+
 		if(CONNECTOR_DB == "MONGODB"){
-			$_M->$collection->insert($final_obj);
+			// print_r($final_obj);
+			$obj_insert[] = $final_obj;
+			if($cont_obj == 20000){
+				try{
+					$_M->$collection->batchInsert($obj_insert);
+				}catch(Exception $e){
+					print_r($e);
+					// exit();
+					// echo "ERRO".PHP_EOL;
+					$cont_erro++;
+				}
+				$cont_obj = 0;
+				$obj_insert = [];
+			}
 		}
 
 		if(CONNECTOR_DB == "MYSQL"){
@@ -261,6 +278,7 @@
 		global $collection;
 		global $tabela;
 		global $post;
+		global $obj_insert;
 		global $cont_obj;
 		global $cont_obj_master;
 		global $_MY;
@@ -273,9 +291,10 @@
 		$lines_replace->line_date = substr($line, (int) $answers["question0.1.1"]["date"]["min"], (int) ($answers["question0.1.1"]["date"]["max"] - $answers["question0.1.1"]["date"]["min"]));
 		$date_match = get_date_line($lines_replace->line_date);
 		$final_obj->date =  date("Y-m-d", strtotime(str_replace('"', "",$date_match[0])));
-		
+
 		$date = new DateTime($final_obj->date, new DateTimeZone('UTC'));
 		$final_obj->ts =  new MongoDate($date->format("U"));
+		$final_obj->date_alias =  $date->format("d/m/Y");
 
 
 		// BEGIN ACCOUNTS
@@ -285,7 +304,7 @@
 		}else{
 			$lines_replace->line_account = substr($line, (int) $answers["question0.1.1"]["account"]["min"], (int) ($answers["question0.1.1"]["account"]["max"] - $answers["question0.1.1"]["account"]["min"]));
 			$account_match = get_numero_conta($lines_replace->line_account);
-			$final_obj->account =  str_replace('"', "",$account_match);
+			$final_obj->account =  str_replace('"', "", $account_match);
 		}
 
 		if($answers["question0.1.1"]["debt_account"]["min"] == $answers["question0.1.1"]["debt_account"]["max"]){
@@ -314,7 +333,8 @@
 			$lines_replace->line_value = substr($line, (int) $answers["question0.1.1"]["value"]["min"], (int) ($answers["question0.1.1"]["value"]["max"] - $answers["question0.1.1"]["value"]["min"]));
 			$value_match = get_debito_credito_linha($lines_replace->line_value);
 			if(!empty($value_match[0][0][0])){
-				$final_obj->value = convert_money(str_replace('"', "",$value_match[0][0][0]));
+				$final_obj->value = convert_money(str_replace('"', "", $value_match[0][0][0]));
+				$final_obj->value_alias = $value_match[0][0][0];
 			}else{
 				$final_obj->value = 0;
 			}
@@ -326,7 +346,8 @@
 			$lines_replace->line_debt_value = substr($line, (int) $answers["question0.1.1"]["debt_value"]["min"], (int) ($answers["question0.1.1"]["debt_value"]["max"] - $answers["question0.1.1"]["debt_value"]["min"]));
 			$value_match = get_debito_credito_linha($lines_replace->line_debt_value);
 			if(!empty($value_match[0][0][0])){
-				$final_obj->debt_value = convert_money(str_replace('"', "",$value_match[0][0][0]));
+				$final_obj->debt_value = convert_money(str_replace('"', "", $value_match[0][0][0]));
+				$final_obj->debt_value_alias = $value_match[0][0][0];
 			}else{
 				$final_obj->debt_value = 0;
 			}
@@ -339,7 +360,8 @@
 			$value_match = get_debito_credito_linha($lines_replace->line_credit_value);
 			// echo $line." - ".$line_credit_value.PHP_EOL;
 			if(!empty($value_match[0][0][0])){
-				$final_obj->credit_value = convert_money(str_replace('"', "",$value_match[0][0][0]));
+				$final_obj->credit_value = convert_money(str_replace('"', "", $value_match[0][0][0]));
+				$final_obj->credit_value_alias = $value_match[0][0][0];
 			}else{
 				$final_obj->credit_value = 0;
 			}
@@ -357,7 +379,19 @@
 
 		if(CONNECTOR_DB == "MONGODB"){
 			// print_r($final_obj);
-			$_M->$collection->insert($final_obj);
+			$obj_insert[] = $final_obj;
+			if($cont_obj == 20000){
+				try{
+					$_M->$collection->batchInsert($obj_insert);
+				}catch(Exception $e){
+					print_r($e);
+					// exit();
+					// echo "ERRO".PHP_EOL;
+					$cont_erro++;
+				}
+				$cont_obj = 0;
+				$obj_insert = [];
+			}
 		}
 
 		if(CONNECTOR_DB == "MYSQL"){

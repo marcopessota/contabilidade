@@ -1,13 +1,8 @@
 <?php
 set_time_limit(0);
-require_once("../config.php");
 
-
-
-
-$collection = "diario_teste3";
-
-$tabela = "diario2";
+$collection = "diario";
+$tabela = "diario";
 
 $time_start = microtime(true);
 
@@ -45,6 +40,7 @@ function do_chart_account(){
 			$_MY->query(rtrim($sql_insert, ","));
 		}
 	}elseif(CONNECTOR_DB == "MONGODB"){
+		$_M->chart_account->remove();
 		$mongo_obj = $_M->$collection->aggregate(array(
 			array(
 			'$project' => array(

@@ -16,6 +16,101 @@ app.controller('ratioController', function($scope, $http, S_vars, $sce, $uibModa
     // $ratio.arr_formula.push(500);
     // $ratio.arr_formula.push("*");
     // $ratio.arr_formula.push(5);
+    $ratio.click_mongo = function(){
+        var currencyTemplate = {align: 'right', sorttype: 'number', editable: true,
+        searchoptions: { sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'nu', 'nn', 'in', 'ni']},
+        formatter: function (v) {
+            return Globalize.format(Number(v), "c");
+        },
+        unformat: function (v) {
+            return Globalize.parseFloat(v);
+        }};
+
+        $("#list2").jqGrid({
+            url:'templates/ratio/example.php?q=2',
+            datatype: "json",
+            colModel:[
+                {name:"Accountt", index:"accountt", sorttype:"int"},
+                {name:"Value", index:"value", sorttype: "string", formmater: "string"},
+                {name:"Hist", index:"hist", sorttype: "string",  formmater: "string"}
+            ],
+            rowNum:30,
+            rowList:[30, 50, 100, 1000],
+            pager: '#pager2',
+            sortname: 'accountt',
+            viewrecords: true,
+            multiselect: true,
+            autowidth: true,
+            height: 350,
+            sortorder: "desc",
+            caption:"Simple data manipulation"
+        }).navGrid("#pager2",{edit:false,add:false,del:false});
+
+        $('#list2').jqGrid('filterToolbar',{"stringResult":true});
+    }
+
+
+    $ratio.click = function(){
+        var currencyTemplate = {align: 'right', sorttype: 'number', editable: true,
+        searchoptions: { sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'nu', 'nn', 'in', 'ni']},
+        formatter: function (v) {
+            return Globalize.format(Number(v), "c");
+        },
+        unformat: function (v) {
+            return Globalize.parseFloat(v);
+        }};
+
+        $("#list").jqGrid({
+            url:'templates/ratio/example.php?q=2',
+            datatype: "json",
+            colModel:[
+                {name:"OrderID", index:"id", sorttype:"int",key:true,editable:true},
+                {name:"OrderDate", index:"invdate", sorttype:"datetime",formatter:"date",
+                    formatoptions:{srcformat:"Y-m-d H:i:s",newformat:"m/d/Y"},
+                    search:false,editable:true
+                },
+                {name:"Amount", index:"Amount", sorttype: "string",  formmater: "string" , classes :"ui-ellipsis"}
+            ],
+            rowNum:10,
+            rowList:[10,20,30],
+            pager: '#pager',
+            sortname: 'id',
+            viewrecords: true,
+            sortorder: "desc",
+            caption:"Simple data manipulation",
+            editurl:"someurl.php"
+        }).navGrid("#pager",{edit:false,add:false,del:false});
+
+        
+        // Toolbar searching
+        $('#list').jqGrid('filterToolbar',{"stringResult":true});
+
+        // $("#list").jqGrid({
+        //     url: "templates/ratio/example.php",
+        //     datatype: "xml",
+        //     mtype: "GET",
+        //     colNames: ["Inv No", "Date", "Amount", "Tax", "Total", "Notes"],
+        //     colModel: [
+        //         { name: "invid", width: 55, "editable":true},
+        //         { name: "invdate", width: 90 },
+        //         { name: "amount", width: 80, align: "right" },
+        //         { name: "tax", width: 80, align: "right" },
+        //         { name: "total", width: 80, align: "right" },
+        //         { name: "note", width: 150, sortable: false }
+        //     ],
+        //     pager: "#pager",
+        //     rowNum: 10,
+        //     height:200,
+        //     autowidth:true,
+        //     rowList: [10, 20, 30],
+        //     sortname: "invid",
+        //     sortorder: "desc",
+        //     viewrecords: true,
+        //     gridview: true,
+        //     autoencode: true,
+        //     caption: "My first grid"
+        // }); 
+    }
 
     $ratio.add_variable = function(type, value) {
         console.log(type);

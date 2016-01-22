@@ -81,3 +81,29 @@
     font-size: 0.8em;
     padding: 0.5em 0.7em;
 }
+
+
+.modal label{
+    width: 100%;
+}
+
+/* JQUERY UI */
+
+/*.ui-widget-header{
+    background: #EEE !important;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default{
+    background: #EEE !important;
+}
+
+.ui-jqgrid .ui-jqgrid-htable th div{
+    color: #111 !important;
+    font-weight: bold !important;
+    top: 3px !important;
+    font-size: 1.5em !important;
+}
+.ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {
+    border-right: 0 none;
+    padding: 10px 18px;
+}*/

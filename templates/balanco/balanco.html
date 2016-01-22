@@ -6,16 +6,17 @@
     </div>
 </div>
 <div ng-if="appCtrl.vars.soft == false">
-    <div class="row">
-        <div class="col-md-12">
-            <div ng-controller="balancoCtrl.datatables as dt">
-                <table datatable="" dt-options="dt.dtOptions" dt-columns="dt.dtColumns" class="row-border hover"></table>
-            </div>
-        </div>
-    </div>
+    <!-- MONGO -->
+    <table ng-init="balancoCtrl.usar_balanco()" id="balanco_mongo">
+        <tr>
+            <td></td>
+        </tr>
+    </table>
+    <div id="pager_balanco_mongo"></div>
 </div>
 <div class="row">
     <div class="col-md-12">
+        <button ng-click="balancoCtrl.gerar_balanco()" class="btn btn-positive">Gerar balanço patrimonial</button>
         <button ng-click="balancoCtrl.sendData()" class="btn btn-warning">Enviar Seleção</button>
     </div>
 </div>

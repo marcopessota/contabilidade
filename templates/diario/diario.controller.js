@@ -284,99 +284,47 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
         $diario.questions.push('Selecione na linha abaixo onde está o campo <b>crédito</b> e pressione "OK"? (Será necessário fazer essa ação 3 veze)');
     }
 
-    $diario.listar_diario = function() {
+    $diario.usar_diario = function(){
+        var currencyTemplate = {align: 'right', sorttype: 'number', editable: true,
+        searchoptions: { sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'nu', 'nn', 'in', 'ni']},
+        formatter: function (v) {
+            return Globalize.format(Number(v), "c");
+        },
+        unformat: function (v) {
+            return Globalize.parseFloat(v);
+        }};
         var obj_ajax = {};
-        obj_ajax._f = "get_diario";
-        // obj_ajax._p = {"answers" : $diario.import_answers, "preview" : preview};
-        $http.post(S_vars.url_ajax + "ajax.php", obj_ajax).success(function(data, status) {
-            console.log(data);
-            // var validation = S_http_validate.validate_success(data.error, status);
-            // if(validation == true){
-            //  if(preview == true){
-            //      $diario.preview_import_items = data.value;
-            //      $diario.max_range_slider = parseInt(data.range);
-            //      $diario.models.max = parseInt(data.range);
-            //      $diario.slider_ratio = 100/$diario.models.max;
-            //      $diario.action = "import";
-            //  }
-            //          }else{
-            //              alert(validation);
-            //          }
-        });
+        obj_ajax._f = 'get_diario';
+        obj_ajax._p = {
+            a: 1
+        };
+        $("#diario_mongo").jqGrid({
+            url: S_vars.url_ajax + 'ajax.php',
+            datatype: "json",
+            postData: obj_ajax,
+            colModel:[
+                {name:"Data", index:"date_alias", sorttype:"string"},
+                {name:"Lançamento", index:"entry", sorttype:"int"},
+                {name:"Conta", index:"account", sorttype: "string", formmater: "string"},
+                {name:"Título", index:"entry", sorttype:"string"},
+                {name:"Débito", index:"debt_value_alias", sorttype: "string",  formmater: "string"},
+                {name:"Crédito", index:"credit_value_alias", sorttype: "string",  formmater: "string"},
+                {name:"Conceito", index:"concept", sorttype:"string"}
+
+            ],
+            rowNum:30,
+            rowList:[30, 50, 100, 1000],
+            pager: '#pager_diario_mongo',
+            sortname: 'accountt',
+            viewrecords: true,
+            multiselect: true,
+            autowidth: true,
+            height: 350,
+            sortorder: "desc"
+        }).navGrid("#pager2",{edit:false,add:false,del:false});
+
+        $('#diario_mongo').jqGrid('filterToolbar',{"stringResult":true});
     };
-
-    $diario.ServerSideProcessingCtrl = function($compile, $scope, $resource, DTOptionsBuilder, DTColumnBuilder) {
-        var vm = this;
-        vm.selectAll = false;
-        $diario.selected = {};
-        $diario.toggleAll = toggleAll;
-        $diario.toggleOne = toggleOne;
-
-        var titleHtml = '<input type="checkbox" ng-model="diarioCtrl.selectAll" ng-click="diarioCtrl.toggleAll(diarioCtrl.selectAll, diarioCtrl.selected)">';
-
-        vm.dtOptions = DTOptionsBuilder.newOptions()
-            .withOption('ajax', {
-                url: S_vars.url_ajax + "ajax/get_diario.php",
-                type: 'POST'
-            })
-            .withDataProp('data')
-            .withOption('processing', true)
-            .withOption('serverSide', true)
-            .withOption('createdRow', function(row, data, dataIndex) {
-                $compile(angular.element(row).contents())($scope);
-            })
-            .withLanguageSource('lib/js/pt-br.json')
-            .withOption('headerCallback', function(header) {
-                if (!vm.headerCompiled) {
-                    // Use this headerCompiled field to only compile header once
-                    vm.headerCompiled = true;
-                    $compile(angular.element(header).contents())($scope);
-                }
-            })
-            .withPaginationType('full_numbers');
-
-        vm.dtColumns = [
-            DTColumnBuilder.newColumn(null).withTitle(titleHtml).notSortable()
-            .renderWith(function(data, type, full, meta) {
-                // $diario.selected[full.id] = false;
-                // console.log(full.id);
-                return '<input type="checkbox" ng-model="diarioCtrl.selected[\'' + data._id.$id + '\']" ng-click="diarioCtrl.toggleOne(diarioCtrl.selected)">';
-            }),
-            DTColumnBuilder.newColumn('_id').withTitle('ID').notVisible(),
-            DTColumnBuilder.newColumn('date').withTitle('Date').withOption('width', '10%'),
-            DTColumnBuilder.newColumn('entry').withTitle('Lançamento').withOption('width', '10%'),
-            DTColumnBuilder.newColumn('account').withTitle('Conta').withOption('width', '10%'),
-            // DTColumnBuilder.newColumn('debt_account').withTitle('Conta débito'),
-            // DTColumnBuilder.newColumn('credit_account').withTitle('Conta crédito'),
-            // DTColumnBuilder.newColumn('value').withTitle('Valor'),
-            DTColumnBuilder.newColumn('debt_value').withTitle('Débito').withOption('width', '10%'),
-            DTColumnBuilder.newColumn('credit_value').withTitle('Crédito').withOption('width', '10%'),
-            DTColumnBuilder.newColumn('concept').withTitle('Conceito').withOption('width', '15%'),
-            DTColumnBuilder.newColumn('title').withTitle('Titulo').withOption('width', '20%'),
-            DTColumnBuilder.newColumn('doc1').withTitle('Doc1').withOption('width', '20%'),
-            DTColumnBuilder.newColumn('doc2').withTitle('Doc2').withOption('width', '5%')
-        ];
-
-        function toggleAll(selectAll, selectedItems) {
-            for (var id in selectedItems) {
-                if (selectedItems.hasOwnProperty(id)) {
-                    selectedItems[id] = selectAll;
-                }
-            }
-        }
-
-        function toggleOne(selectedItems) {
-            for (var id in selectedItems) {
-                if (selectedItems.hasOwnProperty(id)) {
-                    if (!selectedItems[id]) {
-                        vm.selectAll = false;
-                        return;
-                    }
-                }
-            }
-            vm.selectAll = true;
-        }
-    }
 
     $diario.sendData = function() {
         $diario.modalInstance = $uibModal.open({

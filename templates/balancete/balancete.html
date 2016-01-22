@@ -6,16 +6,17 @@
     </div>
 </div>
 <div ng-if="appCtrl.vars.soft == false">
-    <div class="row">
-        <div class="col-md-12">
-            <div ng-controller="balanceteCtrl.datatables as dt">
-                <table datatable="" dt-options="dt.dtOptions" dt-columns="dt.dtColumns" class="row-border hover"></table>
-            </div>
-        </div>
-    </div>
+    <!-- MONGO -->
+    <table ng-init="balanceteCtrl.usar_balancete()" id="balancete_mongo">
+        <tr>
+            <td></td>
+        </tr>
+    </table>
+    <div id="pager_balancete_mongo"></div>
 </div>
 <div class="row">
     <div class="col-md-12">
+        <button ng-click="balanceteCtrl.gerar_balancete()" class="btn btn-positive">Gerar balancete</button>
         <button ng-click="balanceteCtrl.sendData()" class="btn btn-warning">Enviar Seleção</button>
         <button ng-click="balanceteCtrl.composition_balance()" class="btn btn-warning">Gerar Composição de Saldo</button>
         <button ng-click="balanceteCtrl.exportExcel()" class="btn btn-warning">Exportar Excel</button>

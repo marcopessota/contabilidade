@@ -1,11 +1,64 @@
 var app = angular.module('app');
 
-app.controller('balancoController', function($scope, $http, S_vars, $sce) {
+app.controller('balancoController', function($scope, $http, S_vars, $sce, S_http_validate) {
     var $balanco = this;
     $balanco.titulo = "Balanço Patrimonial";
+
+    $balanco.usar_balanco = function(){
+        var currencyTemplate = {align: 'right', sorttype: 'number', editable: true,
+        searchoptions: { sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'nu', 'nn', 'in', 'ni']},
+        formatter: function (v) {
+            return Globalize.format(Number(v), "c");
+        },
+        unformat: function (v) {
+            return Globalize.parseFloat(v);
+        }};
+        var obj_ajax = {};
+        obj_ajax._f = 'get_balanco';
+        obj_ajax._p = {
+            a: 1
+        };
+        $("#balanco_mongo").jqGrid({
+            url: S_vars.url_ajax + 'ajax.php',
+            datatype: "json",
+            postData: obj_ajax,
+            colModel:[
+                {name:"Título", index:"desc_account", sorttype: "string", formmater: "string"},
+                {name:"Conta", index:"chart_account", sorttype: "string", formmater: "string"},
+                {name:"Débito", index:"debt_sum", sorttype: "string",  formmater: "string"},
+                {name:"Crédito", index:"credit_sum", sorttype: "string",  formmater: "string"},
+                {name:"Saldo", index:"outstanding_balance_sum", sorttype: "string",  formmater: "string"}
+
+            ],
+            rowNum:30,
+            rowList:[30, 50, 100, 1000],
+            pager: '#pager_balanco_mongo',
+            sortname: 'accountt',
+            viewrecords: true,
+            multiselect: true,
+            autowidth: true,
+            height: 350,
+            sortorder: "desc"
+        }).navGrid("#pager2",{edit:false,add:false,del:false});
+
+        $('#balanco_mongo').jqGrid('filterToolbar',{"stringResult":true});
+    };
+
+    $balanco.gerar_balanco = function(preview) {
+        var obj_ajax = {};
+        obj_ajax._f = "gera_balanco_patrimonial";
+
+        $http.post(S_vars.url_ajax + "ajax.php", obj_ajax).success(function(data, status) {
+            var validation = S_http_validate.validate_success(data.error, status);
+            // if(validation == true){
+            // }else{
+            // alert(validation);
+            // }
+        });
+    }
     $balanco.iniciar_master_detail = function() {
         var obj_ajax = {};
-        obj_ajax._f = 'inicia_balancete';
+        obj_ajax._f = 'inicia_balanco';
         obj_ajax._p = {};
         $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
             // console.log(data);
@@ -23,7 +76,7 @@ app.controller('balancoController', function($scope, $http, S_vars, $sce) {
             $balanco.toggleAll = toggleAll;
             $balanco.toggleOne = toggleOne;
 
-            var titleHtml = '<input type="checkbox" ng-model="balanceteCtrl.selectAll" ng-click="balanceteCtrl.toggleAll(balanceteCtrl.selectAll, balanceteCtrl.selected)">';
+            var titleHtml = '<input type="checkbox" ng-model="balancoCtrl.selectAll" ng-click="balancoCtrl.toggleAll(balancoCtrl.selectAll, balancoCtrl.selected)">';
 
             vm.dtOptions = DTOptionsBuilder.newOptions()
                 .withOption('ajax', {
@@ -74,7 +127,7 @@ app.controller('balancoController', function($scope, $http, S_vars, $sce) {
                 .renderWith(function(data, type, full, meta) {
                     // $balanco.selected[full.id] = false;
                     // console.log(full.id);
-                    return '<input type="checkbox" ng-model="balanceteCtrl.selected[\'' + data._id.$id + '\']" ng-click="balanceteCtrl.toggleOne(balanceteCtrl.selected)">';
+                    return '<input type="checkbox" ng-model="balancoCtrl.selected[\'' + data._id.$id + '\']" ng-click="balancoCtrl.toggleOne(balancoCtrl.selected)">';
                 }),
                 DTColumnBuilder.newColumn('_id').notVisible(),
                 DTColumnBuilder.newColumn('id_diario').notVisible(),
