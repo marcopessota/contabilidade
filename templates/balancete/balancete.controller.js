@@ -89,7 +89,7 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce, $uib
         var obj_ajax = {};
         obj_ajax._f = 'gera_composicao_saldo';
         obj_ajax._p = {
-            rows: $balancete.selected
+            rows: $("#balancete_mongo").getGridParam('selarrrow')
         };
         $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
             $balancete.composition_balance_data = {};

@@ -9,7 +9,7 @@
 
 	foreach($post["rows"] as $k => $v){
 		if(!empty($v)){
-			$arr_qry[] = array('_id' => new Mongoid($k));
+			$arr_qry[] = array('_id' => new Mongoid($v));
 		}
 	}
 
@@ -19,10 +19,11 @@
 		$accounts[] = array('account' => $v_balance["account"]);
 	}
 
-	$entrys = $_M->diario_teste5->find(array('$or' => $accounts));
+	$entrys = $_M->diario->find(array('$or' => $accounts));
 	$entrys_obj = iterator_to_array($entrys, false);
 	// $a = $entrys_obj;
-	generate(0, $entrys_obj);
+	generate();
+	generate_acumulated();
 	$return->data_entrys = $entrys_obj;
 	$return->data_oks = $oks;
 
@@ -51,9 +52,28 @@
 			}
 		}
 	}
+	function generate_acumulated(){
+		global $oks;
+		global $entrys_obj;
+		// echo count($entrys_obj).PHP_EOL;
+		$debit_sum = 0;
+		$credit_sum = 0;
+		$entrys_sum_arr = array();
+		foreach ($entrys_obj as $k_entry => $v_entry) {
+			$debt_sum += $v_entry["debt_value"];
+			$credit_sum += $v_entry["credit_value"];
+			$entrys_sum_arr[] = $k_entry;
 
-
-
+			if(round($debt_sum, 2) == round($credit_sum,2)){
+				foreach($entrys_sum_arr as $v_arr){
+					$oks[] = $entrys_obj[$v_arr];
+					unset($entrys_obj[$v_arr]);
+				}
+				$entrys_obj = array_values($entrys_obj);
+				generate_acumulated();
+			}
+		}
+	}
 
 	echo json_encode($return);
 ?>

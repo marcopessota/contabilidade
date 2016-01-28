@@ -50,7 +50,7 @@ function do_balance_sheet(){
 	}elseif(CONNECTOR_DB == "MONGODB"){
 		$balance_sheet = array();
 
-		$balance_sheet_obj = $_M->diario_teste5->aggregate(array(
+		$balance_sheet_obj = $_M->diario->aggregate(array(
 		array(
 			'$project' => array(
 				'month' => array('$month' => '$ts'),
