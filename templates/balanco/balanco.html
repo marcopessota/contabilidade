@@ -1,3 +1,10 @@
+<div class="header_table">
+    <span class="title_table">Balanço Patrimonial</span>
+    <div class="fR buttons_holder">
+        <button ng-click="balancoCtrl.sendData()" class="btn btn-primary">Enviar Seleção</button>
+        <button ng-click="balancoCtrl.gerar_balanco()" class="btn btn-success">Gerar balanço patrimonial</button>
+    </div>
+</div>
 <div ng-if="appCtrl.vars.soft == true">
     <div class="row">
         <div class="col-md-12">
@@ -13,10 +20,4 @@
         </tr>
     </table>
     <div id="pager_balanco_mongo"></div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <button ng-click="balancoCtrl.gerar_balanco()" class="btn btn-positive">Gerar balanço patrimonial</button>
-        <button ng-click="balancoCtrl.sendData()" class="btn btn-warning">Enviar Seleção</button>
-    </div>
 </div>

@@ -55,7 +55,6 @@ app.config(['$routeProvider',
 app.controller('appController', function($scope, S_vars){
     var $app = this;
     $app.titulo = "App";
-
     $app.vars = S_vars;
     $scope.$watch('appCtrl.vars.id_business', function(data){
        if(data != "" && data != null){

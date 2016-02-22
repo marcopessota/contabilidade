@@ -22,11 +22,10 @@
     <link rel="stylesheet" media="screen" href="lib/css/angular-dialog-theme-default.min.css">
     <!-- textAngular -->
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <link rel="stylesheet" href="http://textangular.com/css/style.css" type="text/css">
+    <!-- <link rel="stylesheet" href="http://textangular.com/css/style.css" type="text/css"> -->
     <link rel="stylesheet" media="screen" href="lib/css/textAngular.css">
     <!-- AngularRangeSlider -->
     <link rel="stylesheet" media="screen" href="lib/js/range_slider/angular.rangeSlider.css">
-    <link rel="stylesheet" href="http://textangular.com/css/style.css" type="text/css">
 
 
     <!-- JQGRID -->
@@ -61,7 +60,7 @@
                             <a href="">
                                 <div class="brand">Tomas Marcus</div>
                             </a>
-                            <div class="undone brand logout"> <span>Logout</span> </div>
+                            <div class=" brand logout"> <span>Logout</span> </div>
                         </div>
                         </a>
                     </div>
@@ -71,32 +70,32 @@
                     <ul class="nav navbar-nav">
                         <li>
                             <a href="#empresas" ng-click="appCtrl.select_menu('empresas')">
-                                <span class="undone glyphicon icon_menu glyphicon glyphicon-briefcase" aria-hidden="true"></span>
-                                <p class="undone">Empresas</p>
+                                <span class=" glyphicon icon_menu glyphicon glyphicon-briefcase" aria-hidden="true"></span>
+                                <p class="">Empresas</p>
                             </a>
                         </li>
                         <li>
                             <a ng-click="appCtrl.select_menu('contabilidade')">
-                                <span class="done glyphicon icon_menu glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-                                <p class="done">Circuito Contábil</p>
+                                <span class=" glyphicon icon_menu glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                                <p class="">Circuito Contábil</p>
                             </a>
                         </li>
                         <!-- <li>
                             <a ng-click="appCtrl.select_menu('auditoria')">
-                                <span class="undone glyphicon icon_menu glyphicon glyphicon glyphicon-check" aria-hidden="true"></span>
-                                <p class="undone">Auditoria</p>
+                                <span class=" glyphicon icon_menu glyphicon glyphicon glyphicon-check" aria-hidden="true"></span>
+                                <p class="">Auditoria</p>
                             </a>
                         </li>
                         <li>
                             <a ng-click="appCtrl.select_menu('planejamento')">
-                                <span class="undone glyphicon icon_menu glyphicon glyphicon glyphicon-stats" aria-hidden="true"></span>
-                                <p class="undone">Planejamento</p>
+                                <span class=" glyphicon icon_menu glyphicon glyphicon glyphicon-stats" aria-hidden="true"></span>
+                                <p class="">Planejamento</p>
                             </a>
                         </li>
                         <li>
                             <a ng-click="appCtrl.select_menu('geral')">
-                                <span class="done glyphicon icon_menu glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                <p class="done">Geral</p>
+                                <span class=" glyphicon icon_menu glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                <p class="">Geral</p>
                             </a>
                         </li> -->
                     </ul>
@@ -115,28 +114,28 @@
                         <span class="icone_sidebar_menu in glyphicon glyphicon-menu-hamburger menu-toggle" aria-hidden="true"></span>
                     </li>
                     <li>
-                        <a class="done" href="#diario">Diário</a>
+                        <a class="" href="#diario">Diário</a>
                     </li>
                     <li>
-                        <a class="done" href="#tipologia">Tipologia</a>
+                        <a class="" href="#tipologia">Tipologia</a>
                     </li>
                     <li>
-                        <a class="done" href="#balancete">Balancete</a>
+                        <a class="" href="#balancete">Balancete</a>
                     </li>
                     <li>
-                        <a class="done" href="#balanco">Balanço Patrimonial</a>
+                        <a class="" href="#balanco">Balanço Patrimonial</a>
                     </li>
-<!--                     <li>
-                        <a class="undone" href="#ratio">Indicador Economico Financeiro</a>
+<!--                <li>
+                        <a class="" href="#ratio">Indicador Economico Financeiro</a>
+                    </li> -->
+                    <!-- <li>
+                        <a class="" href="#sped">Gráfico</a>
                     </li> -->
                     <li>
-                        <a class="done" href="#sped">Gráfico</a>
+                        <a class="" href="#folha_trabalho">Folhas de Trabalho</a>
                     </li>
                     <li>
-                        <a class="done" href="#folha_trabalho">Folhas de Trabalho</a>
-                    </li>
-                    <li>
-                        <a class="done" href="#plano_contas">Plano de Contas</a>
+                        <a class="" href="#plano_contas">Plano de Contas</a>
                     </li>
                 </ul>
                 <ul ng-show="appCtrl.selected_menu == 'planejamento'" class="sidebar-nav">
@@ -160,7 +159,7 @@
                 <ul ng-show="appCtrl.selected_menu == 'geral'" class="sidebar-nav">
                     <li class="sidebar-brand">
                         <span>Geral</span>
-                        <span class="done icone_sidebar_menu in glyphicon glyphicon-menu-hamburger menu-toggle" aria-hidden="true"></span>
+                        <span class=" icone_sidebar_menu in glyphicon glyphicon-menu-hamburger menu-toggle" aria-hidden="true"></span>
                     </li>
                 </ul>
             </div>
@@ -172,7 +171,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-lg-12">
-                                <h3>{{appCtrl.vars.name_business}}</h3>
+                                <!-- <h3>{{appCtrl.vars.name_business}}</h3> -->
                                 <div ng-view></div>
                             </div>
                         </div>
@@ -262,6 +261,9 @@
             $("#wrapper").toggleClass("toggled");
             if ($("#wrapper").hasClass("toggled")) {}
         });
+        setTimeout(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        }, 500)
     });
     </script>
 </body>

@@ -1,8 +1,10 @@
-<h3>{{planoContasCtrl.titulo}}</h3>
-
-<button ng-click="planoContasCtrl.gerar_plano_contas()" class="btn btn-positive">Gerar Plano de Contas</button>
-<button ng-click="planoContasCtrl.add_chart_account()" class="btn btn-success">Adicionar novo Plano de Conta</button>
-
+<div class="header_table">
+    <span class="title_table">{{planoContasCtrl.titulo}}</span>
+    <div class="fR buttons_holder">
+        <button ng-click="planoContasCtrl.gerar_plano_contas()" class="btn btn-success">Gerar Plano de Contas</button>
+        <button ng-click="planoContasCtrl.add_chart_account()" class="btn btn-success">Adicionar novo Plano de Conta</button>
+    </div>
+</div>
 <div ng-if="appCtrl.vars.soft == true">
     <div class="row">
         <div class="col-md-12">
@@ -20,40 +22,6 @@
     <div id="pager_plano_contas_mongo"></div>
 </div>
 
-<!-- <div ng-controller="planoContasCtrl.angularWayChangeDataCtrl as showCase">
-    <form class="form-inline" ng-submit="showCase.add_chart_account()">
-        <table datatable="ng" dt-options="showCase.dtOptions" dt-column-defs="showCase.dtColumnDefs" dt-instance="showCase.dtInstance" class="row-border hover">
-            <thead>
-                <tr>
-                    <th>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-success">Incluir plano de conta</button>
-                        </div>
-                    </th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                <tr>
-                    <th>Conta</th>
-                    <th>Título</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="item in showCase.items">
-                    <td>{{ item.account }}</td>
-                    <td>{{ item.desc }}</td>
-                    <td>
-                        <button type="button" ng-click="showCase.modify_chart_account($index)" class="btn btn-warning"><i class="fa fa-edit"></i></button>
-                        <button type="button" ng-click="showCase.remove_chart_account($index)" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
-                    </td>
-                    <td>{{ item._id.$id }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </form>
-</div> -->
 <script type="text/ng-template" id="modal_chart_account.html">
     <div class="modal-header">
         <h3 class="modal-title">{{planoContasCtrl.modal_titulo}}</h3>

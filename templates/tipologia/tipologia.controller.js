@@ -24,6 +24,7 @@ app.controller('tipologiaController', function($scope, $http, S_vars, $sce, $uib
         var obj_ajax = {};
         obj_ajax._f = "get_tipologia";
 		obj_ajax._p = {'digits' : $tipologia.digits};
+        waitingDialog.show('Gerando relatório');
         $http.post(S_vars.url_ajax + "ajax.php", obj_ajax).success(function(data, status) {
             var validation = S_http_validate.validate_success(data.error, status);
             if (validation == true) {
@@ -84,7 +85,9 @@ app.controller('tipologiaController', function($scope, $http, S_vars, $sce, $uib
                         data: $tipologia.data
                     }]
                 };
+                waitingDialog.hide();
             } else {
+                waitingDialog.hide();
                 alert(validation);
             }
         });

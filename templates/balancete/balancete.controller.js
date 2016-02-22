@@ -8,15 +8,21 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce, $uib
     $balancete.sort.columns = ['date', 'account', 'debt_value', 'credit_value'];
     $balancete.sort.init();
 
-    $balancete.usar_balancete = function(){
-        var currencyTemplate = {align: 'right', sorttype: 'number', editable: true,
-        searchoptions: { sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'nu', 'nn', 'in', 'ni']},
-        formatter: function (v) {
-            return Globalize.format(Number(v), "c");
-        },
-        unformat: function (v) {
-            return Globalize.parseFloat(v);
-        }};
+    $balancete.usar_balancete = function() {
+        var currencyTemplate = {
+            align: 'right',
+            sorttype: 'number',
+            editable: true,
+            searchoptions: {
+                sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'nu', 'nn', 'in', 'ni']
+            },
+            formatter: function(v) {
+                return Globalize.format(Number(v), "c");
+            },
+            unformat: function(v) {
+                return Globalize.parseFloat(v);
+            }
+        };
         var obj_ajax = {};
         obj_ajax._f = 'get_balancete';
         obj_ajax._p = {
@@ -26,26 +32,61 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce, $uib
             url: S_vars.url_ajax + 'ajax.php',
             datatype: "json",
             postData: obj_ajax,
-            colModel:[
-                {name:"Título", index:"title", sorttype: "string", formmater: "string"},
-                {name:"Conta", index:"account", sorttype: "string", formmater: "string"},
-                {name:"Débito", index:"debt", sorttype: "string",  formmater: "string"},
-                {name:"Crédito", index:"credit", sorttype: "string",  formmater: "string"},
-                {name:"Saldo", index:"outstanding_balance", sorttype: "string",  formmater: "string"}
+            colModel: [{
+                    name: "Título",
+                    index: "title",
+                    sorttype: "string",
+                    formmater: "string"
+                }, {
+                    name: "Conta",
+                    index: "account",
+                    sorttype: "string",
+                    formmater: "string"
+                }, {
+                    name: "Débito",
+                    index: "debt",
+                    sorttype: "string",
+                    formmater: "string"
+                }, {
+                    name: "Crédito",
+                    index: "credit",
+                    sorttype: "string",
+                    formmater: "string"
+                }, {
+                    name: "Saldo",
+                    index: "outstanding_balance",
+                    sorttype: "string",
+                    formmater: "string"
+                }
 
             ],
-            rowNum:30,
-            rowList:[30, 50, 100, 1000],
+            rowNum: 30,
+            rowList: [30, 50, 100, 1000],
             pager: '#pager_balancete_mongo',
             sortname: 'accountt',
             viewrecords: true,
             multiselect: true,
             autowidth: true,
             height: 350,
-            sortorder: "desc"
-        }).navGrid("#pager2",{edit:false,add:false,del:false});
+            sortorder: "desc",
+            onSelectRow: function(ids) {
+                console.log(ids);
+                if(ids == null) {
+                    ids = 0;
+                    console.log("aaa");
+                } else {
+                    console.log("bbb");
+                }
+            }
+        }).navGrid("#pager2", {
+            edit: false,
+            add: false,
+            del: false
+        });
 
-        $('#balancete_mongo').jqGrid('filterToolbar',{"stringResult":true});
+        $('#balancete_mongo').jqGrid('filterToolbar', {
+            "stringResult": true
+        });
     };
 
     $balancete.gerar_balancete = function(preview) {
@@ -70,13 +111,13 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce, $uib
         });
     }
 
-        $balancete.list_formulas = function() {
+    $balancete.list_formulas = function() {
 
         $balancete.modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'modal_formulas.html',
             scope: $scope,
-            size : "lg"
+            size: "lg"
         });
 
         $balancete.cancel = function() {
@@ -110,7 +151,7 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce, $uib
             $balancete.cancel = function() {
                 $balancete.modalInstance.dismiss('cancel');
             };
-            });
+        });
     }
     $balancete.exportExcel = function() {
         waitingDialog.show('Preparando dados para realizar exportação...');
@@ -143,101 +184,7 @@ app.controller('balanceteController', function($scope, $http, S_vars, $sce, $uib
     if (S_vars.soft == true) {
         $balancete.iniciar_master_detail();
     } else {
-        $balancete.datatables = function($filter, $compile, $scope, $resource, DTOptionsBuilder, DTColumnBuilder) {
-            var vm = this;
-            vm.selectAll = false;
-            $balancete.selected = {};
-            $balancete.toggleAll = toggleAll;
-            $balancete.toggleOne = toggleOne;
-
-            var titleHtml = '<input type="checkbox" ng-model="balanceteCtrl.selectAll" ng-click="balanceteCtrl.toggleAll(balanceteCtrl.selectAll, balanceteCtrl.selected)">';
-
-            vm.dtOptions = DTOptionsBuilder.newOptions()
-                .withOption('ajax', {
-                    url: S_vars.url_ajax + "ajax/get_balancete.php",
-                    type: 'POST'
-                })
-                .withLanguage({
-                    "sEmptyTable": "Nenhum registro encontrado",
-                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-                    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-                    "sInfoPostFix": "",
-                    "sInfoThousands": ".",
-                    "sLengthMenu": "_MENU_ resultados por página",
-                    "sLoadingRecords": "Carregando...",
-                    "sProcessing": "Processando...",
-                    "sZeroRecords": "Nenhum registro encontrado",
-                    "sSearch": "Pesquisar (Conta)",
-                    "oPaginate": {
-                        "sNext": "Próximo",
-                        "sPrevious": "Anterior",
-                        "sFirst": "Primeiro",
-                        "sLast": "Último"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": Ordenar colunas de forma ascendente",
-                        "sSortDescending": ": Ordenar colunas de forma descendente"
-                    }
-                })
-                .withDataProp('data')
-                .withOption('processing', true)
-                .withOption('serverSide', true)
-                .withOption('createdRow', function(row, data, dataIndex) {
-                    // Recompiling so we can bind Angular directive to the DT
-                    $compile(angular.element(row).contents())($scope);
-                })
-                .withOption('headerCallback', function(header) {
-                    if (!vm.headerCompiled) {
-                        // Use this headerCompiled field to only compile header once
-                        vm.headerCompiled = true;
-                        $compile(angular.element(header).contents())($scope);
-                    }
-                })
-                .withPaginationType('full_numbers');
-
-            vm.dtColumns = [
-                DTColumnBuilder.newColumn(null).withTitle(titleHtml).notSortable()
-                .renderWith(function(data, type, full, meta) {
-                    // $balancete.selected[full.id] = false;
-                    // console.log(full.id);
-                    return '<input type="checkbox" ng-model="balanceteCtrl.selected[\'' + data._id.$id + '\']" ng-click="balanceteCtrl.toggleOne(balanceteCtrl.selected)">';
-                }),
-                DTColumnBuilder.newColumn('_id').notVisible(),
-                DTColumnBuilder.newColumn('id_diario').notVisible(),
-                DTColumnBuilder.newColumn('title').withTitle('Título').withOption('width', '20%'),
-                DTColumnBuilder.newColumn('account').withTitle('Conta').withOption('width', '20%'),
-                DTColumnBuilder.newColumn('debt').withTitle('Débito').withOption('width', '20%').renderWith(function(data, type, full) {
-                    return $filter('currency')(data, 'R$', 2);
-                }),
-                DTColumnBuilder.newColumn('credit').withTitle('Crédito').withOption('width', '20%').renderWith(function(data, type, full) {
-                    return $filter('currency')(data, 'R$', 2);
-                }),
-                DTColumnBuilder.newColumn('outstanding_balance').withTitle('Saldo').withOption('width', '20%').renderWith(function(data, type, full) {
-                    return $filter('currency')(data, 'R$', 2);
-                })
-            ];
-
-            function toggleAll(selectAll, selectedItems) {
-                for (var id in selectedItems) {
-                    if (selectedItems.hasOwnProperty(id)) {
-                        selectedItems[id] = selectAll;
-                    }
-                }
-            }
-
-            function toggleOne(selectedItems) {
-                for (var id in selectedItems) {
-                    if (selectedItems.hasOwnProperty(id)) {
-                        if (!selectedItems[id]) {
-                            vm.selectAll = false;
-                            return;
-                        }
-                    }
-                }
-                vm.selectAll = true;
-            }
-        }
+        
     }
 
 });

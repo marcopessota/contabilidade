@@ -1,6 +1,6 @@
 var app = angular.module('app');
 
-app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_http_validate, S_fx, $uibModal) {
+app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_http_validate, S_fx, $uibModal, ngDialog) {
     var $diario = this;
     $diario.S_fx = S_fx;
     $diario.titulo = "Diario";
@@ -24,7 +24,7 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
     $diario.models.min = 0;
     $diario.slider_ratio = 0;
 
-    $diario.teste= function(){
+    $diario.teste = function() {
         console.log('a');
     }
 
@@ -284,15 +284,21 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
         $diario.questions.push('Selecione na linha abaixo onde está o campo <b>crédito</b> e pressione "OK"? (Será necessário fazer essa ação 3 veze)');
     }
 
-    $diario.usar_diario = function(){
-        var currencyTemplate = {align: 'right', sorttype: 'number', editable: true,
-        searchoptions: { sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'nu', 'nn', 'in', 'ni']},
-        formatter: function (v) {
-            return Globalize.format(Number(v), "c");
-        },
-        unformat: function (v) {
-            return Globalize.parseFloat(v);
-        }};
+    $diario.usar_diario = function() {
+        var currencyTemplate = {
+            align: 'right',
+            sorttype: 'number',
+            editable: true,
+            searchoptions: {
+                sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'nu', 'nn', 'in', 'ni']
+            },
+            formatter: function(v) {
+                return Globalize.format(Number(v), "c");
+            },
+            unformat: function(v) {
+                return Globalize.parseFloat(v);
+            }
+        };
         var obj_ajax = {};
         obj_ajax._f = 'get_diario';
         obj_ajax._p = {
@@ -302,31 +308,74 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
             url: S_vars.url_ajax + 'ajax.php',
             datatype: "json",
             postData: obj_ajax,
-            colModel:[
-                {name:"Data", index:"date_alias", sorttype:"string"},
-                {name:"Lançamento", index:"entry", sorttype:"int"},
-                {name:"Conta", index:"account", sorttype: "string", formmater: "string"},
-                {name:"Título", index:"entry", sorttype:"string"},
-                {name:"Débito", index:"debt_value_alias", sorttype: "string",  formmater: "string"},
-                {name:"Crédito", index:"credit_value_alias", sorttype: "string",  formmater: "string"},
-                {name:"Conceito", index:"concept", sorttype:"string"}
+            colModel: [{
+                    name: "Data",
+                    index: "date_alias",
+                    sorttype: "string"
+                }, {
+                    name: "Lançamento",
+                    index: "entry",
+                    sorttype: "int"
+                }, {
+                    name: "Conta",
+                    index: "account",
+                    sorttype: "string",
+                    formmater: "string"
+                }, {
+                    name: "Título",
+                    index: "entry",
+                    sorttype: "string"
+                }, {
+                    name: "Débito",
+                    index: "debt_value_alias",
+                    sorttype: "string",
+                    formmater: "string"
+                }, {
+                    name: "Crédito",
+                    index: "credit_value_alias",
+                    sorttype: "string",
+                    formmater: "string"
+                }, {
+                    name: "Conceito",
+                    index: "concept",
+                    sorttype: "string"
+                }
 
             ],
-            rowNum:30,
-            rowList:[30, 50, 100, 1000],
+            rowNum: 30,
+            rowList: [30, 50, 100, 1000],
             pager: '#pager_diario_mongo',
             sortname: 'accountt',
             viewrecords: true,
             multiselect: true,
             autowidth: true,
             height: 350,
-            sortorder: "desc"
-        }).navGrid("#pager2",{edit:false,add:false,del:false});
+            sortorder: "desc",
+            onSelectRow: function(ids) {
+                if ($("#diario_mongo").getGridParam('selarrrow').length == 0) {
+                    // $('#btn_diario_envia_selecao').prop('disabled', true);
+                }
+            }
+        }).navGrid("#pager2", {
+            edit: false,
+            add: false,
+            del: false
+        });
 
-        $('#diario_mongo').jqGrid('filterToolbar',{"stringResult":true});
+        $('#diario_mongo').jqGrid('filterToolbar', {
+            "stringResult": true
+        });
     };
 
     $diario.sendData = function() {
+        if ($("#diario_mongo").getGridParam('selarrrow').length == 0) {
+            $scope.dialog_msg = "Selecione na tabela pelo menos uma linha para gerar uma folha de trabalho";
+            var dialog = ngDialog.open({
+                template: 'templates/default/alert.html',
+                scope: $scope
+            });
+            return false;
+        }
         $diario.modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'modal_exporta_work_sheet.html',
@@ -337,9 +386,8 @@ app.controller('diarioController', function($scope, $http, $timeout, S_vars, S_h
             var obj_ajax = {};
             obj_ajax._f = 'envia_folha_trabalho';
             obj_ajax._p = {
-                rows: $diario.selected,
-                values: $diario.models,
-
+                rows: $("#diario_mongo").getGridParam('selarrrow'),
+                values: $diario.models
             };
             $http.post(S_vars.url_ajax + 'ajax.php', obj_ajax).success(function(data, status) {
                 alert('Enviado para folha de trabalho com sucesso');
