@@ -108,7 +108,7 @@
         <div id="wrapper" ng-class="appCtrl.wrapper_class">
             <!-- Sidebar -->
             <div id="sidebar-wrapper" ng-hide="appCtrl.vars.id_business == '' || appCtrl.selected_menu == 'empresas'">
-                <ul ng-show="appCtrl.selected_menu == 'contabilidade'" class="sidebar-nav">
+                <ul ng-show="appCtrl.selected_menu == 'contabilidade' || appCtrl.selected_menu == 'exercicios'" class="sidebar-nav">
                     <li class="sidebar-brand">
                         <span>Circuito Contábil</span>
                         <span class="icone_sidebar_menu in glyphicon glyphicon-menu-hamburger menu-toggle" aria-hidden="true"></span>
@@ -125,7 +125,7 @@
                     <li>
                         <a class="" href="#balanco">Balanço Patrimonial</a>
                     </li>
-<!--                <li>
+                    <!-- <li>
                         <a class="" href="#ratio">Indicador Economico Financeiro</a>
                     </li> -->
                     <!-- <li>
@@ -243,6 +243,7 @@
     <script src="templates/plano_contas/plano_contas.controller.js"></script>
     <script src="templates/ratio/ratio.controller.js"></script>
     <script src="templates/empresas/empresas.controller.js"></script>
+    <script src="templates/exercicios/exercicios.controller.js"></script>
     <script src="templates/tipologia/tipologia.controller.js"></script>
     <!-- Services -->
     <script src="templates/services.js"></script>
@@ -253,6 +254,7 @@
     <script src="templates/plano_contas/plano_contas.service.js"></script>
     <script src="templates/ratio/ratio.service.js"></script>
     <script src="templates/empresas/empresas.service.js"></script>
+    <script src="templates/exercicios/exercicios.service.js"></script>
     <script src="templates/tipologia/tipologia.service.js"></script>
     <script>
     $(document).ready(function() {

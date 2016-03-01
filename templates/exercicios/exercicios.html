@@ -1,12 +1,12 @@
-{{empresasCtrl.titulo}}
-<div ng-controller="empresasCtrl.angularWayChangeDataCtrl as showCase">
-    <form class="form-inline" ng-submit="showCase.add_business()">
+{{exerciciosCtrl.titulo}}
+<div ng-controller="exerciciosCtrl.angularWayChangeDataCtrl as showCase">
+    <form class="form-inline" ng-submit="showCase.add_exercicio()">
         <table datatable="ng" dt-options="showCase.dtOptions" dt-column-defs="showCase.dtColumnDefs" dt-instance="showCase.dtInstance" class="row-border hover">
             <thead>
                 <tr>
                     <th>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-success">Incluir empresa</button>
+                            <button type="submit" class="btn btn-success">Incluir Exercício</button>
                         </div>
                     </th>
                     <th>
@@ -18,7 +18,7 @@
                 </tr>
                 <tr>
                     <th></th>
-                    <th>Empresas:</th>
+                    <th>Exercício</th>
                     <th></th>
                 </tr>
             </thead>
@@ -27,9 +27,9 @@
                     <td style="text-align: center;">
                         <!-- <button type="button" ng-click="showCase.modify_business($index)" class="btn btn-warning"><i class="fa fa-edit"></i></button>
                         <button type="button" ng-click="showCase.remove_business($index)" class="btn btn-danger"><i class="fa fa-trash-o"></i></button> -->
-                        <button type="button" ng-click="showCase.select_business($index); appCtrl.select_menu('exercicios');" class="table_button_size btn btn-primary"></button>
-                        <button type="button" ng-click="showCase.modify_business($index)" class="table_button_size btn btn-warning"></button>
-                        <button type="button" ng-click="showCase.remove_business($index)" class="table_button_size btn btn-danger"></button>
+                        <button type="button" ng-click="showCase.select_exercicio($index)" class="table_button_size btn btn-primary"></button>
+                        <button type="button" ng-click="showCase.modify_exercicio($index)" class="table_button_size btn btn-warning"></button>
+                        <button type="button" ng-click="showCase.remove_exercicio($index)" class="table_button_size btn btn-danger"></button>
                     </td>
                     <td style="padding-left: 20px;">{{ item.nome }}</td>
                     <td>{{ item._id.$id }}</td>
@@ -38,13 +38,13 @@
         </table>
     </form>
 </div>
-<script type="text/ng-template" id="modal_business.html">
+<script type="text/ng-template" id="modal_exercicio.html">
     <div class="modal-header">
         <h3 class="modal-title">{{showCase.title}}</h3>
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label class="full_width">Nome da Empresa
+            <label class="full_width">Nome do Exercício
                 <input class="form-control" type="text" name="nome" ng-model="showCase.itemAdd.nome" value="">
             </label>
         </div>

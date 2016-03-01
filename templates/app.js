@@ -13,6 +13,11 @@ app.config(['$routeProvider',
             controller: 'empresasController',
             controllerAs: 'empresasCtrl'
         }).
+        when('/exercicios', {
+            templateUrl: 'templates/exercicios/exercicios.html',
+            controller: 'exerciciosController',
+            controllerAs: 'exerciciosCtrl'
+        }).
         when('/sped', {
             templateUrl: 'templates/sped/sped.html',
             controller: 'spedController',
@@ -47,7 +52,7 @@ app.config(['$routeProvider',
             controllerAs: 'planoContasCtrl'
         }).
         otherwise({
-            redirectTo: '/diario'
+            redirectTo: '/empresas'
         });
     }
 ]);
@@ -62,10 +67,13 @@ app.controller('appController', function($scope, S_vars){
        }
     });
     if($app.vars.id_business == ""){
-            $app.wrapper_class = "toggled";
-       }
-    $app.selected_menu = "contabilidade";
+        $app.wrapper_class = "toggled";
+    }
     $app.select_menu = function(menu) {
         $app.selected_menu = menu;
+        if (menu == "empresas") {
+            $app.wrapper_class = "toggled";
+        }
+        console.log(menu);
     };
 });
